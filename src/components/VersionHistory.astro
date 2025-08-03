@@ -1,0 +1,608 @@
+---
+/**
+ * 历史版本组件
+ * 用于在下载页面显示软件的历史版本列表
+ */
+---
+
+<div id="version-history-section" class="version-history-section">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- 标题和切换按钮 -->
+    <div class="text-center mb-12">
+      <h3 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+        历史版本
+      </h3>
+      <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+        查看 DeviceManager Pro 的完整版本历史，了解每个版本的新功能和改进
+      </p>
+      <button
+        id="toggle-version-history"
+        class="inline-flex items-center px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300"
+      >
+        <span id="toggle-text">显示历史版本</span>
+        <svg id="toggle-icon" class="ml-3 w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- 历史版本内容 -->
+    <div id="version-history-content" class="version-history-content hidden">
+      <!-- 加载状态 -->
+      <div id="version-loading" class="text-center py-16">
+        <div class="relative">
+          <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto"></div>
+          <div class="absolute inset-0 flex items-center justify-center">
+            <div class="w-8 h-8 bg-blue-600 rounded-full animate-pulse"></div>
+          </div>
+        </div>
+        <p class="mt-6 text-lg text-gray-600 dark:text-gray-400 font-medium">加载历史版本中...</p>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-500">请稍候，正在获取版本信息</p>
+      </div>
+
+      <!-- 版本列表 -->
+      <div id="version-list" class="hidden space-y-8">
+        <!-- 版本项将通过JavaScript动态插入 -->
+      </div>
+
+      <!-- 错误状态 -->
+      <div id="version-error" class="hidden text-center py-16">
+        <div class="text-gray-500 dark:text-gray-400">
+          <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">暂无历史版本信息</h4>
+          <p class="text-sm text-gray-500 dark:text-gray-400">版本信息正在更新中，请稍后再试</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .version-history-section {
+    @apply py-20 bg-white dark:bg-gray-900;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  }
+
+  .dark .version-history-section {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  }
+
+  .version-item {
+    @apply bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-700 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105;
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  }
+
+  .version-item:hover {
+    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
+  }
+
+  .version-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .version-item:hover::before {
+    opacity: 1;
+  }
+
+  .dark .version-item {
+    background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  }
+
+  .version-header {
+    @apply flex items-start justify-between mb-8;
+  }
+
+  .version-info {
+    @apply flex-1;
+  }
+
+  .version-number {
+    @apply text-4xl font-black text-gray-900 dark:text-white mb-3 relative;
+    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+  }
+
+  .version-number::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+    border-radius: 2px;
+  }
+
+  .version-date {
+    @apply text-sm text-gray-600 dark:text-gray-300 font-semibold flex items-center;
+  }
+
+  .version-date::before {
+    content: '📅';
+    margin-right: 6px;
+    font-size: 14px;
+  }
+
+  .version-type {
+    @apply inline-flex items-center px-6 py-3 rounded-2xl text-sm font-bold shadow-lg transform transition-all duration-300 hover:scale-110;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .version-type::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .version-type:hover::before {
+    left: 100%;
+  }
+
+  .version-type-stable {
+    @apply bg-gradient-to-r from-emerald-400 via-green-500 to-teal-600 text-white;
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+  }
+
+  .version-type-stable::after {
+    content: '✅';
+    margin-left: 8px;
+    font-size: 12px;
+  }
+
+  .version-type-beta {
+    @apply bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white;
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+  }
+
+  .version-type-beta::after {
+    content: '🧪';
+    margin-left: 8px;
+    font-size: 12px;
+  }
+
+  .version-type-prerelease {
+    @apply bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-600 text-white;
+    box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
+  }
+
+  .version-type-prerelease::after {
+    content: '🚀';
+    margin-left: 8px;
+    font-size: 12px;
+  }
+
+  .version-downloads {
+    @apply flex flex-wrap gap-4 mb-8;
+  }
+
+  .download-link {
+    @apply inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-indigo-700 text-white text-sm font-bold rounded-2xl transition-all duration-500 transform hover:scale-110 hover:-translate-y-1 shadow-2xl;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+  }
+
+  .download-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+  }
+
+  .download-link:hover::before {
+    left: 100%;
+  }
+
+  .download-link svg {
+    @apply w-5 h-5 mr-2;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .download-link-secondary {
+    @apply inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-100 via-gray-200 to-slate-300 dark:from-gray-700 dark:via-gray-600 dark:to-slate-700 hover:from-slate-200 hover:via-gray-300 hover:to-slate-400 dark:hover:from-gray-600 dark:hover:via-slate-600 dark:hover:to-gray-500 text-gray-900 dark:text-white text-sm font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-0.5 shadow-lg;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .download-link-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .download-link-secondary:hover::before {
+    left: 100%;
+  }
+
+  .version-notes {
+    @apply text-sm text-gray-700 dark:text-gray-200 leading-relaxed bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-slate-800 dark:to-gray-700 rounded-2xl p-6 mb-6 border border-blue-100 dark:border-gray-600;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .version-notes::before {
+    content: '📝';
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+
+  .version-notes {
+    padding-left: 40px;
+  }
+
+  .version-meta {
+    @apply flex flex-wrap items-center gap-3 text-xs pt-6 border-t border-blue-200 dark:border-gray-600;
+  }
+
+  .version-meta span {
+    @apply bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-700 dark:to-slate-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-full font-semibold shadow-sm border border-blue-200 dark:border-gray-600 transition-all duration-300 hover:scale-105;
+    position: relative;
+  }
+
+  .version-meta span::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .version-meta span:hover::before {
+    opacity: 1;
+  }
+
+  /* 切换按钮样式 */
+  #toggle-version-history {
+    @apply bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-lg transform hover:scale-105 transition-all duration-300;
+  }
+
+  /* 加载动画 */
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* 标题样式增强 */
+  .version-history-section h3 {
+    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* 版本列表动画 */
+  .version-item {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideInUp 0.6s ease-out forwards;
+  }
+
+  @keyframes slideInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* 版本内容展开动画 */
+  .version-history-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-out;
+  }
+
+  .version-history-content.expanded {
+    max-height: 5000px;
+  }
+
+  /* 更新说明列表样式 */
+  .version-notes .flex {
+    transition: all 0.2s ease;
+  }
+
+  .version-notes .flex:hover {
+    transform: translateX(4px);
+    background-color: rgba(59, 130, 246, 0.05);
+    border-radius: 4px;
+    padding: 2px 4px;
+  }
+
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .version-item {
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .version-number {
+      font-size: 2rem;
+    }
+
+    .version-downloads {
+      flex-direction: column;
+    }
+
+    .download-link,
+    .download-link-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script is:inline>
+  class VersionHistory {
+
+    constructor() {
+      this.toggleButton = document.getElementById('toggle-version-history');
+      this.toggleText = document.getElementById('toggle-text');
+      this.toggleIcon = document.getElementById('toggle-icon');
+      this.content = document.getElementById('version-history-content');
+      this.loadingElement = document.getElementById('version-loading');
+      this.listElement = document.getElementById('version-list');
+      this.errorElement = document.getElementById('version-error');
+      this.isExpanded = false;
+      this.versionsLoaded = false;
+
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      if (this.toggleButton) {
+        this.toggleButton.addEventListener('click', () => {
+          this.toggle();
+        });
+      }
+    }
+
+    async toggle() {
+      this.isExpanded = !this.isExpanded;
+
+      if (this.isExpanded) {
+        this.expand();
+        if (!this.versionsLoaded) {
+          await this.loadVersions();
+        }
+      } else {
+        this.collapse();
+      }
+    }
+
+    expand() {
+      if (this.content) this.content.classList.remove('hidden');
+      if (this.toggleText) this.toggleText.textContent = '隐藏历史版本';
+      if (this.toggleIcon) this.toggleIcon.style.transform = 'rotate(180deg)';
+    }
+
+    collapse() {
+      if (this.content) this.content.classList.add('hidden');
+      if (this.toggleText) this.toggleText.textContent = '显示历史版本';
+      if (this.toggleIcon) this.toggleIcon.style.transform = 'rotate(0deg)';
+    }
+
+    async loadVersions() {
+      try {
+        this.showLoading();
+
+        // 使用fetch直接调用API
+        const response = await fetch('https://api-g.lacs.cc/app/software/id/6/versions?page=1&limit=10&sortBy=releaseDate&sortOrder=desc');
+        const data = await response.json();
+
+        if (data.success && data.data && data.data.length > 0) {
+          this.renderVersions(data.data);
+          this.versionsLoaded = true;
+        } else {
+          this.showError();
+        }
+      } catch (error) {
+        console.error('Failed to load version history:', error);
+        this.showError();
+      }
+    }
+
+    showLoading() {
+      if (this.loadingElement) this.loadingElement.classList.remove('hidden');
+      if (this.listElement) this.listElement.classList.add('hidden');
+      if (this.errorElement) this.errorElement.classList.add('hidden');
+    }
+
+    showError() {
+      if (this.loadingElement) this.loadingElement.classList.add('hidden');
+      if (this.listElement) this.listElement.classList.add('hidden');
+      if (this.errorElement) this.errorElement.classList.remove('hidden');
+    }
+
+    renderVersions(versions) {
+      if (!this.listElement) return;
+
+      this.listElement.innerHTML = '';
+
+      versions.forEach(version => {
+        const versionElement = this.createVersionElement(version);
+        this.listElement.appendChild(versionElement);
+      });
+
+      if (this.loadingElement) this.loadingElement.classList.add('hidden');
+      if (this.listElement) this.listElement.classList.remove('hidden');
+    }
+
+    createVersionElement(version) {
+      const div = document.createElement('div');
+      div.className = 'version-item';
+
+      const versionTypeClass = this.getVersionTypeClass(version);
+      const formattedDate = this.formatDate(version.releaseDate);
+      const downloadLinks = this.createDownloadLinks(version);
+
+      div.innerHTML = `
+        <div class="version-header">
+          <div class="version-info">
+            <div class="version-number">v${this.escapeHtml(version.version || '未知版本')}</div>
+            <div class="version-date">${formattedDate}</div>
+          </div>
+          <span class="version-type ${versionTypeClass}">
+            ${this.getVersionTypeLabel(version)}
+          </span>
+        </div>
+
+        ${downloadLinks}
+
+        ${version.releaseNotes ? `
+          <div class="version-notes">
+            <div class="font-semibold text-gray-800 dark:text-gray-100 mb-3 text-base">🔄 更新内容</div>
+            <div class="space-y-2">
+              ${this.formatUpdateNotes(version.releaseNotes)}
+            </div>
+          </div>
+        ` : ''}
+
+        <div class="version-meta">
+          ${version.fileSize ? `<span>💾 ${version.fileSize}</span>` : ''}
+          ${version.fileHash ? `<span>🔐 SHA256: ${version.fileHash.substring(0, 16)}...</span>` : ''}
+          ${version.changelogCategory && version.changelogCategory.length > 0 ?
+            `<span>🏷️ ${version.changelogCategory.join(', ')}</span>` : ''}
+          ${version.downloads ? `<span>📥 ${this.formatDownloadCount(version.downloads)} 下载</span>` : ''}
+        </div>
+      `;
+
+      return div;
+    }
+
+    createDownloadLinks(version) {
+      if (!version.downloadLinks) return '';
+
+      const links = [];
+
+      if (version.downloadLinks.official) {
+        links.push(`
+          <a href="${version.downloadLinks.official}" class="download-link" target="_blank" rel="noopener noreferrer">
+            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m-6 8h8a2 2 0 002-2V7a2 2 0 00-2-2H8a2 2 0 00-2 2v11a2 2 0 002 2z"></path>
+            </svg>
+            官方下载
+          </a>
+        `);
+      }
+
+      if (version.downloadLinks.backup && version.downloadLinks.backup.length > 0) {
+        version.downloadLinks.backup.forEach((link, index) => {
+          links.push(`
+            <a href="${link}" class="download-link-secondary" target="_blank" rel="noopener noreferrer">
+              备用下载 ${index + 1}
+            </a>
+          `);
+        });
+      }
+
+      return links.length > 0 ? `<div class="version-downloads">${links.join('')}</div>` : '';
+    }
+
+    getVersionTypeClass(version) {
+      if (version.isStable) return 'version-type-stable';
+      if (version.isBeta) return 'version-type-beta';
+      if (version.isPrerelease) return 'version-type-prerelease';
+      return 'version-type-stable';
+    }
+
+    getVersionTypeLabel(version) {
+      if (version.isStable) return '稳定版';
+      if (version.isBeta) return '测试版';
+      if (version.isPrerelease) return '预览版';
+      return '稳定版';
+    }
+
+    formatDate(dateString) {
+      try {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      } catch (error) {
+        return '未知日期';
+      }
+    }
+
+    escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    formatUpdateNotes(notes) {
+      if (!notes) return '';
+
+      // 将换行符转换为HTML换行
+      const formattedNotes = this.escapeHtml(notes)
+        .replace(/\n/g, '<br>')
+        .replace(/\*\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-blue-500 font-bold">•</span><span>$1</span></div>')
+        .replace(/-\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-purple-500 font-bold">→</span><span>$1</span></div>');
+
+      return formattedNotes;
+    }
+
+    formatDownloadCount(count) {
+      if (!count || count === 0) return '0';
+
+      if (count >= 1000000) {
+        return (count / 1000000).toFixed(1) + 'M';
+      } else if (count >= 1000) {
+        return (count / 1000).toFixed(1) + 'K';
+      }
+
+      return count.toString();
+    }
+  }
+
+  // 初始化历史版本组件
+  document.addEventListener('DOMContentLoaded', () => {
+    new VersionHistory();
+  });
+</script>

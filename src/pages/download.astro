@@ -1,0 +1,313 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { SITE_CONFIG } from '@/config/site';
+import ScrollColorAnimation from '@/components/ScrollColorAnimation.astro';
+import DynamicVersionConfig from '@/components/DynamicVersionConfig.astro';
+import VersionHistory from '@/components/VersionHistory.astro';
+---
+
+<MainLayout
+  title="下载 - 玩机管家"
+  description="下载玩机管家 (Android Device Management Tool)，支持 Windows、macOS 和 Linux。立即开始管理您的 Android 设备。"
+>
+  <!-- Hero Section -->
+  <section class="bg-white dark:bg-black py-20 lg:py-32 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1
+        class="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight leading-none"
+        data-scroll-color="hero-title"
+        data-fade-in
+      >
+        下载 {SITE_CONFIG.name}
+      </h1>
+      <p
+        class="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto mb-8 font-light"
+        data-scroll-color="feature-text"
+        data-fade-in
+      >
+        专业的 Android 设备管理工具
+      </p>
+      <p
+        class="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-3xl mx-auto mb-12"
+        data-scroll-color="feature-text"
+        data-fade-in
+      >
+        支持 Windows 平台，macOS 和 Linux 版本正在开发中
+      </p>
+      <!-- 动态版本信息组件 -->
+      <DynamicVersionConfig />
+    </div>
+  </section>
+
+  <!-- Download Options -->
+  <section class="py-20 bg-gray-50 dark:bg-gray-900 dynamic-background" data-parallax="0.2">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2
+          class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
+          data-scroll-color="section-title"
+          data-fade-in
+        >
+          选择您的平台
+        </h2>
+        <p
+          class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
+          data-scroll-color="feature-text"
+          data-fade-in
+        >
+          为您的操作系统下载最适合的版本
+        </p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Windows -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-fade-in data-platform="windows">
+          <div class="w-20 h-20 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
+            <span class="text-4xl">🪟</span>
+          </div>
+          <h3
+            class="text-2xl font-bold text-gray-900 dark:text-white mb-4"
+            data-scroll-color="section-title"
+          >
+            Windows
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-6" data-platform-requirements="windows">
+            {SITE_CONFIG.downloads.windows.requirements.os}
+          </p>
+          <div class="space-y-3" data-download-buttons="windows">
+            <a
+              href={SITE_CONFIG.downloads.windows.installer.url}
+              class="download-button-primary block w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
+              data-download-type="installer"
+              data-platform="windows"
+            >
+              <span class="download-name">{SITE_CONFIG.downloads.windows.installer.name}</span>
+              <span class="download-info block text-sm opacity-90 mt-1">
+                <span class="download-filename">{SITE_CONFIG.downloads.windows.installer.filename}</span>
+                (<span class="download-size">{SITE_CONFIG.downloads.windows.installer.size}</span>)
+              </span>
+            </a>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-4" data-platform-description="windows">
+            {SITE_CONFIG.downloads.windows.installer.description}
+          </p>
+        </div>
+
+        <!-- macOS -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center opacity-60" data-platform="macos">
+          <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl">🍎</span>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            macOS
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">
+            macOS 11.0 or later (Intel & Apple Silicon)
+          </p>
+          <div class="space-y-3">
+            <div class="block w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 py-3 px-6 rounded-lg font-semibold cursor-not-allowed">
+              暂不支持下载
+              <span class="block text-sm opacity-70">正在开发中，敬请期待</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linux -->
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center opacity-60" data-platform="linux">
+          <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-6">
+            <span class="text-3xl">🐧</span>
+          </div>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Linux
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Ubuntu 20.04+, Fedora 35+, or equivalent
+          </p>
+          <div class="space-y-3">
+            <div class="block w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 py-3 px-6 rounded-lg font-semibold cursor-not-allowed">
+              暂不支持下载
+              <span class="block text-sm opacity-70">正在开发中，敬请期待</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Version History -->
+  <VersionHistory />
+
+  <!-- 滚动效果组件 -->
+  <ScrollColorAnimation />
+</MainLayout>
+
+<script>
+  // @ts-nocheck
+  // 动态版本配置管理
+  class DynamicDownloadManager {
+    constructor() {
+      this.dynamicDownloads = null;
+      this.versionInfo = null;
+      this.init();
+    }
+
+    init() {
+      // 加载动态下载配置
+      this.loadDynamicDownloads();
+
+      // 加载版本信息
+      this.loadVersionInfo();
+
+      // 更新下载链接
+      this.updateDownloadLinks();
+
+      // 绑定下载事件
+      this.bindDownloadEvents();
+
+      // 自动检测平台
+      this.detectPlatform();
+    }
+
+    loadDynamicDownloads() {
+      try {
+        const dataElement = document.getElementById('dynamic-downloads-data');
+        if (dataElement && dataElement.textContent) {
+          console.log('Raw dynamic downloads data:', dataElement.textContent);
+          this.dynamicDownloads = JSON.parse(dataElement.textContent);
+          console.log('Dynamic downloads loaded:', this.dynamicDownloads);
+        } else {
+          console.log('No dynamic downloads data element found or empty content');
+        }
+      } catch (error) {
+        console.error('Failed to load dynamic downloads:', error);
+        const dataElement = document.getElementById('dynamic-downloads-data');
+        if (dataElement) {
+          console.error('Raw content that failed to parse:', dataElement.textContent);
+        }
+      }
+    }
+
+    loadVersionInfo() {
+      try {
+        const dataElement = document.getElementById('version-info-data');
+        if (dataElement && dataElement.textContent) {
+          console.log('Raw version info data:', dataElement.textContent);
+          this.versionInfo = JSON.parse(dataElement.textContent);
+          console.log('Version info loaded:', this.versionInfo);
+        } else {
+          console.log('No version info data element found or empty content');
+        }
+      } catch (error) {
+        console.error('Failed to load version info:', error);
+        const dataElement = document.getElementById('version-info-data');
+        if (dataElement) {
+          console.error('Raw content that failed to parse:', dataElement.textContent);
+        }
+      }
+    }
+
+    updateDownloadLinks() {
+      if (!this.dynamicDownloads) {
+        console.log('No dynamic downloads available, using static configuration');
+        return;
+      }
+
+      // 更新各平台下载链接
+      ['windows', 'macos', 'linux'].forEach(platform => {
+        this.updatePlatformDownloads(platform);
+      });
+    }
+
+    updatePlatformDownloads(platform) {
+      const platformData = this.dynamicDownloads[platform];
+      if (!platformData) return;
+
+      const platformElement = document.querySelector(`[data-platform="${platform}"]`);
+      if (!platformElement) return;
+
+      // 更新下载按钮
+      const downloadButtons = platformElement.querySelectorAll('[data-download-type]');
+      downloadButtons.forEach(button => {
+        const downloadType = button.getAttribute('data-download-type');
+        const downloadData = platformData[downloadType];
+
+        if (downloadData && downloadData.url && downloadData.url !== '#') {
+          // 更新链接
+          button.setAttribute('href', downloadData.url);
+
+          // 更新文件名
+          const filenameElement = button.querySelector('.download-filename');
+          if (filenameElement && downloadData.filename) {
+            filenameElement.textContent = downloadData.filename;
+          }
+
+          // 更新文件大小
+          const sizeElement = button.querySelector('.download-size');
+          if (sizeElement && downloadData.size) {
+            sizeElement.textContent = downloadData.size;
+          }
+
+          // 添加动态更新标识
+          button.classList.add('dynamic-updated');
+
+          console.log(`Updated ${platform} ${downloadType}:`, downloadData.filename);
+        }
+      });
+    }
+
+    bindDownloadEvents() {
+      // 绑定所有下载按钮的点击事件
+      document.querySelectorAll('[data-download-type]').forEach(button => {
+        button.addEventListener('click', (event) => {
+          const platform = button.getAttribute('data-platform');
+          const downloadType = button.getAttribute('data-download-type');
+
+          if (platform && downloadType) {
+            this.trackDownload(platform, downloadType);
+          }
+        });
+      });
+    }
+
+    trackDownload(platform, type) {
+      console.log(`Download tracked: ${platform} - ${type}`);
+
+      // 获取当前版本信息
+      const version = this.versionInfo?.latestVersion?.version || '2.1.0';
+
+      // Google Analytics 事件追踪
+      if (typeof gtag !== 'undefined') {
+        gtag('event', 'download', {
+          'platform': platform,
+          'download_type': type,
+          'version': version,
+          'source': 'dynamic_api'
+        });
+      }
+    }
+
+    detectPlatform() {
+      const userAgent = navigator.userAgent.toLowerCase();
+      let platform = 'windows'; // default
+
+      if (userAgent.includes('mac')) {
+        platform = 'macos';
+      } else if (userAgent.includes('linux')) {
+        platform = 'linux';
+      }
+
+      // 高亮检测到的平台
+      const platformElement = document.querySelector(`[data-platform="${platform}"]`);
+      if (platformElement) {
+        platformElement.style.border = '2px solid #3b82f6';
+        platformElement.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.3)';
+      }
+
+      console.log(`Detected platform: ${platform}`);
+    }
+  }
+
+  // 初始化动态下载管理器
+  document.addEventListener('DOMContentLoaded', () => {
+    window.downloadManager = new DynamicDownloadManager();
+  });
+</script>

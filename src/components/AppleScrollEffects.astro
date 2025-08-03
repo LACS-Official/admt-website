@@ -1,0 +1,308 @@
+---
+// AppleScrollEffects.astro - 增强的 Apple 风格滚动效果
+---
+
+<div id="scroll-progress-indicator" class="scroll-progress-bar"></div>
+
+<script>
+  // @ts-nocheck
+  class AppleScrollEffects {
+    constructor() {
+      this.progressBar = document.getElementById('scroll-progress-indicator');
+      this.parallaxElements = [];
+      this.fadeElements = [];
+      this.init();
+    }
+
+    init() {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => this.setup());
+      } else {
+        this.setup();
+      }
+    }
+
+    setup() {
+      this.setupProgressBar();
+      this.setupParallaxElements();
+      this.setupFadeElements();
+      this.bindEvents();
+      this.update();
+    }
+
+    setupProgressBar() {
+      if (!this.progressBar) return;
+
+      // 简洁的黑灰色进度条
+      this.progressBar.style.background = `
+        linear-gradient(90deg,
+          #374151 0%,
+          #1f2937 50%,
+          #111827 100%
+        )
+      `;
+    }
+
+    setupParallaxElements() {
+      // 查找视差滚动元素
+      this.parallaxElements = document.querySelectorAll('[data-parallax]');
+    }
+
+    setupFadeElements() {
+      // 查找淡入淡出元素
+      this.fadeElements = document.querySelectorAll('[data-fade-in]');
+    }
+
+    bindEvents() {
+      let ticking = false;
+      
+      const handleScroll = () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            this.update();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', () => this.update(), { passive: true });
+    }
+
+    update() {
+      this.updateProgressBar();
+      this.updateParallaxElements();
+      this.updateFadeElements();
+      this.updateBackgroundColors();
+    }
+
+    updateProgressBar() {
+      if (!this.progressBar) return;
+      
+      const scrollTop = window.pageYOffset;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.min(scrollTop / documentHeight, 1);
+      
+      this.progressBar.style.transform = `scaleX(${progress})`;
+    }
+
+    updateParallaxElements() {
+      const scrollTop = window.pageYOffset;
+      
+      this.parallaxElements.forEach(element => {
+        const speed = parseFloat(element.getAttribute('data-parallax')) || 0.5;
+        const yPos = -(scrollTop * speed);
+        element.style.transform = `translate3d(0, ${yPos}px, 0)`;
+      });
+    }
+
+    updateFadeElements() {
+      const windowHeight = window.innerHeight;
+      const scrollTop = window.pageYOffset;
+      
+      this.fadeElements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top + scrollTop;
+        const elementHeight = element.offsetHeight;
+        const fadeStart = elementTop - windowHeight;
+        const fadeEnd = elementTop + elementHeight;
+        
+        if (scrollTop >= fadeStart && scrollTop <= fadeEnd) {
+          const fadeProgress = (scrollTop - fadeStart) / (fadeEnd - fadeStart);
+          const opacity = Math.min(Math.max(fadeProgress, 0), 1);
+          
+          element.style.opacity = opacity;
+          element.style.transform = `translateY(${(1 - opacity) * 50}px)`;
+        }
+      });
+    }
+
+    updateBackgroundColors() {
+      const scrollTop = window.pageYOffset;
+      const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = Math.min(scrollTop / documentHeight, 1);
+
+      // 简洁的灰度变化
+      const startLightness = 98; // 浅灰
+      const endLightness = 95;   // 稍深的灰
+      const currentLightness = startLightness - (startLightness - endLightness) * progress;
+
+      // 更新 CSS 变量
+      document.documentElement.style.setProperty('--dynamic-lightness', currentLightness.toString());
+      document.documentElement.style.setProperty('--scroll-progress', progress.toString());
+    }
+  }
+
+  // 初始化 Apple 滚动效果
+  new AppleScrollEffects();
+</script>
+
+<style>
+  /* 滚动进度条 */
+  .scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, #374151 0%, #1f2937 50%, #111827 100%);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.1s ease-out;
+    z-index: 9999;
+    opacity: 0.6;
+  }
+
+  /* 动态背景效果 */
+  :root {
+    --dynamic-lightness: 98;
+    --scroll-progress: 0;
+  }
+
+  /* 视差滚动元素 */
+  [data-parallax] {
+    will-change: transform;
+  }
+
+  /* 淡入效果元素 */
+  [data-fade-in] {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    will-change: opacity, transform;
+  }
+
+  /* 动态背景渐变 */
+  .dynamic-background {
+    background: linear-gradient(
+      135deg,
+      hsl(0, 0%, var(--dynamic-lightness)%) 0%,
+      hsl(0, 0%, calc(var(--dynamic-lightness)% - 2%)) 100%
+    );
+    transition: background 0.3s ease-out;
+  }
+
+  /* 深色模式下的动态背景 */
+  @media (prefers-color-scheme: dark) {
+    .dynamic-background {
+      background: linear-gradient(
+        135deg,
+        hsl(0, 0%, calc(100% - var(--dynamic-lightness)% - 85%)) 0%,
+        hsl(0, 0%, calc(100% - var(--dynamic-lightness)% - 88%)) 100%
+      );
+    }
+  }
+
+  /* 滚动触发的文字发光效果 */
+  .glow-text {
+    text-shadow:
+      0 0 20px rgba(0, 0, 0, calc(var(--scroll-progress) * 0.1)),
+      0 0 40px rgba(0, 0, 0, calc(var(--scroll-progress) * 0.05));
+    transition: text-shadow 0.3s ease-out;
+  }
+
+  /* 深色模式下的发光效果 */
+  @media (prefers-color-scheme: dark) {
+    .glow-text {
+      text-shadow:
+        0 0 20px rgba(255, 255, 255, calc(var(--scroll-progress) * 0.1)),
+        0 0 40px rgba(255, 255, 255, calc(var(--scroll-progress) * 0.05));
+    }
+  }
+
+  /* 滚动时的卡片悬浮效果 */
+  .scroll-card {
+    transform: translateY(calc(var(--scroll-progress) * -10px));
+    box-shadow:
+      0 calc(var(--scroll-progress) * 10px) calc(var(--scroll-progress) * 20px)
+      rgba(0, 0, 0, calc(var(--scroll-progress) * 0.05));
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+
+  /* 简洁的渐变文字效果 */
+  .rainbow-text {
+    background: linear-gradient(
+      45deg,
+      #374151,
+      #1f2937,
+      #111827,
+      #374151
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: subtleShift 6s ease-in-out infinite;
+  }
+
+  @keyframes subtleShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* 深色模式下的渐变文字 */
+  @media (prefers-color-scheme: dark) {
+    .rainbow-text {
+      background: linear-gradient(
+        45deg,
+        #d1d5db,
+        #9ca3af,
+        #6b7280,
+        #d1d5db
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  /* 滚动时的缩放效果 */
+  .scroll-scale {
+    transform: scale(calc(1 + var(--scroll-progress) * 0.1));
+    transition: transform 0.2s ease-out;
+  }
+
+  /* 磁性悬停效果 */
+  .magnetic-hover {
+    transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .magnetic-hover:hover {
+    transform: translateY(-5px) scale(1.02);
+  }
+
+  /* 滚动时的模糊效果 */
+  .scroll-blur {
+    filter: blur(calc(var(--scroll-progress) * 2px));
+    transition: filter 0.2s ease-out;
+  }
+
+  /* 性能优化 */
+  [data-scroll-color],
+  [data-parallax],
+  [data-fade-in],
+  .scroll-card,
+  .scroll-scale {
+    will-change: transform, opacity, color, text-shadow;
+  }
+
+  /* 减少动画在低性能设备上的影响 */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-progress-bar,
+    [data-parallax],
+    [data-fade-in],
+    .scroll-card,
+    .scroll-scale,
+    .glow-text,
+    .rainbow-text {
+      animation: none;
+      transition: none;
+      transform: none;
+      filter: none;
+    }
+  }
+</style>

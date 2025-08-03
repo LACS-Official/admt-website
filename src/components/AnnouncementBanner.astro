@@ -1,0 +1,354 @@
+---
+/**
+ * 公告横幅组件
+ * 用于在主页显示重要公告信息
+ */
+---
+
+<div id="announcement-banner" class="announcement-banner hidden">
+  <!-- 公告容器 -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="announcement-content">
+      <!-- 加载状态 -->
+      <div id="announcement-loading" class="flex items-center justify-center py-3">
+        <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-primary-600"></div>
+        <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">加载公告中...</span>
+      </div>
+      
+      <!-- 公告列表 -->
+      <div id="announcement-list" class="hidden space-y-2">
+        <!-- 公告项将通过JavaScript动态插入 -->
+      </div>
+      
+      <!-- 错误状态 -->
+      <div id="announcement-error" class="hidden text-center py-3">
+        <span class="text-sm text-gray-500 dark:text-gray-400">暂无公告信息</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .announcement-banner {
+    @apply bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-gray-700 border-b border-blue-200 dark:border-gray-600;
+    display: block !important;
+  }
+
+  .announcement-banner.hidden {
+    display: none !important;
+  }
+
+  .announcement-item {
+    @apply flex items-start space-x-3 p-3 rounded-lg transition-all duration-200;
+  }
+
+  .announcement-item:hover {
+    @apply bg-white/50 dark:bg-gray-700/50;
+  }
+
+  .announcement-icon {
+    @apply flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm;
+  }
+
+  .announcement-content-text {
+    @apply flex-1 min-w-0;
+  }
+
+  .announcement-title {
+    @apply font-medium text-gray-900 dark:text-white text-sm leading-5;
+  }
+
+  .announcement-meta {
+    @apply flex items-center space-x-2 mt-1;
+  }
+
+  .announcement-type {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-medium;
+  }
+
+  .announcement-date {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+  }
+
+  .announcement-priority-high {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+
+  .announcement-priority-normal {
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
+  }
+
+  .announcement-priority-low {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+  }
+
+  .announcement-type-update {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+  }
+
+  .announcement-type-feature {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
+  }
+
+  .announcement-type-security {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+
+  .announcement-type-maintenance {
+    @apply bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-200;
+  }
+
+  .announcement-type-general {
+    @apply bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200;
+  }
+
+  .announcement-urgent {
+    @apply animate-pulse;
+  }
+
+  .announcement-close {
+    @apply flex-shrink-0 ml-2 p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors;
+  }
+</style>
+
+<script is:inline>
+  // 公告横幅管理器
+  class AnnouncementBanner {
+    constructor() {
+      this.container = document.getElementById('announcement-banner');
+      this.loadingElement = document.getElementById('announcement-loading');
+      this.listElement = document.getElementById('announcement-list');
+      this.errorElement = document.getElementById('announcement-error');
+    }
+
+    async init() {
+      if (!this.container) {
+        console.log('Announcement banner container not found');
+        return;
+      }
+
+      console.log('Initializing announcement banner...');
+
+      try {
+        this.showLoading();
+        this.showBanner(); // 先显示容器
+
+        // 使用fetch直接调用API
+        console.log('Fetching announcements from API...');
+        const response = await fetch('https://api-g.lacs.cc/app/software/id/6/announcements?published=true&limit=3');
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('API response:', data);
+
+        if (data.success && data.data && data.data.length > 0) {
+          console.log(`Found ${data.data.length} announcements`);
+          this.renderAnnouncements(data.data);
+        } else {
+          console.log('No announcements found or API returned empty data, showing placeholder');
+          console.log('API response details:', { success: data.success, dataLength: data.data ? data.data.length : 'no data' });
+          this.showPlaceholder();
+        }
+      } catch (error) {
+        console.error('Failed to load announcements:', error);
+        console.log('Showing placeholder due to error');
+        this.showPlaceholder();
+      }
+    }
+
+    showLoading() {
+      if (this.loadingElement) this.loadingElement.classList.remove('hidden');
+      if (this.listElement) this.listElement.classList.add('hidden');
+      if (this.errorElement) this.errorElement.classList.add('hidden');
+    }
+
+    showError() {
+      if (this.loadingElement) this.loadingElement.classList.add('hidden');
+      if (this.listElement) this.listElement.classList.add('hidden');
+      if (this.errorElement) this.errorElement.classList.remove('hidden');
+      this.showBanner();
+    }
+
+    showBanner() {
+      if (this.container) {
+        this.container.classList.remove('hidden');
+      }
+    }
+
+    hideBanner() {
+      if (this.container) {
+        this.container.classList.add('hidden');
+      }
+    }
+
+    showPlaceholder() {
+      console.log('Showing placeholder announcement...');
+      // 显示一个示例公告，当API没有数据时
+      const placeholderAnnouncements = [
+        {
+          id: 1,
+          title: '玩机管家正在持续更新中',
+          content: '我们正在不断改进产品功能，为您提供更好的设备管理体验。敬请期待更多功能！',
+          type: 'general',
+          priority: 'normal',
+          publishedAt: new Date().toISOString(),
+          metadata: { urgent: false }
+        }
+      ];
+
+      console.log('Placeholder announcements:', placeholderAnnouncements);
+      this.renderAnnouncements(placeholderAnnouncements);
+    }
+
+    renderAnnouncements(announcements) {
+      if (!this.listElement) return;
+
+      this.listElement.innerHTML = '';
+
+      announcements.forEach((announcement) => {
+        const announcementElement = this.createAnnouncementElement(announcement);
+        this.listElement.appendChild(announcementElement);
+      });
+
+      if (this.loadingElement) this.loadingElement.classList.add('hidden');
+      if (this.listElement) this.listElement.classList.remove('hidden');
+    }
+
+    createAnnouncementElement(announcement) {
+      const div = document.createElement('div');
+      div.className = `announcement-item ${announcement.metadata?.urgent ? 'announcement-urgent' : ''}`;
+
+      const iconClass = this.getPriorityIconClass(announcement.priority);
+      const typeClass = this.getTypeClass(announcement.type);
+      const typeIcon = this.getTypeIcon(announcement.type);
+      const typeLabel = this.getTypeLabel(announcement.type);
+      const formattedDate = this.formatDate(announcement.publishedAt);
+
+      div.innerHTML = `
+        <div class="announcement-icon ${iconClass}">
+          ${typeIcon}
+        </div>
+        <div class="announcement-content-text">
+          <div class="announcement-title">
+            ${this.escapeHtml(announcement.title)}
+          </div>
+          <div class="announcement-meta">
+            <span class="announcement-type ${typeClass}">
+              ${typeLabel}
+            </span>
+            <span class="announcement-date">
+              ${formattedDate}
+            </span>
+            ${this.isExpiringSoon(announcement.expiresAt) ? '<span class="text-xs text-orange-600 dark:text-orange-400">即将过期</span>' : ''}
+          </div>
+        </div>
+        <button class="announcement-close" onclick="this.parentElement.style.display='none'" aria-label="关闭公告">
+          <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      `;
+
+      return div;
+    }
+
+    getPriorityIconClass(priority) {
+      switch (priority) {
+        case 'high': return 'announcement-priority-high';
+        case 'normal': return 'announcement-priority-normal';
+        case 'low': return 'announcement-priority-low';
+        default: return 'announcement-priority-normal';
+      }
+    }
+
+    getTypeClass(type) {
+      switch (type) {
+        case 'update': return 'announcement-type-update';
+        case 'feature': return 'announcement-type-feature';
+        case 'security': return 'announcement-type-security';
+        case 'maintenance': return 'announcement-type-maintenance';
+        default: return 'announcement-type-general';
+      }
+    }
+
+    getTypeIcon(type) {
+      switch (type) {
+        case 'update': return '🔄';
+        case 'feature': return '✨';
+        case 'security': return '🔒';
+        case 'maintenance': return '🔧';
+        case 'bugfix': return '🐛';
+        case 'general': return '📢';
+        case 'promotion': return '🎉';
+        case 'deprecation': return '⚠️';
+        default: return '📢';
+      }
+    }
+
+    getTypeLabel(type) {
+      switch (type) {
+        case 'update': return '更新';
+        case 'feature': return '新功能';
+        case 'security': return '安全';
+        case 'maintenance': return '维护';
+        case 'bugfix': return '修复';
+        case 'general': return '通知';
+        case 'promotion': return '推广';
+        case 'deprecation': return '弃用';
+        default: return '通知';
+      }
+    }
+
+    formatDate(dateString) {
+      try {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffTime = now.getTime() - date.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 0) return '今天';
+        if (diffDays === 1) return '昨天';
+        if (diffDays < 7) return `${diffDays}天前`;
+        if (diffDays < 30) return `${Math.floor(diffDays / 7)}周前`;
+
+        return date.toLocaleDateString('zh-CN', {
+          year: 'numeric',
+          month: 'short',
+          day: 'numeric'
+        });
+      } catch (error) {
+        return '未知时间';
+      }
+    }
+
+    isExpiringSoon(expiresAt) {
+      if (!expiresAt) return false;
+
+      try {
+        const expireDate = new Date(expiresAt);
+        const now = new Date();
+        const diffTime = expireDate.getTime() - now.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+        return diffDays <= 7 && diffDays > 0;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  }
+
+  // 初始化公告横幅
+  document.addEventListener('DOMContentLoaded', () => {
+    const banner = new AnnouncementBanner();
+    banner.init();
+  });
+</script>

@@ -1,0 +1,107 @@
+---
+import { SITE_CONFIG } from '@/config/site';
+import ThemeToggle from './ThemeToggle.astro';
+
+const currentPath = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a href="/" class="flex items-center space-x-2">
+          <img src="/favicon.png" alt="玩机管家" class="w-8 h-8 rounded-lg" />
+          <span class="font-bold text-xl text-gray-900 dark:text-white">
+            {SITE_CONFIG.name}
+          </span>
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:block">
+        <div class="ml-10 flex items-baseline space-x-4">
+          {SITE_CONFIG.navigation.map((item) => (
+            <a
+              href={item.href}
+              class={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                currentPath === item.href
+                  ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+              }`}
+            >
+              {item.name}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Right side buttons -->
+      <div class="hidden md:flex items-center space-x-4">
+        <ThemeToggle />
+        <a
+          href="/download"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300"
+        >
+          下载
+        </a>
+      </div>
+
+      <!-- Mobile menu button -->
+      <div class="md:hidden flex items-center space-x-2">
+        <ThemeToggle />
+        <button
+          type="button"
+          class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+        >
+          <span class="sr-only">Open main menu</span>
+          <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="mobile-menu hidden md:hidden">
+      <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+        {SITE_CONFIG.navigation.map((item) => (
+          <a
+            href={item.href}
+            class={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+              currentPath === item.href
+                ? 'bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300'
+                : 'text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+            }`}
+          >
+            {item.name}
+          </a>
+        ))}
+        <a
+          href="/download"
+          class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-full text-base font-medium transition-colors duration-300 mt-4"
+        >
+          下载
+        </a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    const button = document.querySelector('.mobile-menu-button');
+    const menu = document.querySelector('.mobile-menu');
+    
+    if (button && menu) {
+      button.addEventListener('click', () => {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', (!isExpanded).toString());
+        menu.classList.toggle('hidden');
+      });
+    }
+  });
+</script>

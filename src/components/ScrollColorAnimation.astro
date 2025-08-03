@@ -1,0 +1,291 @@
+---
+// ScrollColorAnimation.astro - Apple 风格滚动文字颜色变化组件
+---
+
+<script>
+  // @ts-nocheck
+  class ScrollColorAnimation {
+    constructor() {
+      this.elements = [];
+      this.isScrolling = false;
+      this.init();
+    }
+
+    init() {
+      // 等待 DOM 加载完成
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => this.setup());
+      } else {
+        this.setup();
+      }
+    }
+
+    setup() {
+      // 查找所有需要动画的元素
+      this.elements = document.querySelectorAll('[data-scroll-color]');
+      
+      if (this.elements.length === 0) return;
+
+      // 初始化 CSS 变量
+      this.initializeCSSVariables();
+      
+      // 绑定滚动事件（使用节流优化性能）
+      this.bindScrollEvent();
+      
+      // 初始计算
+      this.updateColors();
+    }
+
+    initializeCSSVariables() {
+      // 在根元素上设置 CSS 变量
+      const root = document.documentElement;
+      root.style.setProperty('--scroll-progress', '0');
+      root.style.setProperty('--text-color-start', 'rgb(17, 24, 39)'); // gray-900
+      root.style.setProperty('--text-color-end', 'rgb(55, 65, 81)');   // gray-700
+      root.style.setProperty('--text-color-accent', 'rgb(31, 41, 55)'); // gray-800
+    }
+
+    bindScrollEvent() {
+      let ticking = false;
+      let lastScrollTop = 0;
+
+      const handleScroll = () => {
+        const scrollTop = window.pageYOffset;
+
+        // 只在滚动距离超过阈值时更新（性能优化）
+        if (Math.abs(scrollTop - lastScrollTop) < 5) return;
+
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            this.updateColors();
+            lastScrollTop = scrollTop;
+            ticking = false;
+          });
+          ticking = true;
+        }
+      };
+
+      // 使用 Intersection Observer 优化性能
+      this.setupIntersectionObserver();
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', () => this.updateColors(), { passive: true });
+    }
+
+    setupIntersectionObserver() {
+      if (!window.IntersectionObserver) return;
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('in-viewport');
+          } else {
+            entry.target.classList.remove('in-viewport');
+          }
+        });
+      }, {
+        threshold: [0, 0.25, 0.5, 0.75, 1],
+        rootMargin: '50px'
+      });
+
+      this.elements.forEach(element => {
+        observer.observe(element);
+      });
+    }
+
+    updateColors() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight - windowHeight;
+      
+      // 计算总体滚动进度 (0-1)
+      const totalProgress = Math.min(scrollTop / documentHeight, 1);
+      
+      this.elements.forEach((element, index) => {
+        const rect = element.getBoundingClientRect();
+        const elementTop = rect.top + scrollTop;
+        const elementHeight = rect.height;
+        
+        // 计算元素相对于视窗的位置
+        const elementProgress = this.calculateElementProgress(
+          scrollTop, 
+          windowHeight, 
+          elementTop, 
+          elementHeight
+        );
+        
+        // 应用颜色变化
+        this.applyColorTransition(element, elementProgress, totalProgress, index);
+      });
+      
+      // 更新全局 CSS 变量
+      document.documentElement.style.setProperty('--scroll-progress', totalProgress.toString());
+    }
+
+    calculateElementProgress(scrollTop, windowHeight, elementTop, elementHeight) {
+      const elementCenter = elementTop + elementHeight / 2;
+      const viewportCenter = scrollTop + windowHeight / 2;
+      
+      // 计算元素中心相对于视窗中心的距离
+      const distance = Math.abs(elementCenter - viewportCenter);
+      const maxDistance = windowHeight / 2 + elementHeight / 2;
+      
+      // 转换为 0-1 的进度值（越接近视窗中心，值越大）
+      return Math.max(0, 1 - distance / maxDistance);
+    }
+
+    applyColorTransition(element, elementProgress, totalProgress, index) {
+      const colorType = element.getAttribute('data-scroll-color');
+      
+      switch (colorType) {
+        case 'hero-title':
+          this.applyHeroTitleColor(element, elementProgress, totalProgress);
+          break;
+        case 'section-title':
+          this.applySectionTitleColor(element, elementProgress, totalProgress, index);
+          break;
+        case 'feature-text':
+          this.applyFeatureTextColor(element, elementProgress, totalProgress);
+          break;
+        case 'gradient-text':
+          this.applyGradientTextColor(element, elementProgress, totalProgress);
+          break;
+        default:
+          this.applyDefaultColor(element, elementProgress, totalProgress);
+      }
+    }
+
+    applyHeroTitleColor(element, elementProgress, totalProgress) {
+      // 主标题：从深灰色到浅灰色的渐变
+      const startColor = [17, 24, 39];    // gray-900
+      const endColor = [55, 65, 81];      // gray-700
+
+      const color = this.interpolateColor(startColor, endColor, totalProgress);
+      element.style.color = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+
+      // 添加微妙的阴影效果
+      if (totalProgress > 0.3) {
+        const shadowIntensity = Math.min((totalProgress - 0.3) / 0.4, 1);
+        element.style.textShadow = `0 2px ${10 * shadowIntensity}px rgba(0, 0, 0, ${0.1 * shadowIntensity})`;
+      } else {
+        element.style.textShadow = 'none';
+      }
+    }
+
+    applySectionTitleColor(element, elementProgress, totalProgress, index) {
+      // 章节标题：使用不同深度的灰色
+      const colorThemes = [
+        [[17, 24, 39], [55, 65, 81]],     // gray-900 to gray-700
+        [[55, 65, 81], [75, 85, 99]],     // gray-700 to gray-600
+        [[75, 85, 99], [107, 114, 128]],  // gray-600 to gray-500
+      ];
+
+      const theme = colorThemes[index % colorThemes.length];
+      const color = this.interpolateColor(theme[0], theme[1], elementProgress);
+
+      element.style.color = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+    }
+
+    applyFeatureTextColor(element, elementProgress, totalProgress) {
+      // 功能文本：基于元素在视窗中的位置
+      const baseColor = [107, 114, 128];  // gray-500
+      const activeColor = [55, 65, 81];   // gray-700
+
+      const color = this.interpolateColor(baseColor, activeColor, elementProgress);
+      element.style.color = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+    }
+
+    applyGradientTextColor(element, elementProgress, totalProgress) {
+      // 渐变文本：创建灰度变化效果
+      const lightness = 20 + (elementProgress * 40); // 20% 到 60% 的亮度变化
+      element.style.color = `hsl(0, 0%, ${lightness}%)`;
+    }
+
+    applyDefaultColor(element, elementProgress, totalProgress) {
+      // 默认颜色变化
+      const startColor = [107, 114, 128];  // gray-500
+      const endColor = [55, 65, 81];       // gray-700
+
+      const color = this.interpolateColor(startColor, endColor, elementProgress);
+      element.style.color = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+    }
+
+    interpolateColor(startColor, endColor, progress) {
+      return startColor.map((start, i) => {
+        const end = endColor[i];
+        return Math.round(start + (end - start) * progress);
+      });
+    }
+  }
+
+  // 初始化滚动颜色动画
+  new ScrollColorAnimation();
+</script>
+
+<style>
+  /* CSS 变量用于全局颜色控制 */
+  :root {
+    --scroll-progress: 0;
+    --text-color-start: rgb(17, 24, 39);
+    --text-color-end: rgb(59, 130, 246);
+    --text-color-accent: rgb(147, 51, 234);
+  }
+
+  /* 为支持颜色动画的元素添加过渡效果 */
+  [data-scroll-color] {
+    transition: color 0.15s ease-out, text-shadow 0.3s ease-out, transform 0.2s ease-out;
+    will-change: color, text-shadow, transform;
+  }
+
+  /* 视窗内元素的增强效果 */
+  [data-scroll-color].in-viewport {
+    transform: translateZ(0); /* 启用硬件加速 */
+  }
+
+  /* 滚动时的微妙缩放效果 */
+  [data-scroll-color="hero-title"].in-viewport {
+    animation: heroTitlePulse 4s ease-in-out infinite;
+  }
+
+  @keyframes heroTitlePulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+
+  /* 特殊的渐变文本效果 */
+  .gradient-text-animated {
+    background: linear-gradient(
+      45deg,
+      var(--text-color-start),
+      var(--text-color-end),
+      var(--text-color-accent)
+    );
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShift 3s ease-in-out infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* 深色模式适配 */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --text-color-start: rgb(229, 231, 235);
+      --text-color-end: rgb(96, 165, 250);
+      --text-color-accent: rgb(168, 85, 247);
+    }
+  }
+</style>

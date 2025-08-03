@@ -1,0 +1,181 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { SITE_CONFIG } from '@/config/site';
+import ScrollColorAnimation from '@/components/ScrollColorAnimation.astro';
+import AppleScrollEffects from '@/components/AppleScrollEffects.astro';
+import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astro';
+---
+
+<MainLayout
+  title="首页"
+  description={SITE_CONFIG.description}
+>
+  <!-- Announcement Banner - Fixed Top -->
+  <SimpleAnnouncementBanner />
+
+  <!-- Hero Section - Apple Style -->
+  <section class="bg-white dark:bg-black py-20 lg:py-32 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1
+        class="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in tracking-tight leading-none"
+        data-scroll-color="hero-title"
+        data-fade-in
+      >
+        {SITE_CONFIG.name}
+      </h1>
+      <p
+        class="text-2xl md:text-3xl lg:text-4xl text-gray-600 dark:text-gray-300 mb-4 animate-slide-up font-light"
+        data-scroll-color="gradient-text"
+        data-fade-in
+      >
+        {SITE_CONFIG.tagline}
+      </p>
+      <p
+        class="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-12 max-w-3xl mx-auto animate-slide-up"
+        data-scroll-color="feature-text"
+      >
+        {SITE_CONFIG.subtitle}
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up">
+        <a
+          href="/download"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full font-medium text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+        >
+          立即下载
+        </a>
+        <a
+          href="/features"
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-10 py-4 rounded-full font-medium text-lg transition-all duration-300 border border-blue-600 dark:border-blue-400 hover:border-blue-700 dark:hover:border-blue-300"
+        >
+          了解更多
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Preview - Apple Style -->
+  <section class="py-32 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-20">
+        <h2
+          class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
+          data-scroll-color="section-title"
+        >
+          强大功能
+        </h2>
+        <p
+          class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto font-light"
+          data-scroll-color="feature-text"
+        >
+          一切都为了让设备管理变得简单而高效
+        </p>
+      </div>
+      
+      <!-- Feature Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+        {SITE_CONFIG.features.slice(0, 6).map((feature) => (
+          <div class="text-center group" data-fade-in>
+            <div class="text-6xl mb-8 transform group-hover:scale-110 transition-transform duration-300">
+              {feature.icon}
+            </div>
+            <h3
+              class="text-2xl font-semibold text-gray-900 dark:text-white mb-4"
+              data-scroll-color="section-title"
+            >
+              {feature.title}
+            </h3>
+            <p
+              class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed"
+              data-scroll-color="feature-text"
+            >
+              {feature.description}
+            </p>
+          </div>
+        ))}
+      </div>
+      
+      <div class="text-center mt-16">
+        <a
+          href="/features"
+          class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300 text-lg"
+        >
+          查看所有功能
+          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section - Apple Style -->
+  <section class="py-32 bg-white dark:bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+        <div>
+          <div
+            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            data-scroll-color="gradient-text"
+          >
+            10K+
+          </div>
+          <div class="text-xl text-gray-600 dark:text-gray-400">活跃用户</div>
+        </div>
+        <div>
+          <div
+            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            data-scroll-color="gradient-text"
+          >
+            50K+
+          </div>
+          <div class="text-xl text-gray-600 dark:text-gray-400">管理设备</div>
+        </div>
+        <div>
+          <div
+            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            data-scroll-color="gradient-text"
+          >
+            99.9%
+          </div>
+          <div class="text-xl text-gray-600 dark:text-gray-400">运行时间</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section - Apple Style -->
+  <section class="py-32 bg-gray-50 dark:bg-gray-900">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2
+        class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight"
+        data-scroll-color="section-title"
+      >
+        准备开始了吗？
+      </h2>
+      <p
+        class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-12 font-light"
+        data-scroll-color="feature-text"
+      >
+        加入数千名信任 {SITE_CONFIG.name} 的开发者和 IT 专业人士
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center">
+        <a
+          href="/download"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-xl"
+        >
+          免费试用
+        </a>
+        <a
+          href="/pricing"
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-10 py-4 rounded-full text-lg font-medium transition-all duration-300 border border-blue-600 dark:border-blue-400 hover:border-blue-700 dark:hover:border-blue-300"
+        >
+          查看价格
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 滚动效果组件 -->
+  <ScrollColorAnimation />
+  <AppleScrollEffects />
+</MainLayout>
