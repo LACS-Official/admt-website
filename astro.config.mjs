@@ -4,7 +4,7 @@ import tailwind from '@astrojs/tailwind';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://wanjiguanjia.vercel.app',
+  site: 'https://admt.lacs.cc',
   output: 'static',
   adapter: vercel({
     webAnalytics: { enabled: true }
