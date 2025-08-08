@@ -11,7 +11,7 @@ import VersionHistory from '@/components/VersionHistory.astro';
   description="下载玩机管家 (Android Device Management Tool)，支持 Windows、macOS 和 Linux。立即开始管理您的 Android 设备。"
 >
   <!-- Hero Section -->
-  <section class="bg-white dark:bg-black py-20 lg:py-32 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
+  <section class="hero-section py-20 lg:py-32 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h1
         class="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight leading-none"
@@ -311,3 +311,56 @@ import VersionHistory from '@/components/VersionHistory.astro';
     window.downloadManager = new DynamicDownloadManager();
   });
 </script>
+
+<style>
+  /* Hero Section Background */
+  .hero-section {
+    position: relative;
+    background-image: url('/img/admt-bg.webp');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  /* Background overlay for better text readability */
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.75);
+    z-index: 1;
+  }
+
+  /* Dark mode overlay */
+  :global(.dark) .hero-section::before {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  /* Ensure content is above the overlay */
+  .hero-section > div {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Responsive background attachment */
+  @media (max-width: 768px) {
+    .hero-section {
+      background-attachment: scroll;
+    }
+  }
+
+  /* Enhance text contrast on background */
+  .hero-section h1,
+  .hero-section p {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  :global(.dark) .hero-section h1,
+  :global(.dark) .hero-section p {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+</style>

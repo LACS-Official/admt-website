@@ -5,6 +5,8 @@ build/
 .env.example
 /docs
 /scripts
+.augment/
+.cursor/
 # Dependencies
 node_modules/
 
