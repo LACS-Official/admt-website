@@ -18,7 +18,7 @@ const {
 } = Astro.props;
 
 // 生成唯一ID
-const blockId = `code-block-${Math.random().toString(36).substr(2, 9)}`;
+const blockId = `code-block-${Math.random().toString(36).substring(2, 11)}`;
 
 // 处理代码内容
 const cleanCode = code.trim();
@@ -26,7 +26,7 @@ const lines = cleanCode.split('\n');
 const lineCount = lines.length;
 
 // 语言显示名称映射
-const languageNames = {
+const languageNames: Record<string, string> = {
   'bash': 'Bash',
   'shell': 'Shell',
   'javascript': 'JavaScript',
@@ -118,31 +118,31 @@ const displayLanguage = languageNames[language] || language.toUpperCase();
     // 代码复制功能
     function initCodeCopy() {
       const copyButtons = document.querySelectorAll('.code-copy-btn');
-      
+
       copyButtons.forEach(button => {
-        button.addEventListener('click', async function() {
-          const code = decodeURIComponent(this.dataset.code);
+        button.addEventListener('click', async function(this: HTMLButtonElement) {
+          const code = decodeURIComponent(this.dataset.code || '');
           const copyText = this.querySelector('.copy-text');
           const copyIcon = this.querySelector('.copy-icon');
-          
+
           try {
             await navigator.clipboard.writeText(code);
-            
+
             // 更新按钮状态
             this.classList.add('copied');
-            copyText.textContent = '已复制';
-            copyIcon.innerHTML = `<polyline points="20,6 9,17 4,12"></polyline>`;
-            
+            if (copyText) copyText.textContent = '已复制';
+            if (copyIcon) copyIcon.innerHTML = `<polyline points="20,6 9,17 4,12"></polyline>`;
+
             // 2秒后恢复
             setTimeout(() => {
               this.classList.remove('copied');
-              copyText.textContent = '复制';
-              copyIcon.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="m5 15-4-4 4-4"></path>`;
+              if (copyText) copyText.textContent = '复制';
+              if (copyIcon) copyIcon.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="m5 15-4-4 4-4"></path>`;
             }, 2000);
-            
+
             // 显示成功提示
             showToast('代码已复制到剪贴板', 'success');
-            
+
           } catch (err) {
             console.error('复制失败:', err);
             showToast('复制失败，请手动选择复制', 'error');
@@ -154,14 +154,16 @@ const displayLanguage = languageNames[language] || language.toUpperCase();
     // 代码展开/折叠功能
     function initCodeExpand() {
       const expandButtons = document.querySelectorAll('.code-expand-btn');
-      
+
       expandButtons.forEach(button => {
         const wrapper = button.closest('.code-block-wrapper');
-        const content = wrapper.querySelector('.code-block-content');
-        
-        button.addEventListener('click', function() {
+        const content = wrapper?.querySelector('.code-block-content');
+
+        if (!content) return;
+
+        button.addEventListener('click', function(this: HTMLButtonElement) {
           const isExpanded = content.classList.contains('expanded');
-          
+
           if (isExpanded) {
             content.classList.remove('expanded');
             this.setAttribute('aria-label', '展开代码');
@@ -171,16 +173,18 @@ const displayLanguage = languageNames[language] || language.toUpperCase();
             this.setAttribute('aria-label', '折叠代码');
             this.setAttribute('title', '折叠代码');
           }
-          
+
           // 旋转图标
-          const icon = this.querySelector('.expand-icon');
-          icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+          const icon = this.querySelector('.expand-icon') as HTMLElement;
+          if (icon) {
+            icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+          }
         });
       });
     }
 
     // 简单的提示功能
-    function showToast(message, type = 'info') {
+    function showToast(message: string, type: string = 'info') {
       const toast = document.createElement('div');
       toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 ${
         type === 'success' ? 'bg-green-500 text-white' : 

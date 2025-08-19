@@ -52,22 +52,26 @@ marked.use(
     gfm: true,
     breaks: false,
     pedantic: false,
-    sanitize: false,
-    smartypants: true,
     renderer: {
       // 自定义表格渲染
-      table(header, body) {
+      table(token) {
+        const header = token.header.map(cell => `<th>${cell.text}</th>`).join('');
+        const body = token.rows.map(row =>
+          `<tr>${row.map(cell => `<td>${cell.text}</td>`).join('')}</tr>`
+        ).join('');
+
         return `<div class="table-wrapper">
           <table class="enhanced-table">
-            <thead>${header}</thead>
+            <thead><tr>${header}</tr></thead>
             <tbody>${body}</tbody>
           </table>
         </div>`;
       },
       // 自定义代码块渲染
-      code(code, language, escaped) {
-        const lang = language || 'text';
-        const displayLang = lang.charAt(0).toUpperCase() + lang.slice(1);
+      code(token) {
+        const code = token.text;
+        const language = token.lang || 'text';
+        const displayLang = language.charAt(0).toUpperCase() + language.slice(1);
 
         return `<div class="code-block-wrapper">
           <div class="code-block-header">
@@ -80,11 +84,13 @@ marked.use(
               复制
             </button>
           </div>
-          <pre class="code-block"><code class="hljs language-${lang}">${escaped ? code : code}</code></pre>
+          <pre class="code-block"><code class="hljs language-${language}">${code}</code></pre>
         </div>`;
       },
       // 自定义引用块渲染
-      blockquote(quote) {
+      blockquote(token) {
+        const quote = token.text;
+
         // 检测特殊类型的引用块
         const alertTypes = {
           '⚠️': 'warning',

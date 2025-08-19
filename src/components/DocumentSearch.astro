@@ -52,14 +52,14 @@ const {
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const searchInput = document.getElementById('doc-search-input');
-    const searchResults = document.getElementById('search-results');
-    const clearBtn = document.getElementById('search-clear-btn');
-    
+    const searchInput = document.getElementById('doc-search-input') as HTMLInputElement;
+    const searchResults = document.getElementById('search-results') as HTMLElement;
+    const clearBtn = document.getElementById('search-clear-btn') as HTMLButtonElement;
+
     if (!searchInput || !searchResults || !clearBtn) return;
 
-    let searchTimeout;
-    let currentResults = [];
+    let searchTimeout: number;
+    let currentResults: any[] = [];
     let selectedIndex = -1;
 
     // 模拟文档数据 - 在实际应用中，这应该从API获取
@@ -91,7 +91,7 @@ const {
     ];
 
     // 搜索功能
-    function performSearch(query) {
+    function performSearch(query: string) {
       if (!query.trim()) {
         hideResults();
         return;
@@ -106,7 +106,7 @@ const {
     }
 
     // 显示搜索结果
-    function displayResults(results, query) {
+    function displayResults(results: any[], query: string) {
       currentResults = results;
       selectedIndex = -1;
 
@@ -118,7 +118,7 @@ const {
           </div>
         `;
       } else {
-        const resultsHTML = results.map((result, index) => `
+        const resultsHTML = results.map((result: any, index: number) => `
           <a href="${result.url}?highlight=${encodeURIComponent(query)}" 
              class="search-result-item" 
              data-index="${index}">
@@ -141,7 +141,7 @@ const {
     }
 
     // 高亮搜索词
-    function highlightText(text, query) {
+    function highlightText(text: string, query: string): string {
       const regex = new RegExp(`(${query})`, 'gi');
       return text.replace(regex, '<mark class="search-highlight">$1</mark>');
     }
@@ -158,7 +158,7 @@ const {
     }
 
     // 键盘导航
-    function handleKeyNavigation(e) {
+    function handleKeyNavigation(e: KeyboardEvent) {
       if (!searchResults.classList.contains('visible')) return;
 
       switch (e.key) {
@@ -199,16 +199,16 @@ const {
     }
 
     // 事件监听
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function(this: HTMLInputElement) {
       clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
+      searchTimeout = window.setTimeout(() => {
         performSearch(this.value);
       }, 300);
     });
 
     searchInput.addEventListener('keydown', handleKeyNavigation);
 
-    searchInput.addEventListener('focus', function() {
+    searchInput.addEventListener('focus', function(this: HTMLInputElement) {
       if (this.value.trim()) {
         performSearch(this.value);
       }
@@ -221,14 +221,15 @@ const {
     });
 
     // 点击外部隐藏结果
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.document-search')) {
+    document.addEventListener('click', function(e: MouseEvent) {
+      const target = e.target as HTMLElement;
+      if (target && !target.closest('.document-search')) {
         hideResults();
       }
     });
 
     // 快捷键支持 (Ctrl+K)
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function(e: KeyboardEvent) {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         searchInput.focus();
@@ -236,7 +237,7 @@ const {
     });
 
     // 显示/隐藏清除按钮
-    searchInput.addEventListener('input', function() {
+    searchInput.addEventListener('input', function(this: HTMLInputElement) {
       clearBtn.style.display = this.value ? 'flex' : 'none';
     });
   });

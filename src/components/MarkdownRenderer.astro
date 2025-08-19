@@ -11,7 +11,7 @@ function markdownToHtml(markdown: string): string {
   let html = markdown;
   
   // 代码块（必须在其他规则之前处理）
-  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
     const language = lang || '';
     return `<pre class="code-block" data-language="${language}"><code>${escapeHtml(code.trim())}</code></pre>`;
   });
@@ -221,7 +221,7 @@ const htmlContent = markdownToHtml(content);
       copyButton.title = '复制代码';
       
       // 设置相对定位
-      block.style.position = 'relative';
+      (block as HTMLElement).style.position = 'relative';
       block.appendChild(copyButton);
       
       // 复制功能

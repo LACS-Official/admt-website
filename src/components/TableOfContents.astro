@@ -48,15 +48,15 @@ const tocHtml = renderTocItems(items);
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // 目录切换功能（移动端）
-    const tocToggle = document.querySelector('.toc-toggle');
-    const tocNav = document.querySelector('.toc-nav');
-    
+    const tocToggle = document.querySelector('.toc-toggle') as HTMLButtonElement;
+    const tocNav = document.querySelector('.toc-nav') as HTMLElement;
+
     if (tocToggle && tocNav) {
-      tocToggle.addEventListener('click', function() {
+      tocToggle.addEventListener('click', function(this: HTMLButtonElement) {
         tocNav.classList.toggle('hidden');
-        
+
         // 旋转箭头
-        const icon = this.querySelector('svg');
+        const icon = this.querySelector('svg') as SVGElement;
         if (icon) {
           icon.style.transform = tocNav.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
         }
@@ -66,7 +66,7 @@ const tocHtml = renderTocItems(items);
     // 目录项点击统计
     const tocLinks = document.querySelectorAll('.toc-link');
     tocLinks.forEach(link => {
-      link.addEventListener('click', function() {
+      link.addEventListener('click', function(this: HTMLAnchorElement) {
         // 可以在这里添加分析代码
         console.log('TOC clicked:', this.textContent, this.getAttribute('href'));
       });
@@ -114,9 +114,9 @@ const tocHtml = renderTocItems(items);
     }
 
     // 节流函数
-    function throttle(func, limit) {
-      let inThrottle;
-      return function() {
+    function throttle(func: Function, limit: number) {
+      let inThrottle: boolean;
+      return function(this: any) {
         const args = arguments;
         const context = this;
         if (!inThrottle) {

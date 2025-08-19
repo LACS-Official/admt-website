@@ -2,7 +2,7 @@
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import TableOfContents from '@/components/TableOfContents.astro';
 import { findDocumentBySlug, getRelatedDocuments } from '@/utils/markdown';
-import type { TableOfContentsItem } from '@/utils/markdown';
+// 移除未使用的导入
 
 export interface Props {
   slug: string;
@@ -28,23 +28,7 @@ const title = document.frontmatter.title || fallbackTitle;
 const description = document.frontmatter.description || fallbackDescription;
 const currentPath = document.frontmatter.title || title;
 
-// 渲染目录组件
-function renderTableOfContents(items: TableOfContentsItem[]): string {
-  if (!items || items.length === 0) return '';
-
-  return items.map(item => {
-    const children = item.children && item.children.length > 0
-      ? `<ul class="toc-list">${renderTableOfContents(item.children)}</ul>`
-      : '';
-
-    return `<li class="toc-item">
-      <a href="#${item.id}" class="toc-link toc-level-${item.level}">${item.text}</a>
-      ${children}
-    </li>`;
-  }).join('');
-}
-
-const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableOfContents) : '';
+// 移除未使用的变量和函数
 ---
 
 <DocsLayout
@@ -155,8 +139,8 @@ const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableO
       const copyButtons = document.querySelectorAll('.code-copy-btn');
 
       copyButtons.forEach(button => {
-        button.addEventListener('click', async function() {
-          const code = decodeURIComponent(this.dataset.code);
+        button.addEventListener('click', async function(this: HTMLButtonElement) {
+          const code = decodeURIComponent(this.dataset.code || '');
 
           try {
             await navigator.clipboard.writeText(code);
@@ -190,7 +174,7 @@ const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableO
 
     // 阅读进度条
     function initReadingProgress() {
-      const progressBar = document.getElementById('reading-progress-bar');
+      const progressBar = document.getElementById('reading-progress-bar') as HTMLElement;
       if (!progressBar) return;
 
       function updateProgress() {
@@ -245,17 +229,19 @@ const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableO
       const tocLinks = document.querySelectorAll('.toc-link');
 
       tocLinks.forEach(link => {
-        link.addEventListener('click', function(e) {
+        link.addEventListener('click', function(this: HTMLAnchorElement, e: Event) {
           e.preventDefault();
 
-          const targetId = this.getAttribute('href').substring(1);
-          const targetElement = document.getElementById(targetId);
+          const targetId = this.getAttribute('href')?.substring(1);
+          if (targetId) {
+            const targetElement = document.getElementById(targetId);
 
-          if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
           }
         });
       });
@@ -266,7 +252,7 @@ const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableO
       const feedbackButtons = document.querySelectorAll('.feedback-btn');
 
       feedbackButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(this: HTMLButtonElement) {
           const feedback = this.dataset.feedback;
 
           // 这里可以发送反馈到服务器
@@ -277,7 +263,9 @@ const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableO
           this.disabled = true;
 
           // 禁用所有反馈按钮
-          feedbackButtons.forEach(btn => btn.disabled = true);
+          feedbackButtons.forEach(btn => {
+            (btn as HTMLButtonElement).disabled = true;
+          });
         });
       });
     }
@@ -312,25 +300,26 @@ const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableO
       }
     }
 
-    function highlightText(element, searchTerm) {
+    function highlightText(element: Element, searchTerm: string) {
       const walker = document.createTreeWalker(
         element,
         NodeFilter.SHOW_TEXT,
-        null,
-        false
+        null
       );
 
-      const textNodes = [];
+      const textNodes: Text[] = [];
       let node;
       while (node = walker.nextNode()) {
-        textNodes.push(node);
+        textNodes.push(node as Text);
       }
 
       textNodes.forEach(textNode => {
-        const parent = textNode.parentNode;
-        if (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE') return;
+        const parent = textNode.parentNode as HTMLElement;
+        if (!parent || parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE') return;
 
         const text = textNode.textContent;
+        if (!text) return;
+
         const regex = new RegExp(`(${searchTerm})`, 'gi');
 
         if (regex.test(text)) {
