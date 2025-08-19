@@ -1,0 +1,216 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+// 读取markdown文件内容
+const markdownPath = join(process.cwd(), 'public/docs/user-guide/getting-started.md');
+let markdownContent = '';
+
+try {
+  markdownContent = readFileSync(markdownPath, 'utf-8');
+  // 移除markdown的前置标题，因为我们在布局中已经有了
+  markdownContent = markdownContent.replace(/^# .*\n\n/, '');
+} catch (error) {
+  console.error('Error reading markdown file:', error);
+  markdownContent = '文档内容加载失败，请稍后重试。';
+}
+
+// 简单的markdown到HTML转换（基础版本）
+function markdownToHtml(markdown: string): string {
+  return markdown
+    // 标题
+    .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+    .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+    .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+    // 粗体
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // 斜体
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    // 链接
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    // 代码块
+    .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')
+    // 行内代码
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    // 列表项
+    .replace(/^\* (.*$)/gim, '<li>$1</li>')
+    .replace(/^- (.*$)/gim, '<li>$1</li>')
+    .replace(/^\d+\. (.*$)/gim, '<li>$1</li>')
+    // 段落
+    .replace(/\n\n/g, '</p><p>')
+    .replace(/^(.*)$/gim, '<p>$1</p>')
+    // 清理多余的p标签
+    .replace(/<p><\/p>/g, '')
+    .replace(/<p>(<h[1-6]>)/g, '$1')
+    .replace(/(<\/h[1-6]>)<\/p>/g, '$1')
+    .replace(/<p>(<li>)/g, '<ul>$1')
+    .replace(/(<\/li>)<\/p>/g, '$1</ul>')
+    .replace(/<p>(<pre>)/g, '$1')
+    .replace(/(<\/pre>)<\/p>/g, '$1');
+}
+
+const htmlContent = markdownToHtml(markdownContent);
+---
+
+<DocsLayout 
+  title="快速入门指南" 
+  description="5分钟快速上手玩机管家，连接您的第一台Android设备"
+  currentPath="快速入门"
+>
+  <!-- 进度指示器 -->
+  <div class="not-prose mb-8">
+    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-700">
+      <div class="flex items-center justify-between text-sm text-blue-700 dark:text-blue-300 mb-2">
+        <span>完成进度</span>
+        <span>预计时间: 5分钟</span>
+      </div>
+      <div class="w-full bg-blue-200 dark:bg-blue-800 rounded-full h-2">
+        <div class="bg-blue-600 h-2 rounded-full" style="width: 0%" id="progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 快速导航 -->
+  <div class="not-prose mb-8">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">本页内容</h2>
+    <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+      <ul class="space-y-2 text-sm">
+        <li><a href="#step1" class="text-blue-600 dark:text-blue-400 hover:underline">🎯 第一步：连接设备</a></li>
+        <li><a href="#interface" class="text-blue-600 dark:text-blue-400 hover:underline">🖥️ 界面概览</a></li>
+        <li><a href="#basic-ops" class="text-blue-600 dark:text-blue-400 hover:underline">🎮 基本操作</a></li>
+        <li><a href="#file-transfer" class="text-blue-600 dark:text-blue-400 hover:underline">📁 文件传输</a></li>
+        <li><a href="#app-management" class="text-blue-600 dark:text-blue-400 hover:underline">📱 应用管理</a></li>
+        <li><a href="#settings" class="text-blue-600 dark:text-blue-400 hover:underline">🔧 常用设置</a></li>
+        <li><a href="#tips" class="text-blue-600 dark:text-blue-400 hover:underline">🎯 使用技巧</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 主要内容 -->
+  <div class="prose-content">
+    <Fragment set:html={htmlContent} />
+  </div>
+
+  <!-- 下一步推荐 -->
+  <div class="not-prose mt-12">
+    <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-200 dark:border-green-700">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+        <span class="text-2xl mr-2">🎉</span>
+        恭喜！您已完成快速入门
+      </h3>
+      <p class="text-gray-600 dark:text-gray-300 mb-4">
+        现在您已经掌握了基本操作，可以继续学习更多高级功能：
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="/docs/user-guide/device-connection" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+          <span class="text-2xl mr-3">🔌</span>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-white">设备连接详解</h4>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">深入了解各种连接方式</p>
+          </div>
+        </a>
+        <a href="/docs/user-guide/remote-control" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+          <span class="text-2xl mr-3">📱</span>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-white">远程控制高级功能</h4>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">掌握更多控制技巧</p>
+          </div>
+        </a>
+        <a href="/docs/user-guide/file-management" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+          <span class="text-2xl mr-3">📁</span>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-white">文件管理完整教程</h4>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">高效管理设备文件</p>
+          </div>
+        </a>
+        <a href="/docs/user-guide/batch-operations" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+          <span class="text-2xl mr-3">⚡</span>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-white">批量操作指南</h4>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">提升工作效率</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</DocsLayout>
+
+<style>
+  /* 自定义样式用于markdown内容 */
+  .prose-content h1 {
+    @apply text-3xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-4 mb-6 mt-8;
+  }
+  
+  .prose-content h2 {
+    @apply text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4;
+  }
+  
+  .prose-content h3 {
+    @apply text-xl font-semibold text-gray-900 dark:text-white mt-6 mb-3;
+  }
+  
+  .prose-content p {
+    @apply text-gray-700 dark:text-gray-300 leading-relaxed mb-4;
+  }
+  
+  .prose-content a {
+    @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 no-underline hover:underline;
+  }
+  
+  .prose-content ul {
+    @apply text-gray-700 dark:text-gray-300 mb-4 pl-6;
+  }
+  
+  .prose-content li {
+    @apply mb-2 list-disc;
+  }
+  
+  .prose-content code {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm;
+  }
+  
+  .prose-content pre {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg overflow-x-auto mb-4;
+  }
+  
+  .prose-content strong {
+    @apply font-semibold text-gray-900 dark:text-white;
+  }
+  
+  .prose-content em {
+    @apply italic;
+  }
+</style>
+
+<script>
+  // 进度条动画
+  document.addEventListener('DOMContentLoaded', () => {
+    const progressBar = document.getElementById('progress-bar');
+    if (progressBar) {
+      // 模拟阅读进度
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += 2;
+        progressBar.style.width = `${progress}%`;
+        if (progress >= 100) {
+          clearInterval(interval);
+        }
+      }, 100);
+    }
+    
+    // 平滑滚动到锚点
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  });
+</script>

@@ -161,6 +161,7 @@ export const SITE_CONFIG = {
   navigation: [
     { name: "首页", href: "/" },
     { name: "功能特性", href: "/features" },
+    { name: "文档", href: "/docs" },
     { name: "下载", href: "/download" },
     { name: "关于与联系", href: "/about-contact" }
   ]

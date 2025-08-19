@@ -1,0 +1,238 @@
+---
+import type { TableOfContentsItem } from '@/utils/markdown';
+
+export interface Props {
+  items: TableOfContentsItem[];
+  className?: string;
+}
+
+const { items, className = '' } = Astro.props;
+
+// 递归渲染目录项
+function renderTocItems(tocItems: TableOfContentsItem[]): string {
+  if (!tocItems || tocItems.length === 0) return '';
+  
+  return tocItems.map(item => {
+    const children = item.children && item.children.length > 0 
+      ? `<ul class="toc-list">${renderTocItems(item.children)}</ul>`
+      : '';
+    
+    return `<li class="toc-item">
+      <a href="#${item.id}" class="toc-link toc-level-${item.level}" data-level="${item.level}">
+        ${item.text}
+      </a>
+      ${children}
+    </li>`;
+  }).join('');
+}
+
+const tocHtml = renderTocItems(items);
+---
+
+{items && items.length > 0 && (
+  <div class={`table-of-contents ${className}`}>
+    <div class="toc-header">
+      <h3 class="toc-title">目录</h3>
+      <button class="toc-toggle lg:hidden" aria-label="切换目录显示">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        </svg>
+      </button>
+    </div>
+    <nav class="toc-nav" aria-label="文档目录">
+      <ul class="toc-list" set:html={tocHtml} />
+    </nav>
+  </div>
+)}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 目录切换功能（移动端）
+    const tocToggle = document.querySelector('.toc-toggle');
+    const tocNav = document.querySelector('.toc-nav');
+    
+    if (tocToggle && tocNav) {
+      tocToggle.addEventListener('click', function() {
+        tocNav.classList.toggle('hidden');
+        
+        // 旋转箭头
+        const icon = this.querySelector('svg');
+        if (icon) {
+          icon.style.transform = tocNav.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(180deg)';
+        }
+      });
+    }
+
+    // 目录项点击统计
+    const tocLinks = document.querySelectorAll('.toc-link');
+    tocLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        // 可以在这里添加分析代码
+        console.log('TOC clicked:', this.textContent, this.getAttribute('href'));
+      });
+    });
+
+    // 目录高亮同步
+    function updateTocHighlight() {
+      const headings = document.querySelectorAll('h1[id], h2[id], h3[id], h4[id], h5[id], h6[id]');
+      const tocLinks = document.querySelectorAll('.toc-link');
+      
+      if (headings.length === 0 || tocLinks.length === 0) return;
+
+      let activeHeading = null;
+      const scrollTop = window.pageYOffset;
+      
+      // 找到当前最接近的标题
+      for (let i = headings.length - 1; i >= 0; i--) {
+        const heading = headings[i];
+        const rect = heading.getBoundingClientRect();
+        const offsetTop = rect.top + scrollTop;
+        
+        if (scrollTop >= offsetTop - 100) {
+          activeHeading = heading;
+          break;
+        }
+      }
+
+      // 更新目录链接状态
+      tocLinks.forEach(link => {
+        link.classList.remove('active');
+        
+        if (activeHeading) {
+          const href = link.getAttribute('href');
+          if (href === '#' + activeHeading.id) {
+            link.classList.add('active');
+            
+            // 确保活动项可见
+            link.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest'
+            });
+          }
+        }
+      });
+    }
+
+    // 节流函数
+    function throttle(func, limit) {
+      let inThrottle;
+      return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+          func.apply(context, args);
+          inThrottle = true;
+          setTimeout(() => inThrottle = false, limit);
+        }
+      }
+    }
+
+    // 监听滚动事件
+    window.addEventListener('scroll', throttle(updateTocHighlight, 100));
+    
+    // 初始化高亮
+    updateTocHighlight();
+  });
+</script>
+
+<style>
+  .table-of-contents {
+    @apply bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700;
+  }
+
+  .toc-header {
+    @apply flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700;
+  }
+
+  .toc-title {
+    @apply text-lg font-semibold text-gray-900 dark:text-gray-100 m-0;
+  }
+
+  .toc-toggle {
+    @apply p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors duration-150;
+  }
+
+  .toc-nav {
+    @apply p-4;
+  }
+
+  .toc-list {
+    @apply list-none p-0 m-0 space-y-1;
+  }
+
+  .toc-item {
+    @apply relative;
+  }
+
+  .toc-link {
+    @apply block py-1.5 px-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded transition-all duration-150 no-underline;
+    text-decoration: none;
+  }
+
+  .toc-link.active {
+    @apply text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 font-medium;
+  }
+
+  .toc-link.active::before {
+    @apply absolute left-0 top-0 bottom-0 w-0.5 bg-blue-600 dark:bg-blue-400 rounded-r;
+    content: '';
+  }
+
+  /* 层级缩进 */
+  .toc-level-1 { @apply ml-0; }
+  .toc-level-2 { @apply ml-4; }
+  .toc-level-3 { @apply ml-8; }
+  .toc-level-4 { @apply ml-12; }
+  .toc-level-5 { @apply ml-16; }
+  .toc-level-6 { @apply ml-20; }
+
+  /* 响应式调整 */
+  @media (max-width: 1024px) {
+    .toc-nav {
+      @apply hidden;
+    }
+    
+    .toc-nav:not(.hidden) {
+      @apply block;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .toc-level-2 { @apply ml-2; }
+    .toc-level-3 { @apply ml-4; }
+    .toc-level-4 { @apply ml-6; }
+    .toc-level-5 { @apply ml-8; }
+    .toc-level-6 { @apply ml-10; }
+  }
+
+  /* 滚动条样式 */
+  .toc-nav {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .toc-nav::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .toc-nav::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .toc-nav::-webkit-scrollbar-thumb {
+    background: #cbd5e0;
+    border-radius: 2px;
+  }
+
+  .dark .toc-nav::-webkit-scrollbar-thumb {
+    background: #4a5568;
+  }
+
+  .toc-nav::-webkit-scrollbar-thumb:hover {
+    background: #a0aec0;
+  }
+
+  .dark .toc-nav::-webkit-scrollbar-thumb:hover {
+    background: #2d3748;
+  }
+</style>

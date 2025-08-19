@@ -1,0 +1,268 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+---
+
+<DocsLayout 
+  title="安装指南" 
+  description="详细的安装步骤和系统配置要求"
+  currentPath="安装指南"
+>
+  <!-- 系统要求概览 -->
+  <div class="not-prose mb-8">
+    <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-6 border border-blue-200 dark:border-blue-700">
+      <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+        <span class="text-2xl mr-2">💻</span>
+        系统要求概览
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">操作系统</h3>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">Windows 10 (64位) 或更高版本</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">内存</h3>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">4 GB 最低，推荐 8 GB</p>
+        </div>
+        <div class="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+          <h3 class="font-semibold text-gray-900 dark:text-white mb-2">存储空间</h3>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">500 MB 可用磁盘空间</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 平台选择 -->
+  <div class="not-prose mb-8">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">选择您的平台</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Windows -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4">
+            <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Windows</h3>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300">
+              支持
+            </span>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+          完整支持 Windows 10/11，包含所有功能
+        </p>
+        <a href="/docs/installation/windows" class="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium">
+          查看安装指南
+          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+
+      <!-- macOS -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 opacity-60">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-4">
+            <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">macOS</h3>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+              开发中
+            </span>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+          macOS 版本正在开发中，敬请期待
+        </p>
+        <span class="text-gray-400 text-sm">即将推出</span>
+      </div>
+
+      <!-- Linux -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 opacity-60">
+        <div class="flex items-center mb-4">
+          <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center mr-4">
+            <svg class="w-6 h-6 text-gray-500" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 01-.088.066c-.297.168-.623.336-.995.268-.4-.068-.738-.37-1.051-.914-.39-.685-.413-1.267-.347-1.832.05-.46.206-.86.347-1.146.064-.133.154-.24.347-.333.135-.073.259-.133.4-.2.146-.065.27-.13.438-.2.259-.108.478-.285.737-.4a.999.999 0 00.337-.168c.148-.129.26-.285.328-.465.067-.18.056-.384.017-.548-.04-.179-.111-.31-.188-.448-.155-.27-.31-.49-.462-.668a.819.819 0 00-.47-.275.7.7 0 00-.47.07c-.205.134-.328.335-.4.465-.071.129-.133.24-.2.335-.065.094-.133.24-.2.4-.065.129-.133.335-.133.465 0 .129.068.24.133.335.065.094.2.18.4.24.129.04.335.068.465.068z"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Linux</h3>
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300">
+              开发中
+            </span>
+          </div>
+        </div>
+        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">
+          Linux 版本正在开发中，敬请期待
+        </p>
+        <span class="text-gray-400 text-sm">即将推出</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Windows 详细安装步骤 -->
+  <div class="prose max-w-none">
+    <h2>Windows 安装详细步骤</h2>
+    
+    <h3>📋 系统要求检查</h3>
+    <div class="not-prose mb-6">
+      <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+            </svg>
+          </div>
+          <div class="ml-3">
+            <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-200">安装前请确认</h3>
+            <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+              <p>请确保您的系统满足最低要求，并关闭杀毒软件以避免安装过程中的误报。</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>📥 下载安装程序</h3>
+    <ol>
+      <li>访问 <a href="/download">官方下载页面</a></li>
+      <li>选择 <strong>Windows 版本</strong></li>
+      <li>点击 <strong>下载安装程序</strong> 按钮</li>
+      <li>下载 <code>玩机管家-Setup.exe</code> 文件（约45MB）</li>
+    </ol>
+
+    <h3>🔧 运行安装程序</h3>
+    <ol>
+      <li><strong>启动安装</strong>：双击下载的 <code>玩机管家-Setup.exe</code> 文件</li>
+      <li><strong>安全提示</strong>：如果出现Windows安全提示，点击 <strong>"更多信息"</strong> → <strong>"仍要运行"</strong></li>
+      <li><strong>管理员权限</strong>：在用户账户控制(UAC)提示中点击 <strong>"是"</strong></li>
+    </ol>
+
+    <h3>⚙️ 安装向导</h3>
+    <ol>
+      <li><strong>欢迎页面</strong>：点击 <strong>"下一步"</strong></li>
+      <li><strong>许可协议</strong>：阅读并接受许可协议，点击 <strong>"我接受"</strong></li>
+      <li><strong>安装位置</strong>：
+        <ul>
+          <li>默认路径: <code>C:\Program Files\玩机管家\</code></li>
+          <li>可点击 <strong>"浏览"</strong> 更改安装位置</li>
+          <li>点击 <strong>"下一步"</strong></li>
+        </ul>
+      </li>
+      <li><strong>组件选择</strong>：
+        <ul>
+          <li>✅ 核心程序（必需）</li>
+          <li>✅ 桌面快捷方式</li>
+          <li>✅ 开始菜单快捷方式</li>
+          <li>⬜ USB驱动程序（推荐）</li>
+        </ul>
+      </li>
+    </ol>
+
+    <h3>🚀 首次启动配置</h3>
+    <p>安装完成后，首次启动需要进行以下配置：</p>
+    
+    <h4>激活程序</h4>
+    <ol>
+      <li>启动玩机管家</li>
+      <li>在激活界面输入您的许可证密钥</li>
+      <li>点击 <strong>"激活"</strong> 按钮</li>
+      <li>等待激活验证完成</li>
+    </ol>
+
+    <h4>初始设置</h4>
+    <ul>
+      <li><strong>设备检测</strong>：启用USB调试检测和网络扫描</li>
+      <li><strong>界面设置</strong>：选择主题和语言偏好</li>
+      <li><strong>安全设置</strong>：配置访问密码和数据加密</li>
+    </ul>
+
+    <h3>✅ 验证安装</h3>
+    <p>完成安装后，请进行以下验证：</p>
+    <ul>
+      <li>在开始菜单中找到 <strong>"玩机管家"</strong></li>
+      <li>启动程序，确认界面正常显示</li>
+      <li>检查版本信息：<strong>帮助</strong> → <strong>关于</strong></li>
+      <li>确认版本号为 <strong>2.1.0</strong></li>
+    </ul>
+
+    <h3>❓ 常见安装问题</h3>
+    <div class="not-prose">
+      <div class="space-y-4">
+        <details class="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <summary class="px-4 py-3 cursor-pointer font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+            安装程序提示"已损坏"或"无法验证"
+          </summary>
+          <div class="px-4 pb-3 text-gray-600 dark:text-gray-300">
+            <p><strong>解决方案</strong>：</p>
+            <ul class="list-disc list-inside space-y-1 mt-2">
+              <li>重新下载安装程序，确保下载完整</li>
+              <li>暂时关闭杀毒软件和Windows Defender</li>
+              <li>以管理员身份运行安装程序</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <summary class="px-4 py-3 cursor-pointer font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+            安装后程序无法启动
+          </summary>
+          <div class="px-4 pb-3 text-gray-600 dark:text-gray-300">
+            <p><strong>解决方案</strong>：</p>
+            <ul class="list-disc list-inside space-y-1 mt-2">
+              <li>检查系统是否满足最低要求</li>
+              <li>以管理员身份运行程序</li>
+              <li>重新安装 Microsoft Visual C++ 运行库</li>
+              <li>检查Windows更新</li>
+            </ul>
+          </div>
+        </details>
+
+        <details class="bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+          <summary class="px-4 py-3 cursor-pointer font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">
+            USB驱动安装失败
+          </summary>
+          <div class="px-4 pb-3 text-gray-600 dark:text-gray-300">
+            <p><strong>解决方案</strong>：</p>
+            <ul class="list-disc list-inside space-y-1 mt-2">
+              <li>手动安装驱动：设备管理器 → 更新驱动程序</li>
+              <li>使用安装目录下的 drivers 文件夹</li>
+              <li>重启电脑后重新尝试</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </div>
+  </div>
+
+  <!-- 下一步 -->
+  <div class="not-prose mt-12">
+    <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-6 border border-green-200 dark:border-green-700">
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+        <span class="text-2xl mr-2">🎉</span>
+        安装完成！下一步做什么？
+      </h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <a href="/docs/getting-started" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+          <span class="text-2xl mr-3">🚀</span>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-white">快速入门</h4>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">5分钟学会基本操作</p>
+          </div>
+        </a>
+        <a href="/docs/user-guide/device-connection" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+          <span class="text-2xl mr-3">🔌</span>
+          <div>
+            <h4 class="font-semibold text-gray-900 dark:text-white">连接设备</h4>
+            <p class="text-gray-600 dark:text-gray-300 text-sm">学习各种连接方式</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</DocsLayout>

@@ -1,0 +1,345 @@
+---
+export interface Props {
+  code: string;
+  language?: string;
+  filename?: string;
+  showLineNumbers?: boolean;
+  highlightLines?: number[];
+  className?: string;
+}
+
+const { 
+  code, 
+  language = 'text', 
+  filename, 
+  showLineNumbers = false, 
+  highlightLines = [], 
+  className = '' 
+} = Astro.props;
+
+// 生成唯一ID
+const blockId = `code-block-${Math.random().toString(36).substr(2, 9)}`;
+
+// 处理代码内容
+const cleanCode = code.trim();
+const lines = cleanCode.split('\n');
+const lineCount = lines.length;
+
+// 语言显示名称映射
+const languageNames = {
+  'bash': 'Bash',
+  'shell': 'Shell',
+  'javascript': 'JavaScript',
+  'js': 'JavaScript',
+  'typescript': 'TypeScript',
+  'ts': 'TypeScript',
+  'python': 'Python',
+  'py': 'Python',
+  'java': 'Java',
+  'cpp': 'C++',
+  'c': 'C',
+  'json': 'JSON',
+  'xml': 'XML',
+  'html': 'HTML',
+  'css': 'CSS',
+  'yaml': 'YAML',
+  'yml': 'YAML',
+  'markdown': 'Markdown',
+  'md': 'Markdown',
+  'text': 'Text',
+  'plaintext': 'Text'
+};
+
+const displayLanguage = languageNames[language] || language.toUpperCase();
+---
+
+<div class={`code-block-wrapper ${className}`} id={blockId}>
+  <!-- 代码块头部 -->
+  <div class="code-block-header">
+    <div class="code-block-info">
+      {filename && (
+        <span class="code-block-filename">{filename}</span>
+      )}
+      <span class="code-block-language">{displayLanguage}</span>
+      {lineCount > 1 && (
+        <span class="code-block-lines">{lineCount} 行</span>
+      )}
+    </div>
+    
+    <div class="code-block-actions">
+      <button 
+        class="code-copy-btn" 
+        data-code={encodeURIComponent(cleanCode)}
+        aria-label="复制代码"
+        title="复制代码"
+      >
+        <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="m5 15-4-4 4-4"></path>
+        </svg>
+        <span class="copy-text">复制</span>
+      </button>
+      
+      {lineCount > 10 && (
+        <button 
+          class="code-expand-btn" 
+          aria-label="展开/折叠代码"
+          title="展开/折叠代码"
+        >
+          <svg class="expand-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="6,9 12,15 18,9"></polyline>
+          </svg>
+        </button>
+      )}
+    </div>
+  </div>
+
+  <!-- 代码内容 -->
+  <div class="code-block-content">
+    <pre class={`code-block ${showLineNumbers ? 'with-line-numbers' : ''}`}><code class={`hljs language-${language}`} set:html={cleanCode}></code></pre>
+    
+    {showLineNumbers && (
+      <div class="line-numbers" aria-hidden="true">
+        {lines.map((_, index) => (
+          <span 
+            class={`line-number ${highlightLines.includes(index + 1) ? 'highlighted' : ''}`}
+            data-line={index + 1}
+          >
+            {index + 1}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 代码复制功能
+    function initCodeCopy() {
+      const copyButtons = document.querySelectorAll('.code-copy-btn');
+      
+      copyButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+          const code = decodeURIComponent(this.dataset.code);
+          const copyText = this.querySelector('.copy-text');
+          const copyIcon = this.querySelector('.copy-icon');
+          
+          try {
+            await navigator.clipboard.writeText(code);
+            
+            // 更新按钮状态
+            this.classList.add('copied');
+            copyText.textContent = '已复制';
+            copyIcon.innerHTML = `<polyline points="20,6 9,17 4,12"></polyline>`;
+            
+            // 2秒后恢复
+            setTimeout(() => {
+              this.classList.remove('copied');
+              copyText.textContent = '复制';
+              copyIcon.innerHTML = `<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="m5 15-4-4 4-4"></path>`;
+            }, 2000);
+            
+            // 显示成功提示
+            showToast('代码已复制到剪贴板', 'success');
+            
+          } catch (err) {
+            console.error('复制失败:', err);
+            showToast('复制失败，请手动选择复制', 'error');
+          }
+        });
+      });
+    }
+
+    // 代码展开/折叠功能
+    function initCodeExpand() {
+      const expandButtons = document.querySelectorAll('.code-expand-btn');
+      
+      expandButtons.forEach(button => {
+        const wrapper = button.closest('.code-block-wrapper');
+        const content = wrapper.querySelector('.code-block-content');
+        
+        button.addEventListener('click', function() {
+          const isExpanded = content.classList.contains('expanded');
+          
+          if (isExpanded) {
+            content.classList.remove('expanded');
+            this.setAttribute('aria-label', '展开代码');
+            this.setAttribute('title', '展开代码');
+          } else {
+            content.classList.add('expanded');
+            this.setAttribute('aria-label', '折叠代码');
+            this.setAttribute('title', '折叠代码');
+          }
+          
+          // 旋转图标
+          const icon = this.querySelector('.expand-icon');
+          icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(180deg)';
+        });
+      });
+    }
+
+    // 简单的提示功能
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 ${
+        type === 'success' ? 'bg-green-500 text-white' : 
+        type === 'error' ? 'bg-red-500 text-white' : 
+        'bg-blue-500 text-white'
+      }`;
+      toast.textContent = message;
+      
+      document.body.appendChild(toast);
+      
+      // 动画进入
+      setTimeout(() => toast.classList.add('opacity-100'), 10);
+      
+      // 3秒后移除
+      setTimeout(() => {
+        toast.classList.add('opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
+
+    // 初始化功能
+    initCodeCopy();
+    initCodeExpand();
+  });
+</script>
+
+<style>
+  .code-block-wrapper {
+    @apply relative mb-6 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 bg-gray-900;
+  }
+
+  .code-block-header {
+    @apply flex items-center justify-between px-4 py-2 bg-gray-800 border-b border-gray-700;
+  }
+
+  .code-block-info {
+    @apply flex items-center gap-3;
+  }
+
+  .code-block-filename {
+    @apply text-sm font-medium text-gray-300;
+  }
+
+  .code-block-language {
+    @apply text-xs font-medium text-gray-400 uppercase tracking-wide;
+  }
+
+  .code-block-lines {
+    @apply text-xs text-gray-500;
+  }
+
+  .code-block-actions {
+    @apply flex items-center gap-2;
+  }
+
+  .code-copy-btn,
+  .code-expand-btn {
+    @apply flex items-center gap-1 px-2 py-1 text-xs font-medium text-gray-400 hover:text-gray-200 bg-transparent border border-gray-600 hover:border-gray-500 rounded transition-all duration-200;
+  }
+
+  .code-copy-btn.copied {
+    @apply text-green-400 border-green-500;
+  }
+
+  .copy-icon,
+  .expand-icon {
+    @apply w-3 h-3 transition-transform duration-200;
+  }
+
+  .code-block-content {
+    @apply relative;
+    max-height: 400px;
+    overflow: hidden;
+  }
+
+  .code-block-content.expanded {
+    max-height: none;
+  }
+
+  .code-block {
+    @apply m-0 p-4 bg-gray-900 text-gray-100 overflow-x-auto;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .code-block.with-line-numbers {
+    @apply pl-12;
+  }
+
+  .code-block code {
+    @apply bg-transparent text-inherit p-0;
+  }
+
+  .line-numbers {
+    @apply absolute left-0 top-0 p-4 pr-2 text-gray-500 text-right select-none;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+
+  .line-number {
+    @apply block;
+  }
+
+  .line-number.highlighted {
+    @apply text-yellow-400 bg-yellow-400/10;
+  }
+
+  /* 滚动条样式 */
+  .code-block::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .code-block::-webkit-scrollbar-track {
+    background: #2d2d2d;
+  }
+
+  .code-block::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 4px;
+  }
+
+  .code-block::-webkit-scrollbar-thumb:hover {
+    background: #777;
+  }
+
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .code-block {
+      font-size: 0.75rem;
+    }
+    
+    .code-block-header {
+      @apply px-2 py-1;
+    }
+    
+    .code-block-info {
+      @apply gap-2;
+    }
+    
+    .code-copy-btn,
+    .code-expand-btn {
+      @apply px-1 py-0.5;
+    }
+  }
+
+  /* 打印样式 */
+  @media print {
+    .code-block-header {
+      @apply hidden;
+    }
+    
+    .code-block-content {
+      max-height: none !important;
+    }
+    
+    .code-block {
+      @apply break-inside-avoid;
+    }
+  }
+</style>

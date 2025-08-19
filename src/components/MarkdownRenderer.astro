@@ -1,0 +1,251 @@
+---
+export interface Props {
+  content: string;
+  className?: string;
+}
+
+const { content, className = '' } = Astro.props;
+
+// 简单的markdown到HTML转换函数
+function markdownToHtml(markdown: string): string {
+  let html = markdown;
+  
+  // 代码块（必须在其他规则之前处理）
+  html = html.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+    const language = lang || '';
+    return `<pre class="code-block" data-language="${language}"><code>${escapeHtml(code.trim())}</code></pre>`;
+  });
+  
+  // 行内代码
+  html = html.replace(/`([^`]+)`/g, '<code class="inline-code">$1</code>');
+  
+  // 标题
+  html = html.replace(/^### (.*$)/gim, '<h3 class="heading-3">$1</h3>');
+  html = html.replace(/^## (.*$)/gim, '<h2 class="heading-2">$1</h2>');
+  html = html.replace(/^# (.*$)/gim, '<h1 class="heading-1">$1</h1>');
+  
+  // 粗体和斜体
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>');
+  html = html.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>');
+  
+  // 链接
+  html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="link">$1</a>');
+  
+  // 有序列表
+  html = html.replace(/^\d+\. (.*$)/gim, '<li class="list-item-ordered">$1</li>');
+  
+  // 无序列表
+  html = html.replace(/^[*-] (.*$)/gim, '<li class="list-item-unordered">$1</li>');
+  
+  // 包装列表项
+  html = html.replace(/(<li class="list-item-ordered">.*?<\/li>)/gs, (match) => {
+    return `<ol class="ordered-list">${match}</ol>`;
+  });
+  html = html.replace(/(<li class="list-item-unordered">.*?<\/li>)/gs, (match) => {
+    return `<ul class="unordered-list">${match}</ul>`;
+  });
+  
+  // 引用
+  html = html.replace(/^> (.*$)/gim, '<blockquote class="blockquote">$1</blockquote>');
+  
+  // 水平线
+  html = html.replace(/^---$/gim, '<hr class="horizontal-rule">');
+  
+  // 段落（最后处理）
+  html = html.split('\n\n').map(paragraph => {
+    paragraph = paragraph.trim();
+    if (!paragraph) return '';
+    
+    // 跳过已经是HTML标签的内容
+    if (paragraph.startsWith('<') && paragraph.endsWith('>')) {
+      return paragraph;
+    }
+    
+    // 跳过列表项
+    if (paragraph.includes('<li class=') || paragraph.includes('<ol class=') || paragraph.includes('<ul class=')) {
+      return paragraph;
+    }
+    
+    // 跳过标题
+    if (paragraph.includes('<h1 class=') || paragraph.includes('<h2 class=') || paragraph.includes('<h3 class=')) {
+      return paragraph;
+    }
+    
+    // 跳过代码块
+    if (paragraph.includes('<pre class=')) {
+      return paragraph;
+    }
+    
+    // 跳过引用
+    if (paragraph.includes('<blockquote class=')) {
+      return paragraph;
+    }
+    
+    // 跳过水平线
+    if (paragraph.includes('<hr class=')) {
+      return paragraph;
+    }
+    
+    return `<p class="paragraph">${paragraph}</p>`;
+  }).join('\n');
+  
+  return html;
+}
+
+function escapeHtml(text: string): string {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+const htmlContent = markdownToHtml(content);
+---
+
+<div class={`markdown-content ${className}`}>
+  <Fragment set:html={htmlContent} />
+</div>
+
+<style>
+  .markdown-content {
+    @apply text-gray-900 dark:text-gray-100;
+  }
+  
+  .markdown-content :global(.heading-1) {
+    @apply text-3xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-4 mb-6 mt-8;
+  }
+  
+  .markdown-content :global(.heading-2) {
+    @apply text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4;
+  }
+  
+  .markdown-content :global(.heading-3) {
+    @apply text-xl font-semibold text-gray-900 dark:text-white mt-6 mb-3;
+  }
+  
+  .markdown-content :global(.paragraph) {
+    @apply text-gray-700 dark:text-gray-300 leading-relaxed mb-4;
+  }
+  
+  .markdown-content :global(.link) {
+    @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 no-underline hover:underline;
+  }
+  
+  .markdown-content :global(.ordered-list) {
+    @apply text-gray-700 dark:text-gray-300 mb-4 pl-6;
+  }
+  
+  .markdown-content :global(.unordered-list) {
+    @apply text-gray-700 dark:text-gray-300 mb-4 pl-6;
+  }
+  
+  .markdown-content :global(.list-item-ordered) {
+    @apply mb-2 list-decimal;
+  }
+  
+  .markdown-content :global(.list-item-unordered) {
+    @apply mb-2 list-disc;
+  }
+  
+  .markdown-content :global(.inline-code) {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .markdown-content :global(.code-block) {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 p-4 rounded-lg overflow-x-auto mb-4 border border-gray-200 dark:border-gray-700;
+  }
+  
+  .markdown-content :global(.code-block code) {
+    @apply font-mono text-sm;
+  }
+  
+  .markdown-content :global(.blockquote) {
+    @apply border-l-4 border-blue-500 pl-4 italic text-gray-600 dark:text-gray-400 mb-4 bg-blue-50 dark:bg-blue-900/20 py-2;
+  }
+  
+  .markdown-content :global(.horizontal-rule) {
+    @apply border-gray-300 dark:border-gray-600 my-8;
+  }
+  
+  .markdown-content :global(strong) {
+    @apply font-semibold text-gray-900 dark:text-white;
+  }
+  
+  .markdown-content :global(em) {
+    @apply italic;
+  }
+  
+  /* 表格样式 */
+  .markdown-content :global(table) {
+    @apply w-full border-collapse border border-gray-300 dark:border-gray-600 mb-4;
+  }
+  
+  .markdown-content :global(th), 
+  .markdown-content :global(td) {
+    @apply border border-gray-300 dark:border-gray-600 px-4 py-2 text-left;
+  }
+  
+  .markdown-content :global(th) {
+    @apply bg-gray-50 dark:bg-gray-700 font-semibold;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .markdown-content :global(.heading-1) {
+      @apply text-2xl;
+    }
+    
+    .markdown-content :global(.heading-2) {
+      @apply text-xl;
+    }
+    
+    .markdown-content :global(.heading-3) {
+      @apply text-lg;
+    }
+    
+    .markdown-content :global(.code-block) {
+      @apply text-xs;
+    }
+  }
+</style>
+
+<script>
+  // 添加代码复制功能
+  document.addEventListener('DOMContentLoaded', () => {
+    const codeBlocks = document.querySelectorAll('.code-block');
+    
+    codeBlocks.forEach((block) => {
+      // 创建复制按钮
+      const copyButton = document.createElement('button');
+      copyButton.innerHTML = '📋';
+      copyButton.className = 'absolute top-2 right-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-sm transition-colors duration-200';
+      copyButton.title = '复制代码';
+      
+      // 设置相对定位
+      block.style.position = 'relative';
+      block.appendChild(copyButton);
+      
+      // 复制功能
+      copyButton.addEventListener('click', async () => {
+        const code = block.querySelector('code');
+        if (code) {
+          try {
+            await navigator.clipboard.writeText(code.textContent || '');
+            copyButton.innerHTML = '✅';
+            copyButton.title = '已复制';
+            
+            setTimeout(() => {
+              copyButton.innerHTML = '📋';
+              copyButton.title = '复制代码';
+            }, 2000);
+          } catch (err) {
+            console.error('复制失败:', err);
+            copyButton.innerHTML = '❌';
+            setTimeout(() => {
+              copyButton.innerHTML = '📋';
+            }, 2000);
+          }
+        }
+      });
+    });
+  });
+</script>

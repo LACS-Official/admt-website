@@ -1,0 +1,367 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import TableOfContents from '@/components/TableOfContents.astro';
+import { findDocumentBySlug, getRelatedDocuments } from '@/utils/markdown';
+import type { TableOfContentsItem } from '@/utils/markdown';
+
+export interface Props {
+  slug: string;
+  fallbackTitle?: string;
+  fallbackDescription?: string;
+}
+
+const { slug, fallbackTitle = '文档', fallbackDescription = '文档内容' } = Astro.props;
+
+// 读取文档内容
+const document = findDocumentBySlug(slug);
+
+// 如果文档不存在，显示404内容
+if (!document) {
+  return Astro.redirect('/404');
+}
+
+// 获取相关文档推荐
+const relatedDocs = getRelatedDocuments(slug, 3);
+
+// 页面元数据
+const title = document.frontmatter.title || fallbackTitle;
+const description = document.frontmatter.description || fallbackDescription;
+const currentPath = document.frontmatter.title || title;
+
+// 渲染目录组件
+function renderTableOfContents(items: TableOfContentsItem[]): string {
+  if (!items || items.length === 0) return '';
+
+  return items.map(item => {
+    const children = item.children && item.children.length > 0
+      ? `<ul class="toc-list">${renderTableOfContents(item.children)}</ul>`
+      : '';
+
+    return `<li class="toc-item">
+      <a href="#${item.id}" class="toc-link toc-level-${item.level}">${item.text}</a>
+      ${children}
+    </li>`;
+  }).join('');
+}
+
+const tocHtml = document.tableOfContents ? renderTableOfContents(document.tableOfContents) : '';
+---
+
+<DocsLayout
+  title={title}
+  description={description}
+  currentPath={currentPath}
+>
+  <!-- 阅读进度条 -->
+  <div class="reading-progress">
+    <div class="reading-progress-bar" id="reading-progress-bar"></div>
+  </div>
+
+  <!-- 文档内容容器 -->
+  <div class="flex gap-8">
+    <!-- 主内容区域 -->
+    <div class="flex-1 min-w-0">
+      <!-- 文档元信息 -->
+      <div class="not-prose mb-6 text-sm text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-700 pb-4">
+        <div class="flex flex-wrap items-center gap-4">
+          {document.frontmatter.date && (
+            <span>📅 更新时间: {document.frontmatter.date}</span>
+          )}
+          {document.frontmatter.author && (
+            <span>👤 作者: {document.frontmatter.author}</span>
+          )}
+          {document.readingTime && (
+            <span>⏱️ 阅读时间: 约 {document.readingTime} 分钟</span>
+          )}
+          {document.frontmatter.category && (
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300">
+              {document.frontmatter.category}
+            </span>
+          )}
+        </div>
+
+        {document.frontmatter.tags && document.frontmatter.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mt-3">
+            {document.frontmatter.tags.map((tag: string) => (
+              <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <!-- Markdown 内容 -->
+      <div class="prose prose-gray dark:prose-invert max-w-none" set:html={document.htmlContent} />
+
+      <!-- 相关文档推荐 -->
+      {relatedDocs && relatedDocs.length > 0 && (
+        <div class="not-prose mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">相关文档</h3>
+          <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {relatedDocs.map((doc) => (
+              <a
+                href={`/docs/${doc.slug}`}
+                class="block p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-600 transition-colors duration-200"
+              >
+                <h4 class="font-medium text-gray-900 dark:text-white mb-2">
+                  {doc.frontmatter.title}
+                </h4>
+                {doc.excerpt && (
+                  <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {doc.excerpt}
+                  </p>
+                )}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <!-- 用户反馈 -->
+      <div class="not-prose mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">这篇文档有帮助吗？</h3>
+          <div class="flex gap-4">
+            <button class="feedback-btn flex items-center gap-2 px-4 py-2 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors duration-200" data-feedback="positive">
+              👍 有帮助
+            </button>
+            <button class="feedback-btn flex items-center gap-2 px-4 py-2 bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 rounded-lg hover:bg-red-200 dark:hover:bg-red-800 transition-colors duration-200" data-feedback="negative">
+              👎 需要改进
+            </button>
+          </div>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-4">
+            如果您有任何建议或发现错误，请通过发送邮件给 web@lacs.email
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 侧边栏：目录 -->
+    {document.tableOfContents && document.tableOfContents.length > 0 && (
+      <div class="hidden lg:block w-64 flex-shrink-0">
+        <div class="sticky top-24">
+          <TableOfContents items={document.tableOfContents} />
+        </div>
+      </div>
+    )}
+  </div>
+</DocsLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // 代码复制功能
+    function initCodeCopyButtons() {
+      const copyButtons = document.querySelectorAll('.code-copy-btn');
+
+      copyButtons.forEach(button => {
+        button.addEventListener('click', async function() {
+          const code = decodeURIComponent(this.dataset.code);
+
+          try {
+            await navigator.clipboard.writeText(code);
+
+            // 更新按钮状态
+            this.classList.add('copied');
+            this.innerHTML = `
+              <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="20,6 9,17 4,12"></polyline>
+              </svg>
+              已复制
+            `;
+
+            // 2秒后恢复原状
+            setTimeout(() => {
+              this.classList.remove('copied');
+              this.innerHTML = `
+                <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="m5 15-4-4 4-4"></path>
+                </svg>
+                复制
+              `;
+            }, 2000);
+          } catch (err) {
+            console.error('复制失败:', err);
+          }
+        });
+      });
+    }
+
+    // 阅读进度条
+    function initReadingProgress() {
+      const progressBar = document.getElementById('reading-progress-bar');
+      if (!progressBar) return;
+
+      function updateProgress() {
+        const scrollTop = window.pageYOffset;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+
+        progressBar.style.width = Math.min(progress, 100) + '%';
+      }
+
+      window.addEventListener('scroll', updateProgress);
+      updateProgress(); // 初始化
+    }
+
+    // 目录导航高亮
+    function initTocHighlight() {
+      const tocLinks = document.querySelectorAll('.toc-link');
+      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+      if (tocLinks.length === 0 || headings.length === 0) return;
+
+      function updateActiveTocLink() {
+        let activeHeading = null;
+
+        // 找到当前可见的标题
+        for (let i = headings.length - 1; i >= 0; i--) {
+          const heading = headings[i];
+          const rect = heading.getBoundingClientRect();
+
+          if (rect.top <= 100) {
+            activeHeading = heading;
+            break;
+          }
+        }
+
+        // 更新目录链接状态
+        tocLinks.forEach(link => {
+          link.classList.remove('active');
+
+          if (activeHeading && link.getAttribute('href') === '#' + activeHeading.id) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', updateActiveTocLink);
+      updateActiveTocLink(); // 初始化
+    }
+
+    // 平滑滚动到锚点
+    function initSmoothScroll() {
+      const tocLinks = document.querySelectorAll('.toc-link');
+
+      tocLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+
+          const targetId = this.getAttribute('href').substring(1);
+          const targetElement = document.getElementById(targetId);
+
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
+    }
+
+    // 用户反馈功能
+    function initFeedback() {
+      const feedbackButtons = document.querySelectorAll('.feedback-btn');
+
+      feedbackButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const feedback = this.dataset.feedback;
+
+          // 这里可以发送反馈到服务器
+          console.log('用户反馈:', feedback);
+
+          // 显示感谢消息
+          this.innerHTML = feedback === 'positive' ? '👍 感谢反馈！' : '👎 感谢反馈！';
+          this.disabled = true;
+
+          // 禁用所有反馈按钮
+          feedbackButtons.forEach(btn => btn.disabled = true);
+        });
+      });
+    }
+
+    // 添加标题锚点链接
+    function initHeaderAnchors() {
+      const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+      headings.forEach(heading => {
+        if (heading.id) {
+          const anchor = document.createElement('a');
+          anchor.href = '#' + heading.id;
+          anchor.className = 'header-anchor';
+          anchor.innerHTML = '#';
+          anchor.setAttribute('aria-label', '链接到此标题');
+
+          heading.appendChild(anchor);
+        }
+      });
+    }
+
+    // 搜索高亮功能
+    function initSearchHighlight() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const searchTerm = urlParams.get('highlight');
+
+      if (searchTerm) {
+        const content = document.querySelector('.prose');
+        if (content) {
+          highlightText(content, searchTerm);
+        }
+      }
+    }
+
+    function highlightText(element, searchTerm) {
+      const walker = document.createTreeWalker(
+        element,
+        NodeFilter.SHOW_TEXT,
+        null,
+        false
+      );
+
+      const textNodes = [];
+      let node;
+      while (node = walker.nextNode()) {
+        textNodes.push(node);
+      }
+
+      textNodes.forEach(textNode => {
+        const parent = textNode.parentNode;
+        if (parent.tagName === 'SCRIPT' || parent.tagName === 'STYLE') return;
+
+        const text = textNode.textContent;
+        const regex = new RegExp(`(${searchTerm})`, 'gi');
+
+        if (regex.test(text)) {
+          const highlightedHTML = text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-800">$1</mark>');
+          const wrapper = document.createElement('span');
+          wrapper.innerHTML = highlightedHTML;
+          parent.replaceChild(wrapper, textNode);
+        }
+      });
+    }
+
+    // 初始化所有功能
+    initCodeCopyButtons();
+    initReadingProgress();
+    initTocHighlight();
+    initSmoothScroll();
+    initFeedback();
+    initHeaderAnchors();
+    initSearchHighlight();
+  });
+</script>
+
+<style>
+  /* 导入Markdown样式 */
+  @import '/src/styles/markdown.css';
+
+  /* 限制行数的样式 */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

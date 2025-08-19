@@ -1,0 +1,181 @@
+---
+import DocsLayout from '@/layouts/DocsLayout.astro';
+import { getDocsIndexContent, getAllDocuments, findDocumentBySlug } from '@/utils/markdown';
+
+// 读取文档首页内容
+const docsContent = getDocsIndexContent();
+
+// 获取所有文档并筛选热门文档
+const allDocuments = getAllDocuments();
+
+// 定义热门文档的 slug
+const popularDocSlugs = [
+  'user-guide/getting-started',
+  'user-guide/device-connection',
+  'troubleshooting/faq'
+];
+
+// 获取热门文档数据
+const popularDocsData = popularDocSlugs.map(slug => {
+  const doc = findDocumentBySlug(slug);
+  if (doc) {
+    return {
+      slug,
+      href: `/docs/${slug}`,
+      icon: doc.frontmatter.icon || '📄',
+      title: doc.frontmatter.title || '文档',
+      description: doc.excerpt || '暂无描述',
+      content: doc
+    };
+  }
+  return null;
+}).filter(doc => doc !== null);
+
+// 快速导航卡片配置
+const quickNavCards = [
+  {
+    title: '快速入门',
+    href: '/docs/getting-started',
+    icon: '🚀',
+    description: '5分钟快速上手，连接您的第一台Android设备',
+    gradient: 'from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20',
+    border: 'border-blue-200 dark:border-blue-700',
+    iconBg: 'bg-blue-500',
+    hoverColor: 'group-hover:text-blue-600 dark:group-hover:text-blue-400'
+  },
+  {
+    title: '安装指南',
+    href: '/docs/installation',
+    icon: '🔧',
+    description: '详细的安装步骤和系统配置要求',
+    gradient: 'from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20',
+    border: 'border-green-200 dark:border-green-700',
+    iconBg: 'bg-green-500',
+    hoverColor: 'group-hover:text-green-600 dark:group-hover:text-green-400'
+  },
+  {
+    title: '用户指南',
+    href: '/docs/user-guide/device-connection',
+    icon: '📱',
+    description: '完整的功能使用教程和最佳实践',
+    gradient: 'from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20',
+    border: 'border-purple-200 dark:border-purple-700',
+    iconBg: 'bg-purple-500',
+    hoverColor: 'group-hover:text-purple-600 dark:group-hover:text-purple-400'
+  },
+  {
+    title: '故障排除',
+    href: '/docs/troubleshooting',
+    icon: '🔧',
+    description: '常见问题解答和故障解决方案',
+    gradient: 'from-red-50 to-red-100 dark:from-red-900/20 dark:to-red-800/20',
+    border: 'border-red-200 dark:border-red-700',
+    iconBg: 'bg-red-500',
+    hoverColor: 'group-hover:text-red-600 dark:group-hover:text-red-400'
+  },
+  {
+    title: '联系支持',
+    href: '/about-contact',
+    icon: '💬',
+    description: '获取技术支持和专业帮助',
+    gradient: 'from-gray-50 to-gray-100 dark:from-gray-800/50 dark:to-gray-700/50',
+    border: 'border-gray-200 dark:border-gray-600',
+    iconBg: 'bg-gray-500',
+    hoverColor: 'group-hover:text-gray-600 dark:group-hover:text-gray-400'
+  }
+];
+
+// 页面标题和描述，优先使用 Markdown 文件中的信息
+const pageTitle = docsContent?.frontmatter.title || '文档中心';
+const pageDescription = docsContent?.frontmatter.description || '玩机管家完整使用指南和开发文档';
+---
+
+<DocsLayout
+  title={pageTitle}
+  description={pageDescription}
+>
+  <div class="not-prose">
+    <!-- 欢迎区域 -->
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full mb-4">
+        <svg class="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+        </svg>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">玩机管家文档中心</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        从安装配置到高级功能，这里有您需要的所有信息
+      </p>
+    </div>
+
+    <!-- 快速导航卡片 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+      {quickNavCards.map((card) => (
+        <a href={card.href} class={`group block p-6 bg-gradient-to-br ${card.gradient} rounded-xl border ${card.border} hover:shadow-lg transition-all duration-300`}>
+          <div class="flex items-center mb-4">
+            <div class={`w-10 h-10 ${card.iconBg} rounded-lg flex items-center justify-center mr-3`}>
+              <span class="text-white text-xl">{card.icon}</span>
+            </div>
+            <h3 class={`text-lg font-semibold text-gray-900 dark:text-white ${card.hoverColor}`}>{card.title}</h3>
+          </div>
+          <p class="text-gray-600 dark:text-gray-300 text-sm">
+            {card.description}
+          </p>
+        </a>
+      ))}
+    </div>
+
+    <!-- 动态 Markdown 内容 -->
+    {docsContent && docsContent.htmlContent && (
+      <div class="mb-12">
+        <div class="prose prose-gray dark:prose-invert max-w-none bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+          <div set:html={docsContent.htmlContent} />
+        </div>
+      </div>
+    )}
+
+    <!-- 热门文档 -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">热门文档</h2>
+      <div class="space-y-4">
+        {popularDocsData.length > 0 ? (
+          popularDocsData.map((doc) => (
+            <a href={doc.href} class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+              <span class="text-2xl mr-4">{doc.icon}</span>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">{doc.title}</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">{doc.description}</p>
+              </div>
+            </a>
+          ))
+        ) : (
+          <!-- 回退内容 -->
+          <div class="space-y-4">
+            <a href="/docs/getting-started" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+              <span class="text-2xl mr-4">🚀</span>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">快速入门指南</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">学习如何快速连接和控制您的Android设备</p>
+              </div>
+            </a>
+            <a href="/docs/troubleshooting/faq" class="flex items-center p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow duration-300">
+              <span class="text-2xl mr-4">❓</span>
+              <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">常见问题解答</h3>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">快速找到常见问题的解决方案</p>
+              </div>
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+
+    <!-- 需要帮助 -->
+    <div class="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 text-center">
+      <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">需要更多帮助？</h3>
+      <p class="text-gray-600 dark:text-gray-300 mb-4">
+        如果您在文档中没有找到需要的信息，我们的技术支持团队随时为您提供帮助。
+      </p>
+    </div>
+  </div>
+</DocsLayout>

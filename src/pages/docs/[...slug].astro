@@ -1,0 +1,33 @@
+---
+import DynamicMarkdownPage from '@/components/DynamicMarkdownPage.astro';
+import { getAllDocuments } from '@/utils/markdown';
+
+// 生成所有可能的路径用于静态生成
+export async function getStaticPaths() {
+  const documents = getAllDocuments();
+  
+  return documents.map((doc) => ({
+    params: { 
+      slug: doc.slug 
+    },
+    props: { 
+      document: doc 
+    }
+  }));
+}
+
+// 获取路径参数
+const { slug } = Astro.params;
+const { document } = Astro.props;
+
+// 如果没有 slug 或文档不存在，重定向到 404
+if (!slug || !document) {
+  return Astro.redirect('/404');
+}
+---
+
+<DynamicMarkdownPage 
+  slug={slug} 
+  fallbackTitle={document.frontmatter.title || '文档'}
+  fallbackDescription={document.frontmatter.description || '文档内容'}
+/>
