@@ -5,24 +5,21 @@ export const SITE_CONFIG = {
   description: "专为开发者和 IT 专业人士打造的强大 Android 设备管理工具",
   tagline: "重新定义设备管理体验",
   subtitle: "强大、简洁、优雅",
-  url: "https://your-software-website.vercel.app",
+  url: "https://admt.lacs.",
 
   // SEO 信息
-  keywords: ["Android", "设备管理", "开发者工具", "移动开发", "IT管理", "玩机管家"],
-  author: "玩机管家团队",
+  keywords: ["领创工作室", "LACS", "Android", "设备管理", "开发者工具", "移动开发", "IT管理", "玩机管家","ADMT","admt","刷机","安卓刷机"],
+  author: "领创工作室",
 
   // 社交媒体
   social: {
-    twitter: "@玩机管家",
-    github: "https://github.com/yourcompany/android-device-management-tool",
-    linkedin: "https://linkedin.com/company/android-device-management-tool",
-    email: "contact@android-device-tool.com"
+    email: "admt@lacs.email"
   },
 
   // 产品信息
   product: {
-    version: "2.1.0",
-    releaseDate: "2024-01-15",
+    version: "1.0.0",
+    releaseDate: "2025-08-15",
     platforms: ["Windows", "macOS", "Linux"],
     license: "商业许可"
   },
@@ -163,6 +160,6 @@ export const SITE_CONFIG = {
     { name: "功能特性", href: "/features" },
     { name: "文档", href: "/docs" },
     { name: "下载", href: "/download" },
-    { name: "关于与联系", href: "/about-contact" }
+    { name: "关于与联系", href: "https://www.lacs.cc/contact" }
   ]
 };

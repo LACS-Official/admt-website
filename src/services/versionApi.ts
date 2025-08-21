@@ -89,6 +89,38 @@ export interface VersionStatsResponse {
   error?: string;
 }
 
+// 新增软件信息接口
+export interface SoftwareInfo {
+  id: number;
+  name: string;
+  nameEn: string | null;
+  description: string | null;
+  descriptionEn: string | null;
+  currentVersion: string;
+  officialWebsite: string | null;
+  category: string | null;
+  tags: string[];
+  systemRequirements: {
+    os: string[];
+  };
+  openname: string;
+  filetype: string;
+  isActive: boolean;
+  sortOrder: number;
+  viewCount: number;
+  metadata: Record<string, any>;
+  createdAt: string;
+  updatedAt: string;
+  currentVersionId: number;
+  latestDownloadUrl: string;
+}
+
+export interface SoftwareInfoResponse {
+  success: boolean;
+  data: SoftwareInfo;
+  error?: string;
+}
+
 // API 调用类
 export class VersionApiService {
   protected config: any;
@@ -149,6 +181,42 @@ export class VersionApiService {
     }
 
     throw lastError;
+  }
+
+  /**
+   * 获取软件信息（包括最新下载链接）
+   */
+  async getSoftwareInfo(): Promise<SoftwareInfoResponse | null> {
+    const cacheKey = 'software_info';
+
+    // 检查缓存
+    const cached = this.cacheManager.get(cacheKey);
+    if (cached) {
+      console.log('Returning cached software info');
+      return cached;
+    }
+
+    try {
+      // 构建请求URL - 使用新的API端点
+      const url = `${this.config.BASE_URL}/app/software/id/${this.config.SOFTWARE_ID}`;
+      console.log('Fetching software info from:', url);
+
+      const result = await this.makeRequest<SoftwareInfoResponse>(url);
+
+      if (result && result.success) {
+        // 缓存结果
+        this.cacheManager.set(cacheKey, result, this.config.CACHE.VERSION_INFO_TTL);
+        console.log('Software info fetched successfully:', result.data);
+        return result;
+      } else {
+        console.error('API returned error:', result?.error);
+        return null;
+      }
+    } catch (error) {
+      console.error('Error fetching software info:', error);
+      // 不抛出错误，而是返回null，让调用者决定如何处理
+      return null;
+    }
   }
 
   /**

@@ -9,7 +9,7 @@ export const API_CONFIG = {
   BASE_URL: 'https://api-g.lacs.cc',
   
   // 玩机管家 (Android Device Management Tool) 的软件ID
-  SOFTWARE_ID: 6,
+  SOFTWARE_ID: 1,
   
   // API 端点
   ENDPOINTS: {
@@ -58,7 +58,8 @@ export const API_CONFIG = {
     // 默认请求头
     HEADERS: {
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Origin': 'https://admt.lacs.cc'
     }
   },
   

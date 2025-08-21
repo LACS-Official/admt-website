@@ -39,100 +39,6 @@ import VersionHistory from '@/components/VersionHistory.astro';
     </div>
   </section>
 
-  <!-- Download Options -->
-  <section class="py-20 bg-gray-50 dark:bg-gray-900 dynamic-background" data-parallax="0.2">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16">
-        <h2
-          class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
-          data-scroll-color="section-title"
-          data-fade-in
-        >
-          选择您的平台
-        </h2>
-        <p
-          class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto"
-          data-scroll-color="feature-text"
-          data-fade-in
-        >
-          为您的操作系统下载最适合的版本
-        </p>
-      </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <!-- Windows -->
-        <div class="bg-white dark:bg-gray-800 rounded-2xl p-8 text-center hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2" data-fade-in data-platform="windows">
-          <div class="w-20 h-20 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <span class="text-4xl">🪟</span>
-          </div>
-          <h3
-            class="text-2xl font-bold text-gray-900 dark:text-white mb-4"
-            data-scroll-color="section-title"
-          >
-            Windows
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-6" data-platform-requirements="windows">
-            {SITE_CONFIG.downloads.windows.requirements.os}
-          </p>
-          <div class="space-y-3" data-download-buttons="windows">
-            <a
-              href={SITE_CONFIG.downloads.windows.installer.url}
-              class="download-button-primary block w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-700 dark:hover:bg-gray-600 text-white py-4 px-6 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105"
-              data-download-type="installer"
-              data-platform="windows"
-            >
-              <span class="download-name">{SITE_CONFIG.downloads.windows.installer.name}</span>
-              <span class="download-info block text-sm opacity-90 mt-1">
-                <span class="download-filename">{SITE_CONFIG.downloads.windows.installer.filename}</span>
-                (<span class="download-size">{SITE_CONFIG.downloads.windows.installer.size}</span>)
-              </span>
-            </a>
-          </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-4" data-platform-description="windows">
-            {SITE_CONFIG.downloads.windows.installer.description}
-          </p>
-        </div>
-
-        <!-- macOS -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center opacity-60" data-platform="macos">
-          <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span class="text-3xl">🍎</span>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            macOS
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-6">
-            macOS 11.0 or later (Intel & Apple Silicon)
-          </p>
-          <div class="space-y-3">
-            <div class="block w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 py-3 px-6 rounded-lg font-semibold cursor-not-allowed">
-              暂不支持下载
-              <span class="block text-sm opacity-70">正在开发中，敬请期待</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Linux -->
-        <div class="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 text-center opacity-60" data-platform="linux">
-          <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-full flex items-center justify-center mx-auto mb-6">
-            <span class="text-3xl">🐧</span>
-          </div>
-          <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Linux
-          </h3>
-          <p class="text-gray-600 dark:text-gray-400 mb-6">
-            Ubuntu 20.04+, Fedora 35+, or equivalent
-          </p>
-          <div class="space-y-3">
-            <div class="block w-full bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 py-3 px-6 rounded-lg font-semibold cursor-not-allowed">
-              暂不支持下载
-              <span class="block text-sm opacity-70">正在开发中，敬请期待</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Version History -->
   <VersionHistory />
 
@@ -243,7 +149,7 @@ import VersionHistory from '@/components/VersionHistory.astro';
           // 更新文件大小
           const sizeElement = button.querySelector('.download-size');
           if (sizeElement && downloadData.size) {
-            sizeElement.textContent = downloadData.size;
+            sizeElement.textContent = `(${downloadData.size})`;
           }
 
           // 添加动态更新标识

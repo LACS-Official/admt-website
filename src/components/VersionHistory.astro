@@ -7,27 +7,18 @@
 
 <div id="version-history-section" class="version-history-section">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <!-- 标题和切换按钮 -->
+    <!-- 标题 -->
     <div class="text-center mb-12">
-      <h3 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+      <h3 class="text-4xl md:text-5xl font-bold text-blue-600 dark:text-white mb-6">
         历史版本
       </h3>
       <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-        查看 DeviceManager Pro 的完整版本历史，了解每个版本的新功能和改进
+        查看玩机管家的完整版本历史，了解每个版本的新功能和改进
       </p>
-      <button
-        id="toggle-version-history"
-        class="inline-flex items-center px-8 py-4 rounded-2xl text-lg font-semibold transition-all duration-300"
-      >
-        <span id="toggle-text">显示历史版本</span>
-        <svg id="toggle-icon" class="ml-3 w-5 h-5 transform transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-        </svg>
-      </button>
     </div>
 
     <!-- 历史版本内容 -->
-    <div id="version-history-content" class="version-history-content hidden">
+    <div id="version-history-content" class="version-history-content">
       <!-- 加载状态 -->
       <div id="version-loading" class="text-center py-16">
         <div class="relative">
@@ -196,58 +187,6 @@
     font-size: 12px;
   }
 
-  .version-downloads {
-    @apply flex flex-wrap gap-4 mb-8;
-  }
-
-  .download-link {
-    @apply inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 hover:from-blue-600 hover:via-purple-600 hover:to-indigo-700 text-white text-sm font-bold rounded-2xl transition-all duration-500 transform hover:scale-110 hover:-translate-y-1 shadow-2xl;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
-  }
-
-  .download-link::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.6s ease;
-  }
-
-  .download-link:hover::before {
-    left: 100%;
-  }
-
-  .download-link svg {
-    @apply w-5 h-5 mr-2;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  }
-
-  .download-link-secondary {
-    @apply inline-flex items-center px-6 py-3 bg-gradient-to-r from-slate-100 via-gray-200 to-slate-300 dark:from-gray-700 dark:via-gray-600 dark:to-slate-700 hover:from-slate-200 hover:via-gray-300 hover:to-slate-400 dark:hover:from-gray-600 dark:hover:via-slate-600 dark:hover:to-gray-500 text-gray-900 dark:text-white text-sm font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-0.5 shadow-lg;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .download-link-secondary::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-    transition: left 0.5s ease;
-  }
-
-  .download-link-secondary:hover::before {
-    left: 100%;
-  }
-
   .version-notes {
     @apply text-sm text-gray-700 dark:text-gray-200 leading-relaxed bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-slate-800 dark:to-gray-700 rounded-2xl p-6 mb-6 border border-blue-100 dark:border-gray-600;
     position: relative;
@@ -267,77 +206,8 @@
     padding-left: 40px;
   }
 
-  .version-meta {
-    @apply flex flex-wrap items-center gap-3 text-xs pt-6 border-t border-blue-200 dark:border-gray-600;
-  }
-
-  .version-meta span {
-    @apply bg-gradient-to-r from-blue-100 to-indigo-100 dark:from-gray-700 dark:to-slate-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-full font-semibold shadow-sm border border-blue-200 dark:border-gray-600 transition-all duration-300 hover:scale-105;
-    position: relative;
-  }
-
-  .version-meta span::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
-    border-radius: inherit;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .version-meta span:hover::before {
-    opacity: 1;
-  }
-
-  /* 切换按钮样式 */
-  #toggle-version-history {
-    @apply bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white border-0 shadow-lg transform hover:scale-105 transition-all duration-300;
-  }
-
-  /* 加载动画 */
-  .animate-spin {
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  /* 标题样式增强 */
-  .version-history-section h3 {
-    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  /* 版本列表动画 */
-  .version-item {
-    opacity: 0;
-    transform: translateY(20px);
-    animation: slideInUp 0.6s ease-out forwards;
-  }
-
-  @keyframes slideInUp {
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
   /* 版本内容展开动画 */
   .version-history-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.5s ease-out;
-  }
-
-  .version-history-content.expanded {
     max-height: 5000px;
   }
 
@@ -363,16 +233,6 @@
     .version-number {
       font-size: 2rem;
     }
-
-    .version-downloads {
-      flex-direction: column;
-    }
-
-    .download-link,
-    .download-link-secondary {
-      width: 100%;
-      justify-content: center;
-    }
   }
 </style>
 
@@ -380,63 +240,24 @@
   class VersionHistory {
 
     constructor() {
-      this.toggleButton = document.getElementById('toggle-version-history');
-      this.toggleText = document.getElementById('toggle-text');
-      this.toggleIcon = document.getElementById('toggle-icon');
       this.content = document.getElementById('version-history-content');
       this.loadingElement = document.getElementById('version-loading');
       this.listElement = document.getElementById('version-list');
       this.errorElement = document.getElementById('version-error');
-      this.isExpanded = false;
-      this.versionsLoaded = false;
 
-      this.bindEvents();
-    }
-
-    bindEvents() {
-      if (this.toggleButton) {
-        this.toggleButton.addEventListener('click', () => {
-          this.toggle();
-        });
-      }
-    }
-
-    async toggle() {
-      this.isExpanded = !this.isExpanded;
-
-      if (this.isExpanded) {
-        this.expand();
-        if (!this.versionsLoaded) {
-          await this.loadVersions();
-        }
-      } else {
-        this.collapse();
-      }
-    }
-
-    expand() {
-      if (this.content) this.content.classList.remove('hidden');
-      if (this.toggleText) this.toggleText.textContent = '隐藏历史版本';
-      if (this.toggleIcon) this.toggleIcon.style.transform = 'rotate(180deg)';
-    }
-
-    collapse() {
-      if (this.content) this.content.classList.add('hidden');
-      if (this.toggleText) this.toggleText.textContent = '显示历史版本';
-      if (this.toggleIcon) this.toggleIcon.style.transform = 'rotate(0deg)';
+      this.loadVersions();
     }
 
     async loadVersions() {
       try {
         this.showLoading();
 
-        // 使用fetch直接调用API
-        const response = await fetch('https://api-g.lacs.cc/app/software/id/6/versions?page=1&limit=10&sortBy=releaseDate&sortOrder=desc');
+        // 使用fetch直接调用API，获取软件ID为1的版本历史
+        const response = await fetch('https://api-g.lacs.cc/app/software/id/1/versions');
         const data = await response.json();
 
         if (data.success && data.data && data.data.length > 0) {
           this.renderVersions(data.data);
-          this.versionsLoaded = true;
         } else {
           this.showError();
         }
@@ -478,7 +299,6 @@
 
       const versionTypeClass = this.getVersionTypeClass(version);
       const formattedDate = this.formatDate(version.releaseDate);
-      const downloadLinks = this.createDownloadLinks(version);
 
       div.innerHTML = `
         <div class="version-header">
@@ -491,8 +311,6 @@
           </span>
         </div>
 
-        ${downloadLinks}
-
         ${version.releaseNotes ? `
           <div class="version-notes">
             <div class="font-semibold text-gray-800 dark:text-gray-100 mb-3 text-base">🔄 更新内容</div>
@@ -501,46 +319,9 @@
             </div>
           </div>
         ` : ''}
-
-        <div class="version-meta">
-          ${version.fileSize ? `<span>💾 ${version.fileSize}</span>` : ''}
-          ${version.fileHash ? `<span>🔐 SHA256: ${version.fileHash.substring(0, 16)}...</span>` : ''}
-          ${version.changelogCategory && version.changelogCategory.length > 0 ?
-            `<span>🏷️ ${version.changelogCategory.join(', ')}</span>` : ''}
-          ${version.downloads ? `<span>📥 ${this.formatDownloadCount(version.downloads)} 下载</span>` : ''}
-        </div>
       `;
 
       return div;
-    }
-
-    createDownloadLinks(version) {
-      if (!version.downloadLinks) return '';
-
-      const links = [];
-
-      if (version.downloadLinks.official) {
-        links.push(`
-          <a href="${version.downloadLinks.official}" class="download-link" target="_blank" rel="noopener noreferrer">
-            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-4-4m4 4l4-4m-6 8h8a2 2 0 002-2V7a2 2 0 00-2-2H8a2 2 0 00-2 2v11a2 2 0 002 2z"></path>
-            </svg>
-            官方下载
-          </a>
-        `);
-      }
-
-      if (version.downloadLinks.backup && version.downloadLinks.backup.length > 0) {
-        version.downloadLinks.backup.forEach((link, index) => {
-          links.push(`
-            <a href="${link}" class="download-link-secondary" target="_blank" rel="noopener noreferrer">
-              备用下载 ${index + 1}
-            </a>
-          `);
-        });
-      }
-
-      return links.length > 0 ? `<div class="version-downloads">${links.join('')}</div>` : '';
     }
 
     getVersionTypeClass(version) {
@@ -586,18 +367,6 @@
         .replace(/-\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-purple-500 font-bold">→</span><span>$1</span></div>');
 
       return formattedNotes;
-    }
-
-    formatDownloadCount(count) {
-      if (!count || count === 0) return '0';
-
-      if (count >= 1000000) {
-        return (count / 1000000).toFixed(1) + 'M';
-      } else if (count >= 1000) {
-        return (count / 1000).toFixed(1) + 'K';
-      }
-
-      return count.toString();
     }
   }
 
