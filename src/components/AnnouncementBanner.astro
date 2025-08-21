@@ -135,7 +135,7 @@
 
         // 使用fetch直接调用API
         console.log('Fetching announcements from API...');
-        const response = await fetch('https://api-g.lacs.cc/app/software/id/6/announcements?published=true&limit=3');
+        const response = await fetch('https://api-g.lacs.cc/app/software/id/1/announcements?published=true&limit=3');
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

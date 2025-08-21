@@ -6,7 +6,7 @@
 ---
 
 <!-- 公告横幅 - 只在有真实API数据时显示 -->
-<div id="announcement-banner" class="announcement-banner fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-blue-600 to-purple-600 shadow-xl backdrop-blur-sm transform -translate-y-full transition-transform duration-500 ease-out" style="display: none;">
+<div id="announcement-banner" class="announcement-banner fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-10 shadow-xl backdrop-blur-sm transform -translate-y-full transition-transform duration-500 ease-out" style="display: none;">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <!-- 倒计时显示 -->
     <div id="countdown-display" class="absolute top-3 right-6 text-white text-xs font-bold bg-black bg-opacity-30 rounded-full w-7 h-7 flex items-center justify-center opacity-70 transition-all duration-300 hover:opacity-90 hover:scale-110" style="display: none; font-family: 'Courier New', monospace;">
@@ -48,7 +48,7 @@
     }
 
     // 从API获取公告数据
-    fetch('https://api-g.lacs.cc/app/software/id/6/announcements?published=true&limit=3')
+    fetch('https://api-g.lacs.cc/app/software/id/1/announcements?published=true&limit=3')
       .then(response => {
         console.log('API response status:', response.status);
         if (!response.ok) {

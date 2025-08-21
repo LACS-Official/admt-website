@@ -16,12 +16,18 @@ let statsData: StatsData | null = null;
 let statsError: string | null = null;
 
 try {
-  const response = await fetch('https://api-g.lacs.cc/api/admt/state');
+  console.log('正在获取统计数据...');
+  const response = await fetch('https://api-g.lacs.cc/api/admt/stats', {
+  });
+  console.log('统计数据API响应状态:', response.status);
   const result = await response.json();
+  console.log('统计数据API响应数据:', result);
   if (result.success) {
     statsData = result.data;
+    console.log('成功获取统计数据:', statsData);
   } else {
     statsError = '获取统计数据失败';
+    console.error('获取统计数据失败:', result.error);
   }
 } catch (error) {
   statsError = '网络错误，无法获取统计数据';
@@ -134,7 +140,7 @@ try {
   <!-- Stats Section - Apple Style -->
   <section class="py-32 bg-white dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-16 text-center">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 text-center">
         <div>
           <div
             class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
