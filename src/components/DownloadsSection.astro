@@ -1,0 +1,204 @@
+---
+/**
+ * 多下载源展示组件
+ * 展示官方下载、夸克网盘、迅雷网盘、百度网盘等多个下载选项
+ */
+import type { SoftwareVersionHistory } from '@/services/versionApi';
+
+interface Props {
+  latestVersion: SoftwareVersionHistory;
+}
+
+const { latestVersion } = Astro.props;
+
+// 下载源配置
+const downloadSources = [
+  {
+    id: 'quark',
+    name: '夸克网盘',
+    icon: '☁️',
+    link: latestVersion.downloadLinks?.quark,
+    description: '高速下载'
+  },
+  {
+    id: 'thunder',
+    name: '迅雷网盘',
+    icon: '⚡',
+    link: latestVersion.downloadLinks?.thunderPan,
+    description: '迅雷用户推荐'
+  },
+  {
+    id: 'baidu',
+    name: '百度网盘',
+    icon: '🐻',
+    link: latestVersion.downloadLinks?.baidu,
+    description: '提取码：81hx'
+  }
+];
+---
+
+<div class="downloads-section">
+  <h3 class="downloads-title">选择下载源</h3>
+  <div class="downloads-grid">
+    {downloadSources.map((source) => (
+      source.link ? (
+        <a
+          href={source.link}
+          class="download-card"
+          data-download-type={source.id}
+          data-platform="windows"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <div class="download-icon">{source.icon}</div>
+          <div class="download-content">
+            <h4 class="download-name">{source.name}</h4>
+            <p class="download-description">{source.description}</p>
+          </div>
+        </a>
+      ) : null
+    ))}
+  </div>
+  
+</div>
+
+<style>
+  .downloads-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 1px solid #e2e8f0;
+  }
+
+  .downloads-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+
+  .downloads-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .download-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .download-card:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-color: #cbd5e1;
+    transform: translateY(-2px);
+  }
+
+  .download-icon {
+    font-size: 1.5rem;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    background: #f1f5f9;
+  }
+
+  .download-content {
+    flex: 1;
+  }
+
+  .download-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .download-description {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .download-meta {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+
+  .download-filename {
+    font-weight: 500;
+  }
+
+  .download-size {
+    font-size: 0.7rem;
+  }
+
+  .download-notice {
+    padding: 0.75rem;
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #92400e;
+  }
+
+  /* 深色模式支持 */
+  :global(.dark) .downloads-section {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border-color: #475569;
+  }
+
+  :global(.dark) .download-card {
+    background: #334155;
+    border-color: #475569;
+  }
+
+  :global(.dark) .download-icon {
+    background: #475569;
+  }
+
+  :global(.dark) .download-name {
+    color: #f1f5f9;
+  }
+
+  :global(.dark) .download-description {
+    color: #94a3b8;
+  }
+
+  :global(.dark) .download-meta {
+    color: #cbd5e1;
+  }
+
+  :global(.dark) .download-notice {
+    background: #451a03;
+    border-color: #92400e;
+    color: #fbbf24;
+  }
+  
+  /* 响应式设计：在小屏幕上调整为较少的列数 */
+  @media (max-width: 768px) {
+    .downloads-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .downloads-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

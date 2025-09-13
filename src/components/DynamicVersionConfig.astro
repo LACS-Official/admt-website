@@ -1,76 +1,43 @@
 ---
 /**
  * 动态版本配置组件
- * 通过API获取DeviceManager Pro最新版本信息并更新下载配置
+ * 通过API获取最新版本信息并更新下载配置
+ * 只有最新版本提供下载链接，其他版本只显示日志
  */
 import { SITE_CONFIG } from '@/config/site';
-import { deviceManagerVersionApi, type SoftwareVersionHistory, VersionApiService, versionApi } from '@/services/versionApi';
+import { deviceManagerVersionApi, type SoftwareVersionHistory } from '@/services/versionApi';
+import DownloadsSection from '@/components/DownloadsSection.astro';
 
-// 尝试获取最新版本信息
+// 尝试获取最新版本信息和所有版本信息
 let latestVersion: SoftwareVersionHistory | null = null;
-let versionStats = null;
+let allVersions: SoftwareVersionHistory[] = [];
 let dynamicDownloadConfig = null;
 let errorMessage = '';
 
 try {
-  console.log('Fetching DeviceManager Pro version data...');
+  console.log('Fetching version data with download policy...');
 
-  // 获取最新版本
-  latestVersion = await deviceManagerVersionApi.getLatestDeviceManagerVersion();
+  // 获取版本信息（包含下载策略）
+  const versionData = await deviceManagerVersionApi.getAllVersionsWithDownloadPolicy();
+  
+  if (versionData.latestVersion) {
+    latestVersion = versionData.latestVersion;
+    allVersions = versionData.allVersions;
+    
+    console.log('Successfully fetched version data:');
+    console.log('- Latest version:', latestVersion.version, 'with ID:', latestVersion.id);
+    console.log('- Total versions:', allVersions.length);
+    console.log('- Latest version download URL:', latestVersion.downloadLinks?.official);
 
-  if (latestVersion) {
-    console.log('Successfully fetched DeviceManager Pro version:', latestVersion.version);
-
-    // 只有在有版本数据时才获取统计和生成配置
-    versionStats = await deviceManagerVersionApi.getDeviceManagerStats();
+    // 生成动态下载配置
     dynamicDownloadConfig = await deviceManagerVersionApi.generateDynamicDownloadConfig();
   } else {
-    console.warn('No version data available for DeviceManager Pro (Software ID: 6)');
-    errorMessage = 'API暂无版本数据，请使用静态下载链接';
+    console.warn('No version data available');
+    errorMessage = 'API暂无版本数据，请稍后重试';
   }
 } catch (error: any) {
-  console.error('Failed to fetch DeviceManager Pro version data:', error);
-  errorMessage = `版本信息获取失败: ${error?.message || '未知错误'}，请使用静态下载链接`;
-}
-
-// 新增：获取软件信息以获取最新的下载链接
-let softwareInfo = null;
-try {
-  console.log('Fetching software info for latest download URL...');
-  const response = await versionApi.getSoftwareInfo();
-  if (response && response.success) {
-    softwareInfo = response.data;
-    console.log('Successfully fetched software info:', softwareInfo);
-    
-    // 更新动态下载配置中的Windows链接
-    if (dynamicDownloadConfig && softwareInfo.latestDownloadUrl) {
-      dynamicDownloadConfig.windows.installer.url = softwareInfo.latestDownloadUrl;
-      console.log('Updated Windows download URL to:', softwareInfo.latestDownloadUrl);
-    }
-  } else {
-    console.warn('Failed to fetch software info or invalid response');
-    // 即使软件信息获取失败，我们仍然可以使用已有的dynamicDownloadConfig
-  }
-} catch (error: any) {
-  console.error('Failed to fetch software info:', error);
-  // 即使软件信息获取失败，我们仍然可以使用已有的dynamicDownloadConfig
-}
-
-// 如果没有从设备管理器API获取到配置，则尝试从软件信息API获取基础配置
-if (!dynamicDownloadConfig && softwareInfo) {
-  dynamicDownloadConfig = {
-    version: softwareInfo.currentVersion,
-    windows: {
-      installer: {
-        name: "安装程序",
-        filename: `玩机管家-${softwareInfo.currentVersion}-Setup.exe`,
-        size: "未知",
-        url: softwareInfo.latestDownloadUrl || "#",
-        description: "推荐：完整安装包，包含所有功能"
-      }
-    }
-  };
-  console.log('Generated fallback download config from software info');
+  console.error('Failed to fetch version data:', error);
+  errorMessage = `版本信息获取失败: ${error?.message || '未知错误'}，请稍后重试`;
 }
 
 // 使用从API获取的动态下载配置
@@ -84,10 +51,11 @@ const dynamicDownloads = dynamicDownloadConfig;
       <div class="version-badge">
         <span class="version-label">最新版本</span>
         <span class="version-number">{latestVersion.version}</span>
+        <span class="version-id">ID: {latestVersion.id}</span>
       </div>
       <div class="version-details">
         <span class="release-date">
-          发布日期：{VersionApiService.formatReleaseDate(latestVersion.releaseDate)}
+          发布日期：{new Date(latestVersion.releaseDate).toLocaleDateString('zh-CN')}
         </span>
         {latestVersion.fileSize && (
           <span class="file-size">
@@ -98,6 +66,17 @@ const dynamicDownloads = dynamicDownloadConfig;
           <span class="stable-badge">稳定版</span>
         )}
       </div>
+            <!-- Windows平台下载 -->
+      <div class="platform-selector">
+        {latestVersion.downloadLinks?.official ? (
+          <DownloadsSection latestVersion={latestVersion} />
+        ) : (
+          <div class="download-unavailable">
+            <span>暂无下载链接</span>
+          </div>
+        )}
+        
+      </div>
       {latestVersion.releaseNotes && (
         <div class="release-notes">
           <h4>更新说明：</h4>
@@ -105,71 +84,7 @@ const dynamicDownloads = dynamicDownloadConfig;
         </div>
       )}
       
-      <!-- Windows平台选择 -->
-      <div class="platform-selector">
-        <h3 class="platform-title">下载</h3>
-        <div class="platform-options">
-          <!-- Windows -->
-          <div class="platform-option" data-platform="windows">
-            <div class="platform-icon">🪟</div>
-            <div class="platform-info">
-              <h4>Windows</h4>
-              <p>Windows 10 (64位) 或更高版本</p>
-              <a
-                href={dynamicDownloads?.windows?.installer?.url || SITE_CONFIG.downloads.windows.installer.url}
-                class="download-button"
-                data-download-type="installer"
-                data-platform="windows"
-              >
-                <span class="download-name">安装程序</span>
-                <span class="download-info">
-                  <span class="download-filename">玩机管家-{dynamicDownloads?.version || softwareInfo?.currentVersion || SITE_CONFIG.product.version}-Setup.exe</span>
-                  <span class="download-size">(未知)</span>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  ) : softwareInfo ? (
-    <div class="version-success">
-      <div class="version-badge">
-        <span class="version-label">当前版本</span>
-        <span class="version-number">{softwareInfo.currentVersion}</span>
-      </div>
-      <div class="version-details">
-        <span class="release-date">
-          更新时间：{new Date(softwareInfo.updatedAt).toLocaleDateString('zh-CN')}
-        </span>
-      </div>
-      
-      <!-- Windows平台选择 -->
-      <div class="platform-selector">
-        <h3 class="platform-title">下载</h3>
-        <div class="platform-options">
-          <!-- Windows -->
-          <div class="platform-option" data-platform="windows">
-            <div class="platform-icon">🪟</div>
-            <div class="platform-info">
-              <h4>Windows</h4>
-              <p>Windows 10 (64位) 或更高版本</p>
-              <a
-                href={dynamicDownloads?.windows?.installer?.url || softwareInfo.latestDownloadUrl || SITE_CONFIG.downloads.windows.installer.url}
-                class="download-button"
-                data-download-type="installer"
-                data-platform="windows"
-              >
-                <span class="download-name">安装程序</span>
-                <span class="download-info">
-                  <span class="download-filename">玩机管家-{softwareInfo.currentVersion}-Setup.exe</span>
-                  <span class="download-size">(未知)</span>
-                </span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   ) : (
     <div class="version-error">
@@ -185,9 +100,9 @@ const dynamicDownloads = dynamicDownloadConfig;
 <!-- 版本信息数据 -->
 <script type="application/json" id="version-info-data" is:inline set:html={JSON.stringify({
   latestVersion: latestVersion || null,
-  versionStats: versionStats || null,
-  errorMessage: errorMessage || '',
-  softwareInfo: softwareInfo || null
+  allVersions: allVersions || [],
+  dynamicDownloadConfig: dynamicDownloadConfig || null,
+  errorMessage: errorMessage || ''
 })}></script>
 
 <style>
@@ -234,6 +149,38 @@ const dynamicDownloads = dynamicDownloadConfig;
     align-items: center;
     font-size: 0.875rem;
     color: #64748b;
+  }
+
+  .version-id {
+    font-size: 0.75rem;
+    color: #64748b;
+    background: #f1f5f9;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    font-weight: 500;
+  }
+
+  .download-notice {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: #fef3c7;
+    border: 1px solid #fbbf24;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    color: #92400e;
+  }
+
+  .download-unavailable {
+    display: block;
+    width: 100%;
+    padding: 0.5rem;
+    background: #f3f4f6;
+    color: #6b7280;
+    text-align: center;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1px solid #d1d5db;
   }
 
   .stable-badge {
@@ -344,20 +291,36 @@ const dynamicDownloads = dynamicDownloadConfig;
     display: block;
     width: 100%;
     padding: 0.5rem;
-    background: #1e293b;
     color: white;
     text-align: center;
     border-radius: 0.375rem;
     font-size: 0.875rem;
     font-weight: 500;
     text-decoration: none;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
   }
 
+  .download-buttons-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .download-button.primary {
+    background: #1e293b;
+    color: white;
+  }
+  
+  .download-button.secondary {
+    background: #64748b;
+    color: white;
+  }
+  
   .download-button:hover:not(:disabled) {
-    background: #0f172a;
+    opacity: 0.9;
+    transform: translateY(-1px);
   }
-
+  
   .download-info {
     display: block;
     font-size: 0.75rem;
@@ -375,6 +338,23 @@ const dynamicDownloads = dynamicDownloadConfig;
     background: #334155;
     color: #f1f5f9;
     border-color: #475569;
+  }
+
+  :global(.dark) .version-id {
+    background: #475569;
+    color: #cbd5e1;
+  }
+
+  :global(.dark) .download-notice {
+    background: #451a03;
+    border-color: #92400e;
+    color: #fbbf24;
+  }
+
+  :global(.dark) .download-unavailable {
+    background: #374151;
+    color: #9ca3af;
+    border-color: #4b5563;
   }
 
   :global(.dark) .release-notes {

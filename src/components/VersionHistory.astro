@@ -8,43 +8,37 @@
 <div id="version-history-section" class="version-history-section">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- 标题 -->
-    <div class="text-center mb-12">
-      <h3 class="text-4xl md:text-5xl font-bold text-blue-600 dark:text-white mb-6">
+    <div class="text-center mb-8">
+      <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
         历史版本
       </h3>
-      <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-        查看玩机管家的完整版本历史，了解每个版本的新功能和改进
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        查看玩机管家的完整版本历史
       </p>
     </div>
 
     <!-- 历史版本内容 -->
-    <div id="version-history-content" class="version-history-content">
+    <div id="version-history-content">
       <!-- 加载状态 -->
-      <div id="version-loading" class="text-center py-16">
-        <div class="relative">
-          <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-200 border-t-blue-600 mx-auto"></div>
-          <div class="absolute inset-0 flex items-center justify-center">
-            <div class="w-8 h-8 bg-blue-600 rounded-full animate-pulse"></div>
-          </div>
-        </div>
-        <p class="mt-6 text-lg text-gray-600 dark:text-gray-400 font-medium">加载历史版本中...</p>
-        <p class="mt-2 text-sm text-gray-500 dark:text-gray-500">请稍候，正在获取版本信息</p>
+      <div id="version-loading" class="text-center py-12">
+        <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"></div>
+        <p class="mt-4 text-gray-600 dark:text-gray-400">加载历史版本中...</p>
       </div>
 
       <!-- 版本列表 -->
-      <div id="version-list" class="hidden space-y-8">
+      <div id="version-list" class="hidden space-y-4">
         <!-- 版本项将通过JavaScript动态插入 -->
       </div>
 
       <!-- 错误状态 -->
-      <div id="version-error" class="hidden text-center py-16">
+      <div id="version-error" class="hidden text-center py-12">
         <div class="text-gray-500 dark:text-gray-400">
-          <div class="w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
             </svg>
           </div>
-          <h4 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">暂无历史版本信息</h4>
+          <h4 class="text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">暂无历史版本信息</h4>
           <p class="text-sm text-gray-500 dark:text-gray-400">版本信息正在更新中，请稍后再试</p>
         </div>
       </div>
@@ -52,51 +46,42 @@
   </div>
 </div>
 
-<style>
+<style is:global>
   .version-history-section {
-    @apply py-20 bg-white dark:bg-gray-900;
-    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  }
-
-  .dark .version-history-section {
-    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    @apply py-12 bg-white dark:bg-gray-900;
   }
 
   .version-item {
-    @apply bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-2xl border border-gray-100 dark:border-gray-700 transition-all duration-500 transform hover:-translate-y-2 hover:scale-105;
-    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  }
-
-  .version-item:hover {
-    box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.35);
-  }
-
-  .version-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .version-item:hover::before {
-    opacity: 1;
-  }
-
-  .dark .version-item {
-    background: linear-gradient(145deg, #2d3748 0%, #1a202c 100%);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    @apply bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700;
   }
 
   .version-header {
-    @apply flex items-start justify-between mb-8;
+    @apply flex items-start justify-between mb-4;
+  }
+
+  .version-actions {
+    @apply flex flex-col items-end gap-2;
+  }
+
+  .latest-badge {
+    @apply inline-block ml-2 px-2 py-1 text-xs font-medium bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded;
+  }
+
+  .version-id {
+    @apply text-xs text-gray-500 dark:text-gray-400 font-mono mt-1;
+  }
+
+  .download-button {
+    @apply inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700;
+    text-decoration: none;
+  }
+
+  .no-download {
+    @apply inline-flex items-center px-3 py-1.5 bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300 text-sm font-medium rounded;
+  }
+
+  .version-notice {
+    @apply mt-4 p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-700 rounded text-sm text-yellow-800 dark:text-yellow-200;
   }
 
   .version-info {
@@ -104,134 +89,53 @@
   }
 
   .version-number {
-    @apply text-4xl font-black text-gray-900 dark:text-white mb-3 relative;
-    background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
-  }
-
-  .version-number::after {
-    content: '';
-    position: absolute;
-    bottom: -4px;
-    left: 0;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
-    border-radius: 2px;
+    @apply text-2xl font-bold text-gray-900 dark:text-white mb-2;
   }
 
   .version-date {
-    @apply text-sm text-gray-600 dark:text-gray-300 font-semibold flex items-center;
-  }
-
-  .version-date::before {
-    content: '📅';
-    margin-right: 6px;
-    font-size: 14px;
+    @apply text-sm text-gray-600 dark:text-gray-300;
   }
 
   .version-type {
-    @apply inline-flex items-center px-6 py-3 rounded-2xl text-sm font-bold shadow-lg transform transition-all duration-300 hover:scale-110;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .version-type::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
-  }
-
-  .version-type:hover::before {
-    left: 100%;
+    @apply inline-flex items-center px-3 py-1 rounded text-xs font-medium;
   }
 
   .version-type-stable {
-    @apply bg-gradient-to-r from-emerald-400 via-green-500 to-teal-600 text-white;
-    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
-  }
-
-  .version-type-stable::after {
-    content: '✅';
-    margin-left: 8px;
-    font-size: 12px;
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
   }
 
   .version-type-beta {
-    @apply bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 text-white;
-    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
-  }
-
-  .version-type-beta::after {
-    content: '🧪';
-    margin-left: 8px;
-    font-size: 12px;
+    @apply bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200;
   }
 
   .version-type-prerelease {
-    @apply bg-gradient-to-r from-purple-400 via-pink-500 to-indigo-600 text-white;
-    box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
-  }
-
-  .version-type-prerelease::after {
-    content: '🚀';
-    margin-left: 8px;
-    font-size: 12px;
+    @apply bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200;
   }
 
   .version-notes {
-    @apply text-sm text-gray-700 dark:text-gray-200 leading-relaxed bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-800 dark:via-slate-800 dark:to-gray-700 rounded-2xl p-6 mb-6 border border-blue-100 dark:border-gray-600;
-    position: relative;
-    overflow: hidden;
+    @apply text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 rounded p-4 mb-4;
   }
 
-  .version-notes::before {
-    content: '📝';
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    font-size: 16px;
-    opacity: 0.7;
-  }
-
-  .version-notes {
-    padding-left: 40px;
-  }
-
-  /* 版本内容展开动画 */
-  .version-history-content {
-    max-height: 5000px;
-  }
-
-  /* 更新说明列表样式 */
-  .version-notes .flex {
-    transition: all 0.2s ease;
-  }
-
-  .version-notes .flex:hover {
-    transform: translateX(4px);
-    background-color: rgba(59, 130, 246, 0.05);
-    border-radius: 4px;
-    padding: 2px 4px;
+  .version-footer {
+    @apply mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center;
   }
 
   /* 响应式调整 */
   @media (max-width: 768px) {
     .version-item {
-      padding: 1.5rem;
-      margin-bottom: 1rem;
+      padding: 1rem;
     }
 
     .version-number {
-      font-size: 2rem;
+      font-size: 1.5rem;
+    }
+
+    .version-actions {
+      @apply flex-row items-start gap-2;
+    }
+
+    .download-button, .no-download {
+      @apply text-xs px-2 py-1;
     }
   }
 </style>
@@ -244,6 +148,7 @@
       this.loadingElement = document.getElementById('version-loading');
       this.listElement = document.getElementById('version-list');
       this.errorElement = document.getElementById('version-error');
+      this.latestVersionId = null; // 用于存储最新版本ID
 
       this.loadVersions();
     }
@@ -257,6 +162,10 @@
         const data = await response.json();
 
         if (data.success && data.data && data.data.length > 0) {
+          // 通过ID判断最新版本（ID最大的就是最新版本）
+          this.latestVersionId = Math.max(...data.data.map(v => v.id));
+          console.log('最新版本ID:', this.latestVersionId);
+          
           this.renderVersions(data.data);
         } else {
           this.showError();
@@ -282,6 +191,9 @@
     renderVersions(versions) {
       if (!this.listElement) return;
 
+      // 按版本ID降序排列（最新的在前面）
+      versions.sort((a, b) => b.id - a.id);
+
       this.listElement.innerHTML = '';
 
       versions.forEach(version => {
@@ -299,26 +211,83 @@
 
       const versionTypeClass = this.getVersionTypeClass(version);
       const formattedDate = this.formatDate(version.releaseDate);
+      const isLatest = version.id === this.latestVersionId;
+      const hasDownloadLink = version.downloadLinks?.official;
+
+      // 生成下载按钮HTML
+      const downloadButtonHtml = hasDownloadLink && isLatest ? `
+        <a href="${this.escapeHtml(version.downloadLinks.official)}" 
+           class="download-button"
+           target="_blank" rel="noopener noreferrer">
+          下载最新版
+        </a>
+      ` : `
+        <span class="no-download">
+          无下载链接
+        </span>
+      `;
 
       div.innerHTML = `
         <div class="version-header">
           <div class="version-info">
-            <div class="version-number">v${this.escapeHtml(version.version || '未知版本')}</div>
+            <div class="flex items-center">
+              <div class="version-number">v${this.escapeHtml(version.version || '未知版本')}</div>
+              ${isLatest ? '<span class="latest-badge">最新</span>' : ''}
+            </div>
             <div class="version-date">${formattedDate}</div>
+            <div class="version-id">ID: ${version.id}</div>
           </div>
-          <span class="version-type ${versionTypeClass}">
-            ${this.getVersionTypeLabel(version)}
-          </span>
+          <div class="version-actions">
+            <span class="version-type ${versionTypeClass}">
+              ${this.getVersionTypeLabel(version)}
+            </span>
+            ${isLatest ? downloadButtonHtml : ''}
+          </div>
         </div>
 
         ${version.releaseNotes ? `
           <div class="version-notes">
-            <div class="font-semibold text-gray-800 dark:text-gray-100 mb-3 text-base">🔄 更新内容</div>
-            <div class="space-y-2">
+            <div class="font-medium text-gray-900 dark:text-gray-100 mb-2">
+              更新内容
+            </div>
+            <div class="space-y-1">
               ${this.formatUpdateNotes(version.releaseNotes)}
             </div>
           </div>
         ` : ''}
+
+        ${!isLatest ? `
+          <div class="version-notice">
+            <div class="flex items-start">
+              <div>
+                <strong>提示：</strong>此版本不提供下载，仅供查看更新日志。请下载最新版本。
+              </div>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- 版本信息底部 -->
+        <div class="version-footer">
+          <div class="text-xs text-gray-500 dark:text-gray-400">
+            发布于 ${formattedDate}
+          </div>
+          <div class="flex space-x-2">
+            ${version.downloadLinks?.official ? `
+              <a href="${this.escapeHtml(version.downloadLinks.official)}" 
+                 class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                 target="_blank" rel="noopener noreferrer">
+                官方下载
+              </a>
+            ` : ''}
+            ${version.downloadLinks?.quark ? `
+              <a href="${this.escapeHtml(version.downloadLinks.quark)}" 
+                 class="text-xs text-purple-600 dark:text-purple-400 hover:underline"
+                 target="_blank" rel="noopener noreferrer">
+                夸克网盘
+              </a>
+            ` : ''}
+          </div>
+        </div>
       `;
 
       return div;
@@ -363,8 +332,8 @@
       // 将换行符转换为HTML换行
       const formattedNotes = this.escapeHtml(notes)
         .replace(/\n/g, '<br>')
-        .replace(/\*\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-blue-500 font-bold">•</span><span>$1</span></div>')
-        .replace(/-\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-purple-500 font-bold">→</span><span>$1</span></div>');
+        .replace(/\*\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-blue-500 font-bold flex-shrink-0">•</span><span>$1</span></div>')
+        .replace(/-\s*(.+?)(?=\n|$)/g, '<div class="flex items-start space-x-2 mb-1"><span class="text-purple-500 font-bold flex-shrink-0">→</span><span>$1</span></div>');
 
       return formattedNotes;
     }

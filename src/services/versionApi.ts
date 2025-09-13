@@ -24,6 +24,7 @@ export interface SoftwareVersionHistory {
     pan123?: string;
     baidu?: string;
     thunder?: string;
+    thunderPan?: string;
     backup?: string[];
   };
   fileSize?: string;
@@ -448,28 +449,29 @@ export const versionApi = new VersionApiService();
 
 /**
  * 玩机管家 (Android Device Management Tool) 专用版本服务
- * 专门用于获取软件ID为6的版本信息
+ * 专门用于获取软件ID为1的版本信息
  */
 export class DeviceManagerVersionService extends VersionApiService {
   constructor() {
     super();
     // 确保使用正确的软件ID
     const config = getApiConfig();
-    this.urlBuilder = new ApiUrlBuilder(config.BASE_URL, 6);
+    this.urlBuilder = new ApiUrlBuilder(config.BASE_URL, 1);
   }
 
   /**
    * 获取玩机管家的最新版本信息
    * 包含完整的下载链接和元数据
+   * 通过 ID 判断最新版本
    */
   async getLatestDeviceManagerVersion(): Promise<SoftwareVersionHistory | null> {
     try {
-      console.log('Fetching latest 玩机管家 version (Software ID: 6)...');
+      console.log('Fetching latest 玩机管家 version (Software ID: 1)...');
 
-      // 首先尝试获取所有版本，不使用过滤条件
+      // 获取所有版本，按创建时间降序排列
       let result = await this.getVersionHistory({
         page: 1,
-        limit: 10,
+        limit: 20,
         sortBy: 'releaseDate',
         sortOrder: 'desc'
       });
@@ -477,24 +479,16 @@ export class DeviceManagerVersionService extends VersionApiService {
       if (result && result.data && result.data.length > 0) {
         console.log(`Found ${result.data.length} versions for 玩机管家`);
 
-        // 优先查找稳定版本
-        let latestVersion = result.data.find(v => v.isStable && v.versionType === 'release');
+        // 通过 ID 判断最新版本（ID 最大的就是最新版本）
+        let latestVersion = result.data.reduce((prev, current) => {
+          return (current.id > prev.id) ? current : prev;
+        });
 
-        // 如果没有稳定版本，查找最新的正式版本
-        if (!latestVersion) {
-          latestVersion = result.data.find(v => v.versionType === 'release');
-        }
-
-        // 如果还没有，就使用最新的版本
-        if (!latestVersion) {
-          latestVersion = result.data[0];
-        }
-
-        console.log('Latest 玩机管家 version found:', latestVersion.version);
+        console.log('Latest 玩机管家 version found:', latestVersion.version, 'with ID:', latestVersion.id);
         return latestVersion;
       }
 
-      console.warn('No versions found for 玩机管家 (Software ID: 6)');
+      console.warn('No versions found for 玩机管家 (Software ID: 1)');
       return null;
     } catch (error) {
       console.error('Failed to fetch 玩机管家 version:', error);
@@ -518,12 +512,49 @@ export class DeviceManagerVersionService extends VersionApiService {
 
 
   /**
+   * 获取所有版本信息，用于版本历史显示
+   * 只有最新版本提供下载链接，其他版本只显示日志
+   */
+  async getAllVersionsWithDownloadPolicy(): Promise<{ latestVersion: SoftwareVersionHistory | null, allVersions: SoftwareVersionHistory[] }> {
+    try {
+      // 获取所有版本
+      const result = await this.getVersionHistory({
+        page: 1,
+        limit: 50,
+        sortBy: 'releaseDate',
+        sortOrder: 'desc'
+      });
+
+      if (!result || !result.data || result.data.length === 0) {
+        console.warn('No versions found');
+        return { latestVersion: null, allVersions: [] };
+      }
+
+      // 通过 ID 判断最新版本（ID 最大的就是最新版本）
+      const latestVersion = result.data.reduce((prev, current) => {
+        return (current.id > prev.id) ? current : prev;
+      });
+
+      console.log('Latest version determined by ID:', latestVersion.version, 'with ID:', latestVersion.id);
+      
+      return {
+        latestVersion,
+        allVersions: result.data
+      };
+    } catch (error) {
+      console.error('Failed to fetch versions with download policy:', error);
+      throw error;
+    }
+  }
+
+  /**
    * 生成动态下载配置
    * 基于API获取的版本信息生成下载页面配置
+   * 只有最新版本提供下载链接
    */
   async generateDynamicDownloadConfig(): Promise<any> {
     try {
-      const latestVersion = await this.getLatestDeviceManagerVersion();
+      const { latestVersion, allVersions } = await this.getAllVersionsWithDownloadPolicy();
 
       if (!latestVersion) {
         console.warn('No version data available, returning null config');
@@ -536,15 +567,17 @@ export class DeviceManagerVersionService extends VersionApiService {
         releaseNotes: latestVersion.releaseNotes,
         fileSize: latestVersion.fileSize,
         isStable: latestVersion.isStable,
+        latestVersionId: latestVersion.id,
 
-        // Windows 下载配置
+        // Windows 下载配置 - 只有最新版本提供下载
         windows: {
           installer: {
             name: "安装程序",
             filename: `玩机管家-${latestVersion.version}-Setup.exe`,
-            size: latestVersion.fileSize || "45 MB",
+            size: latestVersion.fileSize || "14MB",
             url: latestVersion.downloadLinks?.official || "#",
-            description: "推荐：完整安装包，包含所有功能"
+            description: "推荐：完整安装包，包含所有功能",
+            isLatest: true
           }
         },
 
@@ -561,6 +594,13 @@ export class DeviceManagerVersionService extends VersionApiService {
           message: "暂不支持下载",
           description: "Linux 版本正在开发中，敬请期待"
         },
+
+        // 所有版本信息（用于版本历史显示）
+        allVersions: allVersions.map(version => ({
+          ...version,
+          isLatest: version.id === latestVersion.id,
+          downloadAvailable: version.id === latestVersion.id // 只有最新版本可下载
+        })),
 
         // 所有下载链接
         allDownloadLinks: latestVersion.downloadLinks || {},

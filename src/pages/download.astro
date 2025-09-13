@@ -4,6 +4,7 @@ import { SITE_CONFIG } from '@/config/site';
 import ScrollColorAnimation from '@/components/ScrollColorAnimation.astro';
 import DynamicVersionConfig from '@/components/DynamicVersionConfig.astro';
 import VersionHistory from '@/components/VersionHistory.astro';
+import DownloadsSection from '@/components/DownloadsSection.astro';
 ---
 
 <MainLayout
@@ -99,6 +100,12 @@ import VersionHistory from '@/components/VersionHistory.astro';
           console.log('Raw version info data:', dataElement.textContent);
           this.versionInfo = JSON.parse(dataElement.textContent);
           console.log('Version info loaded:', this.versionInfo);
+          
+          // 显示版本信息
+          if (this.versionInfo.latestVersion) {
+            console.log('Latest version ID:', this.versionInfo.latestVersion.id);
+            console.log('Download URL:', this.versionInfo.latestVersion.downloadLinks?.official);
+          }
         } else {
           console.log('No version info data element found or empty content');
         }
@@ -162,23 +169,25 @@ import VersionHistory from '@/components/VersionHistory.astro';
 
     bindDownloadEvents() {
       // 绑定所有下载按钮的点击事件
-      document.querySelectorAll('[data-download-type]').forEach(button => {
+      document.querySelectorAll('[data-download-type], .download-button').forEach(button => {
         button.addEventListener('click', (event) => {
-          const platform = button.getAttribute('data-platform');
-          const downloadType = button.getAttribute('data-download-type');
+          const platform = button.getAttribute('data-platform') || 'windows';
+          const downloadType = button.getAttribute('data-download-type') || 'installer';
+          const isLatestVersion = this.versionInfo?.latestVersion ? true : false;
 
           if (platform && downloadType) {
-            this.trackDownload(platform, downloadType);
+            this.trackDownload(platform, downloadType, isLatestVersion);
           }
         });
       });
     }
 
-    trackDownload(platform, type) {
-      console.log(`Download tracked: ${platform} - ${type}`);
+    trackDownload(platform, type, isLatestVersion = false) {
+      console.log(`Download tracked: ${platform} - ${type} - Latest: ${isLatestVersion}`);
 
       // 获取当前版本信息
-      const version = this.versionInfo?.latestVersion?.version || '2.1.0';
+      const version = this.versionInfo?.latestVersion?.version || '1.0.0';
+      const versionId = this.versionInfo?.latestVersion?.id || 'unknown';
 
       // Google Analytics 事件追踪
       if (typeof gtag !== 'undefined') {
@@ -186,8 +195,15 @@ import VersionHistory from '@/components/VersionHistory.astro';
           'platform': platform,
           'download_type': type,
           'version': version,
+          'version_id': versionId,
+          'is_latest': isLatestVersion,
           'source': 'dynamic_api'
         });
+      }
+      
+      // 显示下载通知
+      if (isLatestVersion) {
+        console.log(`正在下载最新版本 ${version} (ID: ${versionId})`);
       }
     }
 
