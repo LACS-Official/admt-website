@@ -75,7 +75,7 @@ export const API_CONFIG = {
     VERSION_STATS_TTL: 15 * 60 * 1000, // 15分钟
     
     // 是否启用缓存
-    ENABLED: true
+    ENABLED: false
   },
   
   // 错误处理配置
