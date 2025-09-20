@@ -33,6 +33,13 @@ const downloadSources = [
     icon: '🐻',
     link: latestVersion.downloadLinks?.baidu,
     description: '百度网盘'
+  },
+  {
+    id:'123pan',
+    name: '123云盘',
+    icon: '123',
+    link: latestVersion.downloadLinks?.pan123,
+    description: '123pan'
   }
 ];
 ---
@@ -81,7 +88,7 @@ const downloadSources = [
 
   .downloads-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
     margin-bottom: 1.5rem;
   }
@@ -117,6 +124,9 @@ const downloadSources = [
 
   .download-content {
     flex: 1;
+    min-width: 0; /* 允许内容收缩 */
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 
   .download-name {
@@ -124,12 +134,17 @@ const downloadSources = [
     font-weight: 600;
     color: #1e293b;
     margin: 0 0 0.25rem 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .download-description {
     font-size: 0.75rem;
     color: #64748b;
     margin: 0 0 0.5rem 0;
+    word-break: break-word;
+    white-space: normal;
   }
 
   .download-meta {
@@ -190,6 +205,12 @@ const downloadSources = [
   }
   
   /* 响应式设计：在小屏幕上调整为较少的列数 */
+  @media (max-width: 1024px) {
+    .downloads-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
   @media (max-width: 768px) {
     .downloads-grid {
       grid-template-columns: repeat(2, 1fr);

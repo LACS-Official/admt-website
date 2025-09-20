@@ -10,7 +10,7 @@
     <!-- 标题 -->
     <div class="text-center mb-8">
       <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-        历史版本
+        版本列表
       </h3>
       <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
         查看玩机管家的完整版本历史
@@ -157,23 +157,127 @@
       try {
         this.showLoading();
 
-        // 使用fetch直接调用API，获取软件ID为1的版本历史
-        const response = await fetch('https://api-g.lacs.cc/app/software/id/1/versions');
-        const data = await response.json();
+        const response = await fetch('https://api-g.lacs.cc/app/software/id/1/versions', {
+          mode: 'cors',
+          credentials: 'include',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          }
+        });
 
-        if (data.success && data.data && data.data.length > 0) {
-          // 通过ID判断最新版本（ID最大的就是最新版本）
-          this.latestVersionId = Math.max(...data.data.map(v => v.id));
-          console.log('最新版本ID:', this.latestVersionId);
-          
-          this.renderVersions(data.data);
-        } else {
-          this.showError();
+        if (!response.ok) {
+          throw new Error(`API请求失败，状态码: ${response.status}`);
         }
+
+        const { success, data, meta } = await response.json();
+
+        if (!success || !Array.isArray(data)) {
+          throw new Error('API返回数据格式不正确');
+        }
+
+        // 设置最新版本ID（使用meta中的currentVersion或data中的第一个版本）
+        const latestVersion = data.find(v => v.version === meta?.software?.currentVersion) || data[0];
+        this.latestVersionId = latestVersion?.id;
+
+        // 渲染版本列表
+        this.renderVersions(data);
+
       } catch (error) {
-        console.error('Failed to load version history:', error);
+        console.error('加载版本历史出错:', error);
+        
+        const errorElement = document.getElementById('version-error-message');
+        if (errorElement) {
+          errorElement.textContent = error.message.includes('CORS') ? 
+            '无法获取版本信息，请检查网络或稍后再试' : 
+            `版本信息加载失败: ${error.message}`;
+        }
+        
         this.showError();
       }
+    }
+
+    createVersionElement(version) {
+      const div = document.createElement('div');
+      div.className = 'version-item';
+
+      const isLatest = version.id === this.latestVersionId;
+      const hasDownloadLink = version.downloadLinks?.official;
+      const formattedDate = this.formatDate(version.releaseDate);
+
+      // 生成下载按钮HTML
+      const downloadButtonHtml = hasDownloadLink ? `
+        <a href="${this.escapeHtml(version.downloadLinks.official)}" 
+           class="download-button"
+           target="_blank" rel="noopener noreferrer">
+          ${isLatest ? '下载最新版' : '下载此版本'}
+        </a>
+      ` : `
+        <span class="no-download">
+          无下载链接
+        </span>
+      `;
+
+      div.innerHTML = `
+        <div class="version-header">
+          <div class="version-info">
+            <div class="flex items-center">
+              <div class="version-number">v${this.escapeHtml(version.version || '未知版本')}</div>
+              ${isLatest ? '<span class="latest-badge">最新</span>' : ''}
+            </div>
+            <div class="version-date">${formattedDate}</div>
+            <div class="version-id">ID: ${version.id}</div>
+          </div>
+          <div class="version-actions">
+            <span class="version-type ${this.getVersionTypeClass(version)}">
+              ${this.getVersionTypeLabel(version)}
+            </span>
+            ${downloadButtonHtml}
+          </div>
+        </div>
+
+        ${version.releaseNotes ? `
+          <div class="version-notes">
+            <div class="font-medium text-gray-900 dark:text-gray-100 mb-2">
+              更新内容
+            </div>
+            <div class="space-y-1">
+              ${this.formatUpdateNotes(version.releaseNotes)}
+            </div>
+          </div>
+        ` : ''}
+
+        <div class="version-footer">
+          <div class="text-xs text-gray-500 dark:text-gray-400">
+            发布于 ${formattedDate}
+          </div>
+          <div class="flex space-x-2">
+            ${version.downloadLinks?.official ? `
+              <a href="${this.escapeHtml(version.downloadLinks.official)}" 
+                 class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
+                 target="_blank" rel="noopener noreferrer">
+                官方下载
+              </a>
+            ` : ''}
+            ${version.downloadLinks?.quark ? `
+              <a href="${this.escapeHtml(version.downloadLinks.quark)}" 
+                 class="text-xs text-purple-600 dark:text-purple-400 hover:underline"
+                 target="_blank" rel="noopener noreferrer">
+                夸克网盘
+              </a>
+            ` : ''}
+            ${version.downloadLinks?.thunderPan ? `
+              <a href="${this.escapeHtml(version.downloadLinks.thunderPan)}" 
+                 class="text-xs text-orange-600 dark:text-orange-400 hover:underline"
+                 target="_blank" rel="noopener noreferrer">
+                迅雷网盘
+              </a>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      return div;
     }
 
     showLoading() {
