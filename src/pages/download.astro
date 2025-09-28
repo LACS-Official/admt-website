@@ -11,35 +11,6 @@ import DownloadsSection from '@/components/DownloadsSection.astro';
   title="下载 - 玩机管家"
   description="下载玩机管家 (Android Device Management Tool)，支持 Windows、macOS 和 Linux。立即开始管理您的 Android 设备。"
 >
-  <!-- Hero Section -->
-  <section class="hero-section py-20 lg:py-32 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h1
-        class="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight leading-none"
-        data-scroll-color="hero-title"
-        data-fade-in
-      >
-        下载 {SITE_CONFIG.name}
-      </h1>
-      <p
-        class="text-2xl md:text-3xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto mb-8 font-light"
-        data-scroll-color="feature-text"
-        data-fade-in
-      >
-        专业的 Android 设备管理工具
-      </p>
-      <p
-        class="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-3xl mx-auto mb-12"
-        data-scroll-color="feature-text"
-        data-fade-in
-      >
-        支持 Windows 平台，macOS 和 Linux 版本正在开发中
-      </p>
-      <!-- 动态版本信息组件 -->
-      <DynamicVersionConfig />
-    </div>
-  </section>
-
   <!-- Version History -->
   <VersionHistory />
 
