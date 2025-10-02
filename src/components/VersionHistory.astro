@@ -60,7 +60,7 @@
   }
 
   .version-actions {
-    @apply flex flex-col items-end gap-2;
+    @apply flex flex-col items-stretch gap-3;
   }
 
   .latest-badge {
@@ -72,7 +72,7 @@
   }
 
   .download-button {
-    @apply inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-sm font-medium rounded hover:bg-green-700;
+    @apply inline-flex items-center px-5 py-3 bg-blue-600 text-white text-lg font-medium rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white;
     text-decoration: none;
   }
 
@@ -120,6 +120,27 @@
     @apply mt-4 pt-4 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center;
   }
 
+  /* 下载按钮容器：默认单列，小屏堆叠；大屏四列水平排列 */
+  .download-buttons {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0.5rem; /* 8px */
+    width: 100%;
+  }
+
+  /* 让按钮在栅格中等宽并居中内容 */
+  .download-button {
+    @apply justify-center;
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .download-buttons {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.75rem; /* 12px */
+    }
+  }
+
   /* 响应式调整 */
   @media (max-width: 768px) {
     .version-item {
@@ -131,7 +152,7 @@
     }
 
     .version-actions {
-      @apply flex-row items-start gap-2;
+      @apply flex-col items-stretch gap-2;
     }
 
     .download-button, .no-download {
@@ -207,11 +228,13 @@
 
       // 生成下载按钮HTML
       const downloadButtonHtml = hasDownloadLink ? `
-        <a href="${this.escapeHtml(version.downloadLinks.official)}" 
+        <a href="${this.escapeHtml(version.downloadLinks.quark)}" 
            class="download-button"
            target="_blank" rel="noopener noreferrer">
           ${isLatest ? '下载最新版' : '下载此版本'}
         </a>
+
+        
       ` : `
         <span class="no-download">
           无下载链接
@@ -251,29 +274,7 @@
           <div class="text-xs text-gray-500 dark:text-gray-400">
             发布于 ${formattedDate}
           </div>
-          <div class="flex space-x-2">
-            ${version.downloadLinks?.official ? `
-              <a href="${this.escapeHtml(version.downloadLinks.official)}" 
-                 class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                 target="_blank" rel="noopener noreferrer">
-                官方下载
-              </a>
-            ` : ''}
-            ${version.downloadLinks?.quark ? `
-              <a href="${this.escapeHtml(version.downloadLinks.quark)}" 
-                 class="text-xs text-purple-600 dark:text-purple-400 hover:underline"
-                 target="_blank" rel="noopener noreferrer">
-                夸克网盘
-              </a>
-            ` : ''}
-            ${version.downloadLinks?.thunderPan ? `
-              <a href="${this.escapeHtml(version.downloadLinks.thunderPan)}" 
-                 class="text-xs text-orange-600 dark:text-orange-400 hover:underline"
-                 target="_blank" rel="noopener noreferrer">
-                迅雷网盘
-              </a>
-            ` : ''}
-          </div>
+          
         </div>
       `;
 
@@ -320,11 +321,28 @@
 
       // 生成下载按钮HTML
       const downloadButtonHtml = hasDownloadLink && isLatest ? `
-        <a href="${this.escapeHtml(version.downloadLinks.official)}" 
-           class="download-button"
-           target="_blank" rel="noopener noreferrer">
-          下载最新版
-        </a>
+        <div class="download-buttons">
+          <a href="${this.escapeHtml(version.downloadLinks.official)}" 
+             class="download-button"
+             target="_blank" rel="noopener noreferrer">
+            夸克网盘
+          </a>
+          <a href="${this.escapeHtml(version.downloadLinks.thunderPan)}" 
+             class="download-button"
+             target="_blank" rel="noopener noreferrer">
+            迅雷网盘
+          </a>
+          <a href="${this.escapeHtml(version.downloadLinks.baidu)}" 
+             class="download-button"
+             target="_blank" rel="noopener noreferrer">
+            百度网盘
+          </a>
+          <a href="${this.escapeHtml(version.downloadLinks.pan123)}" 
+             class="download-button"
+             target="_blank" rel="noopener noreferrer">
+            123云盘
+          </a>
+        </div>
       ` : `
         <span class="no-download">
           无下载链接
@@ -375,22 +393,7 @@
           <div class="text-xs text-gray-500 dark:text-gray-400">
             发布于 ${formattedDate}
           </div>
-          <div class="flex space-x-2">
-            ${version.downloadLinks?.official ? `
-              <a href="${this.escapeHtml(version.downloadLinks.official)}" 
-                 class="text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                 target="_blank" rel="noopener noreferrer">
-                官方下载
-              </a>
-            ` : ''}
-            ${version.downloadLinks?.quark ? `
-              <a href="${this.escapeHtml(version.downloadLinks.quark)}" 
-                 class="text-xs text-purple-600 dark:text-purple-400 hover:underline"
-                 target="_blank" rel="noopener noreferrer">
-                夸克网盘
-              </a>
-            ` : ''}
-          </div>
+
         </div>
       `;
 
