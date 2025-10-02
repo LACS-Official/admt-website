@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
   // 基本信息
-  name: "玩机管家",
+  name: "玩机管家-ADMT",
   englishName: "Android Device Management Tool",
   description: "专为开发者和 IT 专业人士打造的强大 Android 设备管理工具",
   tagline: "重新定义设备管理体验",
@@ -25,52 +25,6 @@ export const SITE_CONFIG = {
   },
 
   // 下载配置
-  downloads: {
-    // Windows 下载选项
-    windows: {
-      installer: {
-        name: "安装程序",
-        filename: "玩机管家-Setup.exe",
-        size: "45 MB",
-        url: "https://releases.example.com/windows/玩机管家-Setup.exe",
-        description: "推荐：完整安装包，包含所有功能"
-      },
-      requirements: {
-        os: "Windows 10 (64位) 或更高版本",
-        ram: "4 GB 内存最低，推荐 8 GB",
-        storage: "500 MB 可用磁盘空间",
-        other: ["USB 2.0 或更高版本端口", "网络连接用于激活"]
-      }
-    },
-
-    // macOS 下载选项 - 暂不支持
-    macos: {
-      status: "unsupported",
-      message: "暂不支持下载",
-      description: "macOS 版本正在开发中，敬请期待",
-      requirements: {
-        os: "macOS 11.0 (Big Sur) 或更高版本",
-        processor: "Intel 或 Apple Silicon 处理器",
-        ram: "4 GB 内存最低，推荐 8 GB",
-        storage: "500 MB 可用磁盘空间",
-        other: ["USB-C 或 USB-A 端口"]
-      }
-    },
-
-    // Linux 下载选项 - 暂不支持
-    linux: {
-      status: "unsupported",
-      message: "暂不支持下载",
-      description: "Linux 版本正在开发中，敬请期待",
-      requirements: {
-        os: "Ubuntu 20.04+ / Fedora 35+ 或同等版本",
-        architecture: "x86_64 架构",
-        ram: "4 GB 内存最低，推荐 8 GB",
-        storage: "500 MB 可用磁盘空间",
-        other: ["libusb 和 udev 支持"]
-      }
-    }
-  },
   
   // 功能特性
   features: [
