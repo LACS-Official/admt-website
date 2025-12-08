@@ -18,7 +18,7 @@ export const SITE_CONFIG = {
 
   // 产品信息
   product: {
-    version: "1.0.0",
+    version: "1.2.0",
     releaseDate: "2025-08-15",
     platforms: ["Windows", "macOS", "Linux"],
     license: "商业许可"
@@ -30,7 +30,7 @@ export const SITE_CONFIG = {
   features: [
     {
       title: "智能设备发现",
-      description: "自动发现并连接网络中的 Android 设备，无需繁琐配置",
+      description: "自动发现并连接Android 设备，无需繁琐配置",
       icon: "🔍"
     },
     {
@@ -60,53 +60,6 @@ export const SITE_CONFIG = {
     }
   ],
   
-  // 定价方案
-  pricing: [
-    {
-      name: "个人版",
-      price: "¥199",
-      period: "买断制",
-      description: "专为个人开发者设计",
-      features: [
-        "支持 5 台设备",
-        "基础远程控制",
-        "文件传输功能",
-        "邮件技术支持",
-        "1 年免费更新"
-      ],
-      popular: false
-    },
-    {
-      name: "专业版",
-      price: "¥699",
-      period: "买断制",
-      description: "小团队的理想选择",
-      features: [
-        "支持 25 台设备",
-        "高级远程控制",
-        "批量操作功能",
-        "优先技术支持",
-        "2 年免费更新",
-        "团队协作工具"
-      ],
-      popular: true
-    },
-    {
-      name: "企业版",
-      price: "¥2099",
-      period: "买断制",
-      description: "大型组织的完整解决方案",
-      features: [
-        "无限设备支持",
-        "全部功能包含",
-        "7×24 电话支持",
-        "定制化集成",
-        "终身免费更新",
-        "私有化部署"
-      ],
-      popular: false
-    }
-  ],
   
   // 导航菜单
   navigation: [

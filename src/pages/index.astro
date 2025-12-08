@@ -15,38 +15,38 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
   <SimpleAnnouncementBanner />
 
   <!-- Hero Section - Apple Style -->
-  <section class="hero-section py-20 lg:py-32 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
+  <section class="hero-section py-24 lg:py-40 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h1
-        class="text-5xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white mb-6 animate-fade-in tracking-tight leading-none"
+        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 dark:text-white mb-8 animate-fade-in tracking-tight leading-tight"
         data-scroll-color="hero-title"
         data-fade-in
       >
         {SITE_CONFIG.name}
       </h1>
       <p
-        class="text-2xl md:text-3xl lg:text-4xl text-gray-600 dark:text-gray-300 mb-4 animate-slide-up font-light"
+        class="text-2xl sm:text-3xl md:text-4xl text-gray-600 dark:text-gray-200 mb-8 animate-slide-up font-light leading-relaxed"
         data-scroll-color="gradient-text"
         data-fade-in
       >
         {SITE_CONFIG.tagline}
       </p>
       <p
-        class="text-lg md:text-xl text-gray-500 dark:text-gray-400 mb-12 max-w-3xl mx-auto animate-slide-up"
+        class="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-16 max-w-3xl mx-auto animate-slide-up leading-relaxed"
         data-scroll-color="feature-text"
       >
         {SITE_CONFIG.subtitle}
       </p>
-      <div class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up">
+      <div class="flex flex-col sm:flex-row gap-8 justify-center animate-slide-up">
         <a
           href="/download"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full font-medium text-lg transition-all duration-300 transform hover:scale-105 shadow-xl"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl"
         >
           立即下载
         </a>
         <a
           href="/features"
-          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-10 py-4 rounded-full font-medium text-lg transition-all duration-300 border border-blue-600 dark:border-blue-400 hover:border-blue-700 dark:hover:border-blue-300"
+          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-12 py-5 rounded-full font-semibold text-lg sm:text-xl transition-all duration-300 border border-blue-600 dark:border-blue-400 hover:border-blue-700 dark:hover:border-blue-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
         >
           了解更多
         </a>
@@ -55,8 +55,26 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
   </section>
 
   <!-- Features Preview - Apple Style -->
-  <section class="py-32 bg-gray-50 dark:bg-gray-900">
+  <section class="py-24 sm:py-32 bg-gray-50 dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- 界面主页截图展示 -->
+      <div class="mb-20 sm:mb-28 p-4 sm:p-8 rounded-3xl bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
+          <div class="relative w-full h-full">
+            <!-- 白色遮罩层 -->
+            <div class="absolute inset-0 bg-white/60 dark:bg-gray-900/60 z-10"></div>
+            <img 
+              src="/img/PageScreenshot/Main.webp" 
+              alt="设备管理工具主界面" 
+              class="w-full h-full object-contain p-2 sm:p-4 transition-transform duration-500 hover:scale-105 opacity-90"
+            >
+          </div>
+          <div class="absolute inset-0 flex items-center justify-center text-center p-6">
+            <div class="text-4xl sm:text-5xl md:text-6xl font-bold text-black-900 dark:text-white leading-tight">
+              强大、简洁、优雅
+            </div>
+          </div>
+      </div>
+
       <div class="text-center mb-20">
         <h2
           class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
@@ -73,35 +91,45 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
       </div>
       
       <!-- Feature Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
-        {SITE_CONFIG.features.slice(0, 6).map((feature) => (
-          <div class="text-center group" data-fade-in>
-            <div class="text-6xl mb-8 transform group-hover:scale-110 transition-transform duration-300">
-              {feature.icon}
+      <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-12">
+        {SITE_CONFIG.features.slice(0, 6).map((feature, index) => (
+          <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-all duration-400 group transform hover:-translate-y-1" data-fade-in>
+            <div class="w-full md:w-1/2">
+              <div class="aspect-video bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-400">
+                <!-- 功能截图占位符 -->
+                <div class="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
+                  <span class="text-4xl sm:text-5xl">📸</span>
+                </div>
+              </div>
             </div>
-            <h3
-              class="text-2xl font-semibold text-gray-900 dark:text-white mb-4"
-              data-scroll-color="section-title"
-            >
-              {feature.title}
-            </h3>
-            <p
-              class="text-lg text-gray-600 dark:text-gray-400 leading-relaxed"
-              data-scroll-color="feature-text"
-            >
-              {feature.description}
-            </p>
+            <div class="w-full md:w-1/2 text-center md:text-left">
+              <div class="text-5xl sm:text-6xl mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-400 text-gray-700 dark:text-gray-300">
+                {feature.icon}
+              </div>
+              <h3
+                class="text-xl sm:text-2xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4"
+                data-scroll-color="section-title"
+              >
+                {feature.title}
+              </h3>
+              <p
+                class="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed"
+                data-scroll-color="feature-text"
+              >
+                {feature.description}
+              </p>
+            </div>
           </div>
         ))}
       </div>
       
-      <div class="text-center mt-16">
+      <div class="text-center mt-12 sm:mt-16">
         <a
           href="/features"
-          class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-colors duration-300 text-lg"
+          class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 text-base sm:text-lg px-4 py-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20"
         >
           查看所有功能
-          <svg class="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="ml-2 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
           </svg>
         </a>
@@ -110,78 +138,107 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
   </section>
 
   <!-- Stats Section - Apple Style -->
-  <section class="py-32 bg-white dark:bg-black">
+  <section class="py-24 sm:py-32 bg-white dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 text-center">
-        <div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 md:gap-16 text-center">
+        <div class="p-6 transform hover:scale-105 transition-transform duration-400">
           <div
-            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-3 sm:mb-4"
             data-scroll-color="gradient-text"
             id="stats-total-usage"
           >
             ***
           </div>
-          <div class="text-xl text-gray-600 dark:text-gray-400">累计使用次数</div>
+          <div class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium">累计使用次数</div>
         </div>
-        <div>
+        <div class="p-6 transform hover:scale-105 transition-transform duration-400">
           <div
-            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-3 sm:mb-4"
             data-scroll-color="gradient-text"
             id="stats-unique-devices"
           >
             ***
           </div>
-          <div class="text-xl text-gray-600 dark:text-gray-400">使用人数</div>
+          <div class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium">使用人数</div>
         </div>
-        <div>
+        <div class="p-6 transform hover:scale-105 transition-transform duration-400">
           <div
-            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-3 sm:mb-4"
             data-scroll-color="gradient-text"
             id="stats-total-connections"
           >
             ***
           </div>
-          <div class="text-xl text-gray-600 dark:text-gray-400">管理设备次数</div>
+          <div class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium">管理设备次数</div>
         </div>
-        <div>
+        <div class="p-6 transform hover:scale-105 transition-transform duration-400">
           <div
-            class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4"
+            class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-3 sm:mb-4"
             data-scroll-color="gradient-text"
             id="stats-unique-connection-devices"
           >
             ***
           </div>
-          <div class="text-xl text-gray-600 dark:text-gray-400">设备数量</div>
+          <div class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium">设备数量</div>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Video Section -->
+  <section class="py-24 sm:py-32 bg-white dark:bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 sm:mb-16">
+        <h2
+          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 tracking-tight"
+          data-scroll-color="section-title"
+        >
+          功能演示视频
+        </h2>
+        <p
+          class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light max-w-3xl mx-auto"
+          data-scroll-color="feature-text"
+        >
+          观看玩机管家的功能演示，了解如何高效管理您的Android设备
+        </p>
+      </div>
+      <div class="aspect-video max-w-4xl mx-auto bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl transition-all duration-400 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]">
+        <iframe 
+          src="//player.bilibili.com/player.html?isOutside=true&aid=115400721433636&bvid=BV1mrsPzME5t&cid=33213580102&p=1" 
+          scrolling="no" 
+          frameborder="no"  
+          allowfullscreen="true"
+          class="w-full h-full"
+        ></iframe>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA Section - Apple Style -->
-  <section class="py-32 bg-gray-50 dark:bg-gray-900">
+  <section class="py-24 sm:py-32 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2
-        class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight"
+        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 tracking-tight"
         data-scroll-color="section-title"
       >
         准备好开始使用玩机管家了吗？
       </h2>
       <p
-        class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 mb-12 font-light"
+        class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 sm:mb-12 font-light max-w-3xl mx-auto"
         data-scroll-color="feature-text"
       >
         强大、简洁、优雅的安卓设备跨平台全能玩机管家
       </p>
-      <div class="flex flex-col sm:flex-row gap-6 justify-center">
+      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
         <a
           href="/download"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-10 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-xl"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-3.5 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
         >
           免费下载使用
         </a>
         <a
           href="/docs"
-          class="bg-white hover:bg-gray-100 text-gray-900 px-10 py-4 rounded-full text-lg font-medium transition-all duration-300 transform hover:scale-105 shadow-xl"
+          class="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-8 sm:px-12 py-3.5 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700"
         >
           访问文档中心
         </a>
