@@ -1,0 +1,332 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { SITE_CONFIG } from '@/config/site';
+---
+
+<MainLayout
+  title="协议与政策 - {SITE_CONFIG.name}"
+  description="{SITE_CONFIG.name} 的用户协议、隐私政策和信息收集说明"
+>
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800">
+    <div class="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+      <!-- 页面标题 -->
+      <header class="mb-10 text-center">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-3">
+          <span class="text-slate-800 dark:text-slate-100">玩机管家软件协议政策</span>
+        </h1>
+        <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          了解我们的用户协议、隐私政策和信息收集说明，保护您的权益
+        </p>
+      </header>
+
+      <!-- 协议切换按钮组 - 优化响应式布局 -->
+      <div class="flex flex-wrap justify-center gap-4 mb-10 px-4">
+        <button 
+          id="privacy-btn" 
+          class="px-5 sm:px-7 py-3 bg-slate-700 text-white rounded-xl font-semibold transition-all duration-300 hover:bg-slate-800 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600 transform hover:-translate-y-0.5"
+        >
+          隐私政策
+        </button>
+        <button 
+          id="user-btn" 
+          class="px-5 sm:px-7 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-2 border-slate-300 dark:border-slate-600 rounded-xl font-semibold transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-600 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600 transform hover:-translate-y-0.5"
+        >
+          用户协议
+        </button>
+        <button 
+          id="collection-btn" 
+          class="px-5 sm:px-7 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-2 border-slate-300 dark:border-slate-600 rounded-xl font-semibold transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-600 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600 transform hover:-translate-y-0.5"
+        >
+          信息收集说明
+        </button>
+      </div>
+
+      <!-- 隐私政策 -->
+      <section id="privacy" class="mb-10 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-7 sm:p-9 transition-all duration-300 hover:shadow-2xl">
+        <div class="mb-8">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+            <div class="w-1 h-8 bg-slate-700 dark:bg-slate-400 rounded-full mr-4"></div>
+            隐私政策
+          </h2>
+          <div class="h-1 w-20 bg-slate-700 dark:bg-slate-400 rounded-full ml-14"></div>
+        </div>
+        <p class="text-slate-600 dark:text-slate-300 mb-8 text-lg leading-relaxed">
+          我们非常重视您的隐私权。本隐私政策说明了我们如何收集、使用和保护您的个人信息。
+        </p>
+
+        <div class="space-y-7">
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">1</span>
+              信息收集
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-3">我们可能收集以下类型的信息：</p>
+            <ul class="list-disc pl-11 text-slate-600 dark:text-slate-300 space-y-2">
+              <li>设备信息：硬件配置、设备标识符</li>
+              <li>使用数据：应用使用统计、功能使用频率、错误日志</li>
+              <li>匿名分析数据：用于改进产品性能和用户体验</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">2</span>
+              信息使用
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-3">我们使用收集的信息用于：</p>
+            <ul class="list-disc pl-11 text-slate-600 dark:text-slate-300 space-y-2">
+              <li>提供和改进我们的服务</li>
+              <li>分析产品使用情况</li>
+              <li>修复错误和提升性能</li>
+              <li>提供技术支持</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">3</span>
+              信息保护
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-3">我们采用行业标准的安全措施保护您的信息：</p>
+            <ul class="list-disc pl-11 text-slate-600 dark:text-slate-300 space-y-2">
+              <li>数据加密传输和存储</li>
+              <li>访问控制和权限管理</li>
+              <li>定期安全审计</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">4</span>
+              信息共享
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-3">我们不会向第三方出售、交易或转让您的个人信息，除非：</p>
+            <ul class="list-disc pl-11 text-slate-600 dark:text-slate-300 space-y-2">
+              <li>获得您的明确同意</li>
+              <li>法律要求或政府部门要求</li>
+              <li>保护我们的权利和安全</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">5</span>
+              您的权利
+            </h3>
+            <p class="text-slate-600 dark:text-slate-300 mb-3">您有权：</p>
+            <ul class="list-disc pl-11 text-slate-600 dark:text-slate-300 space-y-2">
+              <li>要求删除您的个人信息</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 用户协议 -->
+      <section id="user" class="mb-10 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-7 sm:p-9 transition-all duration-300 hover:shadow-2xl hidden">
+        <div class="mb-8">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+            <div class="w-1 h-8 bg-slate-700 dark:bg-slate-400 rounded-full mr-4"></div>
+            用户协议
+          </h2>
+          <div class="h-1 w-20 bg-slate-700 dark:bg-slate-400 rounded-full ml-14"></div>
+        </div>
+        <p class="text-slate-600 dark:text-slate-300 mb-8 text-lg leading-relaxed">
+          欢迎使用我们的软件。使用本软件即表示您同意以下条款：
+        </p>
+
+        <div class="space-y-7">
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">1</span>
+              软件许可
+            </h3>
+            <p class="text-slate-700 dark:text-slate-300">
+              本软件按"现状"提供，我们授予您有限的、非独占的、不可转让的使用许可。
+            </p>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">2</span>
+              使用限制
+            </h3>
+            <p class="text-slate-700 dark:text-slate-300 mb-3">您不得：</p>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>逆向工程、反编译或反汇编软件</li>
+              <li>移除或修改任何版权声明</li>
+              <li>将软件用于非法目的</li>
+              <li>干扰软件的正常运行</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">3</span>
+              知识产权
+            </h3>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>软件及其所有相关知识产权均归我们(领创工作室)所有。</li>
+              <li>您不得复制、修改、分发、销售或使用本软件的任何部分，除非获得我们的明确许可。</li>
+              <li>您不得将本软件用于任何商业目的，包括但不限于销售、出租或许可。</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">4</span>
+              免责声明
+            </h3>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>因本软件的服务类目特殊性，由于操作具有一定风险，若用户操作不当导致设备损坏、数据丢失或其他问题，本软件运营方不承担任何责任，请熟悉软件使用说明，谨慎操作。</li>
+              <li>本软件运营方不承担因用户操作错误导致的任何损失或损害。</li>
+              <li>若用户运行的非官方版本、非最新版软件导致的任何问题，本软件运营方不承担任何责任。</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">5</span>
+              服务变更
+            </h3>
+            <p class="text-slate-700 dark:text-slate-300">
+              我们保留随时修改或终止服务的权利，恕不另行通知。
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 信息收集说明 -->
+      <section id="collection" class="mb-10 bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 p-7 sm:p-9 transition-all duration-300 hover:shadow-2xl hidden">
+        <div class="mb-8">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+            <div class="w-1 h-8 bg-slate-700 dark:bg-slate-400 rounded-full mr-4"></div>
+            信息收集说明
+          </h2>
+          <div class="h-1 w-20 bg-slate-700 dark:bg-slate-400 rounded-full ml-14"></div>
+        </div>
+        <p class="text-slate-600 dark:text-slate-300 mb-8 text-lg leading-relaxed">
+          为了提供更好的服务和用户体验，我们需要收集以下数据：
+        </p>
+
+        <div class="space-y-7">
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">1</span>
+              设备数据
+            </h3>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>设备唯一标识符（匿名化处理）</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">2</span>
+              使用行为数据
+            </h3>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>应用启动（匿名化处理）</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">3</span>
+              数据处理原则
+            </h3>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>所有数据都经过匿名化处理</li>
+              <li>不收集任何可识别个人身份的信息</li>
+              <li>数据仅用于产品改进和技术支持</li>
+              <li>严格遵循最小化原则，只收集必要数据</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-slate-50 to-slate-100 dark:from-slate-700/50 dark:to-slate-600/50 p-6 rounded-xl border-l-4 border-slate-400 dark:border-slate-500 shadow-sm">
+            <h3 class="text-xl font-bold text-slate-800 dark:text-slate-100 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-full text-sm font-bold mr-3">4</span>
+              数据安全
+            </h3>
+            <ul class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2">
+              <li>采用加密传输和存储</li>
+              <li>定期删除过期数据</li>
+              <li>严格的访问控制</li>
+            </ul>
+          </div>
+
+          <div class="bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-amber-900/30 dark:to-yellow-900/30 p-6 rounded-xl border-l-4 border-amber-400 dark:border-amber-500 shadow-sm">
+            <h3 class="text-xl font-bold text-amber-800 dark:text-amber-200 mb-3 flex items-center">
+              <span class="inline-flex items-center justify-center w-8 h-8 bg-amber-200 dark:bg-amber-800 text-amber-800 dark:text-amber-200 rounded-full text-sm font-bold mr-3">⚠️</span>
+              重要提示
+            </h3>
+            <p class="text-amber-700 dark:text-amber-300 text-lg">
+              这些数据收集对于软件的正常运行是必需的。如果您不同意，软件将无法正常工作。
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // 类型定义
+    type AgreementType = 'privacy' | 'user' | 'collection';
+    
+    // DOM 元素获取
+    const privacyBtn = document.getElementById('privacy-btn') as HTMLButtonElement;
+    const userBtn = document.getElementById('user-btn') as HTMLButtonElement;
+    const collectionBtn = document.getElementById('collection-btn') as HTMLButtonElement;
+    
+    const privacySection = document.getElementById('privacy') as HTMLElement;
+    const userSection = document.getElementById('user') as HTMLElement;
+    const collectionSection = document.getElementById('collection') as HTMLElement;
+
+    // 按钮样式配置
+    const buttonStyles = {
+      active: 'px-5 sm:px-7 py-3 bg-slate-700 text-white rounded-xl font-semibold transition-all duration-300 hover:bg-slate-800 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600 transform hover:-translate-y-0.5',
+      inactive: 'px-5 sm:px-7 py-3 bg-white dark:bg-slate-700 text-slate-700 dark:text-slate-200 border-2 border-slate-300 dark:border-slate-600 rounded-xl font-semibold transition-all duration-300 hover:bg-slate-50 dark:hover:bg-slate-600 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-slate-300 dark:focus:ring-slate-600 transform hover:-translate-y-0.5'
+    };
+
+    // 显示指定协议
+    function showAgreement(sectionId: AgreementType) {
+      // 隐藏所有协议
+      [privacySection, userSection, collectionSection].forEach(section => {
+        if (section) section.classList.add('hidden');
+      });
+      
+      // 重置所有按钮样式
+      [privacyBtn, userBtn, collectionBtn].forEach(btn => {
+        if (btn) btn.className = buttonStyles.inactive;
+      });
+      
+      // 显示选中的协议
+      const activeSection = document.getElementById(sectionId) as HTMLElement;
+      if (activeSection) activeSection.classList.remove('hidden');
+      
+      // 设置当前按钮为激活状态
+      const activeBtn = document.getElementById(`${sectionId}-btn`) as HTMLButtonElement;
+      if (activeBtn) activeBtn.className = buttonStyles.active;
+      
+      // 更新URL哈希
+      history.replaceState(null, '', sectionId === 'privacy' ? '#' : `#${sectionId}`);
+    }
+
+    // 按钮事件监听
+    privacyBtn?.addEventListener('click', () => showAgreement('privacy'));
+    userBtn?.addEventListener('click', () => showAgreement('user'));
+    collectionBtn?.addEventListener('click', () => showAgreement('collection'));
+
+    // 初始化 - 根据URL哈希显示对应协议
+    const init = () => {
+      const hash = window.location.hash.replace('#', '') as AgreementType;
+      if (hash === 'user' || hash === 'collection') {
+        showAgreement(hash);
+      } else {
+        showAgreement('privacy');
+      }
+    };
+
+    // 页面加载完成后初始化
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</MainLayout>
