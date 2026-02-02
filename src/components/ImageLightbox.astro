@@ -1,0 +1,93 @@
+---
+// ImageLightbox.astro - 一个轻量级的、符合 Apple 风格的图片大图查看组件
+---
+
+<div id="lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center bg-white/90 dark:bg-black/95 backdrop-blur-xl transition-all duration-500 opacity-0">
+  <button id="lightbox-close" class="absolute top-6 right-6 p-3 rounded-full bg-gray-200/50 dark:bg-gray-800/50 text-gray-900 dark:text-white hover:scale-110 transition-transform z-[110]" aria-label="Close lightbox">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+  
+  <div class="relative max-w-[90vw] max-h-[90vh] flex items-center justify-center">
+    <img id="lightbox-img" src="" alt="Enlarged view" class="max-w-full max-h-[85vh] rounded-xl shadow-2xl object-contain opacity-0 scale-95 transition-all duration-500" />
+    <div id="lightbox-caption" class="absolute -bottom-12 left-0 right-0 text-center text-gray-900 dark:text-white font-medium text-lg"></div>
+  </div>
+</div>
+
+<script>
+  function initLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeBtn = document.getElementById('lightbox-close');
+    
+    if (!lightbox || !lightboxImg || !closeBtn) return;
+
+    // 查找所有带有 data-zoom-in 属性或 gallery 容器内的图片
+    const galleryImages = document.querySelectorAll('img[src], .zoom-target img');
+
+    galleryImages.forEach(img => {
+      // 排除 Logo 和不需要缩放的小图标
+      if (img.classList.contains('no-zoom')) return;
+      
+      img.style.cursor = 'zoom-in';
+      
+      img.addEventListener('click', (e) => {
+        const target = e.currentTarget as HTMLImageElement;
+        const src = target.src;
+        const alt = target.alt || '';
+        
+        lightboxImg.src = src;
+        if (lightboxCaption) lightboxCaption.textContent = alt;
+        
+        // 显示 Lightbox
+        lightbox.classList.remove('hidden');
+        lightbox.classList.add('flex');
+        
+        // 触发动画
+        setTimeout(() => {
+          lightbox.classList.add('opacity-100');
+          lightboxImg.classList.add('opacity-100', 'scale-100');
+          lightboxImg.classList.remove('opacity-0', 'scale-95');
+        }, 10);
+        
+        document.body.style.overflow = 'hidden'; // 禁止滚动
+      });
+    });
+
+    const closeLightbox = () => {
+      lightbox.classList.remove('opacity-100');
+      lightboxImg.classList.add('opacity-0', 'scale-95');
+      lightboxImg.classList.remove('opacity-100', 'scale-100');
+      
+      setTimeout(() => {
+        lightbox.classList.remove('flex');
+        lightbox.classList.add('hidden');
+        document.body.style.overflow = ''; // 恢复滚动
+      }, 500);
+    };
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+    
+    // ESC 键关闭
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lightbox.classList.contains('hidden')) {
+        closeLightbox();
+      }
+    });
+  }
+
+  // 初始化
+  document.addEventListener('DOMContentLoaded', initLightbox);
+  document.addEventListener('astro:page-load', initLightbox);
+</script>
+
+<style>
+  #lightbox-img {
+      will-change: transform, opacity;
+  }
+</style>

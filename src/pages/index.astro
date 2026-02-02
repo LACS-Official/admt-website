@@ -4,6 +4,7 @@ import { SITE_CONFIG } from '@/config/site';
 import ScrollColorAnimation from '@/components/ScrollColorAnimation.astro';
 import AppleScrollEffects from '@/components/AppleScrollEffects.astro';
 import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astro';
+import ImageLightbox from '@/components/ImageLightbox.astro';
 ---
 
 <MainLayout
@@ -15,65 +16,88 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
   <SimpleAnnouncementBanner />
 
   <!-- Hero Section - Apple Style -->
-  <section class="hero-section py-24 lg:py-40 min-h-screen flex items-center dynamic-background" data-parallax="0.3">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+  <section class="hero-section py-24 lg:py-48 min-h-[95vh] flex items-center dynamic-background overflow-hidden" data-parallax="0.05">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 border border-blue-100 dark:border-blue-800 text-blue-600 dark:text-blue-400 text-sm font-medium mb-10 animate-fade-in mx-auto">
+         <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+         </span>
+         <span id="latest-version-badge">Version {SITE_CONFIG.product.version} 已发布</span>
+      </div>
       <h1
-        class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-gray-900 dark:text-white mb-8 animate-fade-in tracking-tight leading-tight"
+        class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-gray-900 dark:text-white mb-10 animate-fade-in tracking-tighter leading-[1.05]"
         data-scroll-color="hero-title"
         data-fade-in
       >
-        {SITE_CONFIG.name}
+        {SITE_CONFIG.name.split('-')[0]}<span class="bg-gradient-to-b from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 bg-clip-text text-transparent italic">{SITE_CONFIG.name.split('-')[1] ? '-' + SITE_CONFIG.name.split('-')[1] : ''}</span>
       </h1>
       <p
-        class="text-2xl sm:text-3xl md:text-4xl text-gray-600 dark:text-gray-200 mb-8 animate-slide-up font-light leading-relaxed"
+        class="text-2xl sm:text-3xl md:text-4xl text-gray-600 dark:text-gray-300 mb-16 animate-slide-up font-light leading-relaxed tracking-tight max-w-4xl mx-auto"
         data-scroll-color="gradient-text"
         data-fade-in
       >
         {SITE_CONFIG.tagline}
       </p>
-      <p
-        class="text-lg sm:text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-16 max-w-3xl mx-auto animate-slide-up leading-relaxed"
-        data-scroll-color="feature-text"
-      >
-        {SITE_CONFIG.subtitle}
-      </p>
-      <div class="flex flex-col sm:flex-row gap-8 justify-center animate-slide-up">
+      <div class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up">
         <a
           href="/download"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-12 py-5 rounded-full font-semibold text-lg sm:text-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-2xl"
+          class="bg-blue-600 hover:bg-blue-700 text-white px-14 py-5 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-[1.03] shadow-[0_20px_50px_rgba(37,99,235,0.3)] hover:shadow-blue-500/40"
         >
           立即下载
         </a>
         <a
           href="/features"
-          class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 px-12 py-5 rounded-full font-semibold text-lg sm:text-xl transition-all duration-300 border border-blue-600 dark:border-blue-400 hover:border-blue-700 dark:hover:border-blue-300 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700"
+          class="group text-gray-900 dark:text-white px-14 py-5 rounded-full font-bold text-xl transition-all duration-300 border-2 border-gray-900/10 dark:border-white/10 hover:border-gray-900 dark:hover:border-white flex items-center justify-center gap-2"
         >
-          了解更多
+          了解详情
+          <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </a>
       </div>
     </div>
   </section>
 
+  <!-- Gallery Showcase - High Impact -->
+  <section class="py-24 bg-white dark:bg-black overflow-hidden">
+     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+           <div class="order-2 md:order-1" data-fade-in>
+              <div class="relative">
+                 <div class="absolute -inset-10 bg-blue-500/10 rounded-full blur-3xl"></div>
+                 <img 
+                   src="https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp" 
+                   alt="ADMT 每一处细节" 
+                   class="relative rounded-2xl shadow-2xl border border-gray-200/50 dark:border-white/10 transform -rotate-1 hover:rotate-0 transition-all duration-1000 group-hover:shadow-3xl"
+                 />
+              </div>
+           </div>
+           <div class="order-1 md:order-2 px-8" data-fade-in>
+              <h2 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight">
+                看见 <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">每一处细节</span>
+              </h2>
+              <p class="text-xl text-gray-600 dark:text-gray-400 font-light leading-relaxed mb-10">
+                深度的系统洞察，直观的数据展示。ADMT 让复杂的 Android 系统管理变得如丝般顺滑。
+              </p>
+              <ul class="space-y-4">
+                 {[
+                   "全方位的设备信息展示",
+                   "实时的系统日志捕获",
+                   "全能的手机信息管理"
+                 ].map(item => (
+                   <li class="flex items-center gap-3 text-lg font-medium text-gray-700 dark:text-gray-300">
+                      <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                      {item}
+                   </li>
+                 ))}
+              </ul>
+           </div>
+        </div>
+     </div>
+  </section>
+
   <!-- Features Preview - Apple Style -->
   <section class="py-24 sm:py-32 bg-gray-50 dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- 界面主页截图展示 -->
-      <div class="mb-20 sm:mb-28 p-4 sm:p-8 rounded-3xl bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
-          <div class="relative w-full h-full">
-            <!-- 白色遮罩层 -->
-            <div class="absolute inset-0 bg-white/60 dark:bg-gray-900/60 z-10"></div>
-            <img 
-              src="/img/PageScreenshot/Main.webp" 
-              alt="设备管理工具主界面" 
-              class="w-full h-full object-contain p-2 sm:p-4 transition-transform duration-500 hover:scale-105 opacity-90"
-            >
-          </div>
-          <div class="absolute inset-0 flex items-center justify-center text-center p-6">
-            <div class="text-4xl sm:text-5xl md:text-6xl font-bold text-black-900 dark:text-white leading-tight">
-              强大、简洁、优雅
-            </div>
-          </div>
-      </div>
 
       <div class="text-center mb-20">
         <h2
@@ -83,57 +107,76 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
           强大功能
         </h2>
         <p
-          class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto font-light"
+          class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto font-light mb-10"
           data-scroll-color="feature-text"
         >
           一切都为了让设备管理变得简单而高效
         </p>
+        <div class="flex justify-center mb-16" data-fade-in>
+          <a
+            href="/features"
+            class="group inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+          >
+            探索所有功能特性
+            <svg class="ml-3 w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
       </div>
       
       <!-- Feature Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-12">
-        {SITE_CONFIG.features.slice(0, 6).map((feature, index) => (
-          <div class="flex flex-col md:flex-row items-center gap-6 sm:gap-8 p-6 sm:p-8 rounded-2xl bg-white dark:bg-gray-800 shadow-lg hover:shadow-2xl transition-all duration-400 group transform hover:-translate-y-1" data-fade-in>
-            <div class="w-full md:w-1/2">
-              <div class="aspect-video bg-gray-50 dark:bg-gray-700 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-400">
-                <!-- 功能截图占位符 -->
-                <div class="w-full h-full flex items-center justify-center text-gray-400 dark:text-gray-500">
-                  <span class="text-4xl sm:text-5xl">📸</span>
-                </div>
-              </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-12">
+        {[
+          {
+            title: "欢迎使用",
+            description: "ADMT，让设备管理变得简单而高效。",
+            image: "https://img-g.lacs.cc/file/1770038393216_SnowShot_2026-02-02_16-36-04.webp",
+          },
+          {
+            title: "全能的设备信息获取",
+            description: "获取设备的详细信息。",
+            image: "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
+          },
+          {
+            title: "设备投屏",
+            description: "超低延迟，极致高清。",
+            image: "https://img-g.lacs.cc/file/1770038393162_SnowShot_2026-02-02_18-41-20.webp",
+          },
+          {
+            title: "应用管理",
+            description: "批量管理，极致高效。",
+            image: "https://img-g.lacs.cc/file/1770038395136_SnowShot_2026-02-02_18-51-34.webp",
+          }
+        ].map((feature, index) => (
+          <div class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2" data-fade-in>
+            <div class="aspect-[16/10] overflow-hidden">
+               <img 
+                 src={feature.image} 
+                 alt={feature.title} 
+                 class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+               />
             </div>
-            <div class="w-full md:w-1/2 text-center md:text-left">
-              <div class="text-5xl sm:text-6xl mb-3 sm:mb-4 transform group-hover:scale-110 transition-transform duration-400 text-gray-700 dark:text-gray-300">
-                {feature.icon}
+            <div class="p-8 sm:p-10">
+              <div class="flex items-center gap-4 mb-4">
+                <span class="text-3xl">{feature.icon}</span>
+                <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+                  {feature.title}
+                </h3>
               </div>
-              <h3
-                class="text-xl sm:text-2xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4"
-                data-scroll-color="section-title"
-              >
-                {feature.title}
-              </h3>
-              <p
-                class="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed"
-                data-scroll-color="feature-text"
-              >
+              <p class="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed">
                 {feature.description}
               </p>
+            </div>
+            <div class="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+               <div class="w-12 h-12 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-lg">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+               </div>
             </div>
           </div>
         ))}
       </div>
       
-      <div class="text-center mt-12 sm:mt-16">
-        <a
-          href="/features"
-          class="inline-flex items-center text-blue-600 dark:text-blue-400 font-medium hover:text-blue-700 dark:hover:text-blue-300 transition-all duration-300 text-base sm:text-lg px-4 py-2 rounded-full hover:bg-blue-50 dark:hover:bg-blue-900/20"
-        >
-          查看所有功能
-          <svg class="ml-2 w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </a>
-      </div>
     </div>
   </section>
 
@@ -249,46 +292,104 @@ import SimpleAnnouncementBanner from '@/components/SimpleAnnouncementBanner.astr
   <!-- 滚动效果组件 -->
   <ScrollColorAnimation />
   <AppleScrollEffects />
+  <ImageLightbox />
 
-  <!-- 客户端统计数据获取脚本 -->
+  <!-- 客户端统计与版本数据获取脚本 -->
   <script>
-    // 在客户端运行，每次页面加载时获取实时统计数据
+    // 在客户端运行，获取实时数据并支持本地缓存
     document.addEventListener('DOMContentLoaded', async function() {
-      try {
-        console.log('正在获取实时统计数据...');
-        const response = await fetch('https://api-g.lacs.cc/api/admt/stats', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Origin': 'https://admt.lacs.cc',
-          },
-        });
-        
-        console.log('统计数据API响应状态:', response.status);
-        const result = await response.json();
-        console.log('统计数据API响应数据:', result);
-        
-        if (result.success && result.data) {
-          // 更新页面上的统计数据，添加null检查
-          const statsTotalUsage = document.getElementById('stats-total-usage');
-          if (statsTotalUsage) statsTotalUsage.textContent = result.data.totalUsage + '+';
-          
-          const statsUniqueDevices = document.getElementById('stats-unique-devices');
-          if (statsUniqueDevices) statsUniqueDevices.textContent = result.data.uniqueDevices + '+';
-          
-          const statsTotalConnections = document.getElementById('stats-total-connections');
-          if (statsTotalConnections) statsTotalConnections.textContent = result.data.totalConnections + '+';
-          
-          const statsUniqueConnectionDevices = document.getElementById('stats-unique-connection-devices');
-          if (statsUniqueConnectionDevices) statsUniqueConnectionDevices.textContent = result.data.uniqueConnectionDevices + '+';
-          
-          console.log('成功更新实时统计数据');
-        } else {
-          console.error('获取统计数据失败:', result.error || '未知错误');
-        }
-      } catch (error) {
-        console.error('获取统计数据时出错:', error);
+      const CACHE_KEY_STATS = 'admt_stats_cache';
+      const CACHE_KEY_VERSION = 'admt_version_cache';
+      const CACHE_TTL = 1000 * 60 * 30; // 30 分钟缓存
+
+      // 更新版本显示
+      function updateVersionBadge(version) {
+        const badge = document.getElementById('latest-version-badge');
+        if (badge && version) badge.textContent = `Version ${version} 已发布`;
       }
+
+      // 更新统计数据显示
+      function updateStats(data) {
+        const statsMap = {
+          'stats-total-usage': data.totalUsage || '10000',
+          'stats-unique-devices': data.uniqueDevices || '5000',
+          'stats-total-connections': data.totalConnections || '50000',
+          'stats-unique-connection-devices': data.uniqueConnectionDevices || '3000'
+        };
+
+        for (const [id, value] of Object.entries(statsMap)) {
+          const el = document.getElementById(id);
+          if (el) el.textContent = value + '+';
+        }
+      }
+
+      // 检查缓存
+      function getCachedData(key) {
+        const cached = localStorage.getItem(key);
+        if (cached) {
+          const { data, expiry } = JSON.parse(cached);
+          if (Date.now() < expiry) return data;
+        }
+        return null;
+      }
+
+      // 设置缓存
+      function setCachedData(key, data) {
+        localStorage.setItem(key, JSON.stringify({
+          data,
+          expiry: Date.now() + CACHE_TTL
+        }));
+      }
+
+      // 获取统计数据
+      async function fetchStats() {
+        const cached = getCachedData(CACHE_KEY_STATS);
+        if (cached) {
+          updateStats(cached);
+          return;
+        }
+
+        try {
+          const response = await fetch('https://api-g.lacs.cc/api/admt/stats', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Origin': 'https://admt.lacs.cc' }
+          });
+          const result = await response.json();
+          if (result.success && result.data) {
+            updateStats(result.data);
+            setCachedData(CACHE_KEY_STATS, result.data);
+          }
+        } catch (error) {
+          console.error('获取统计数据失败:', error);
+        }
+      }
+
+      // 获取最新版本信息
+      async function fetchVersion() {
+        const cached = getCachedData(CACHE_KEY_VERSION);
+        if (cached) {
+          updateVersionBadge(cached);
+          return;
+        }
+
+        try {
+          const response = await fetch('https://api-g.lacs.cc/app/software/id/1', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Origin': 'https://admt.lacs.cc' }
+          });
+          const result = await response.json();
+          if (result.success && result.data && result.data.currentVersion) {
+            updateVersionBadge(result.data.currentVersion);
+            setCachedData(CACHE_KEY_VERSION, result.data.currentVersion);
+          }
+        } catch (error) {
+          console.error('获取版本信息失败:', error);
+        }
+      }
+
+      // 启动获取
+      fetchStats();
+      fetchVersion();
     });
   </script>
 </MainLayout>

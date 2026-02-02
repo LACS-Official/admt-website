@@ -1,6 +1,117 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
 import { SITE_CONFIG } from '@/config/site';
+import ImageLightbox from '@/components/ImageLightbox.astro';
+
+const featureDetails = [
+  {
+    title: "极致连接体验",
+    description: "自研智能连接技术，支持 USB 与 无线 双模式。秒识别，瞬时同步，让连接不再是阻碍。",
+    image: "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
+    badges: ["全自动发现", "断线重连", "多设备并发"],
+    color: "bg-blue-50 dark:bg-blue-900/10"
+  },
+  {
+    title: "Fastboot镜像可视化",
+    description: "支持查看，导出，让Fastboot镜像管理变得简单高效。",
+    image: "https://img-g.lacs.cc/file/1770043646538_SnowShot_2026-02-02_22-46-23.webp",
+    badges: ["分类查看", "核心作用详解"],
+    color: "bg-gray-50 dark:bg-gray-900/10",
+    reverse: true
+  },
+  {
+    title: "全能的应用管理",
+    description: "从安装、提权到卸载等功能。 权限深度管控，掌控应用每一个细节。",
+    image: "https://img-g.lacs.cc/file/1770038395136_SnowShot_2026-02-02_18-51-34.webp",
+    badges: ["批量卸载", "批量冻结/解冻", "强行停止","导出apk","清除数据","导入/导出列表"],
+    color: "bg-indigo-50 dark:bg-indigo-900/10"
+  },
+  {
+    title: "低延时设备投屏",
+    description: "基于scrcpy的屏幕镜像。支持多种设置，在电脑上也能享受高帧率顺滑操作。",
+    image: "https://img-g.lacs.cc/file/1770038393162_SnowShot_2026-02-02_18-41-20.webp",
+    badges: ["高清镜像", "键鼠同步", "剪贴板共享"],
+    color: "bg-purple-50 dark:bg-purple-900/10",
+    reverse: true
+  },{
+    title:"全能的应用安装功能",
+    description:"支持单个安装、批量安装、遍历文件夹安装包安装",
+    image:"https://img-g.lacs.cc/file/1770038385884_SnowShot_2026-02-02_18-50-53.webp",
+    badges:["批量安装", "遍历安装"],
+    color:"bg-purple-50 dark:bg-purple-900/10",
+    reverse:true
+  },{
+    title:"按键模拟",
+    description:"支持各种常用按键模拟",
+    image:"https://img-g.lacs.cc/file/1770038388771_SnowShot_2026-02-02_18-41-06.webp",
+    badges:["按键模拟"],
+    color:"bg-purple-50 dark:bg-purple-900/10",
+    reverse:true
+  },{
+    title:"设备系统设置",
+    description:"支持显示控制，动画速度，电源管理，电池模拟",
+    image:"https://img-g.lacs.cc/file/1770038393224_SnowShot_2026-02-02_18-51-57.webp",
+    badges:["显示控制","动画速度","电源管理","电池模拟"],
+    color:"bg-purple-50 dark:bg-purple-900/10",
+    reverse:true
+  },{
+    title:"镜像刷入",
+    description:"支持常规镜像刷入，到指定的分区，以及强大的刷入模式",
+    image:"https://img-g.lacs.cc/file/1770038397996_SnowShot_2026-02-02_18-52-41.webp",
+    badges:["常规刷入","分区刷入","刷入模式"],
+    color:"bg-purple-50 dark:bg-purple-900/10",
+    reverse:true
+  },{
+    title:"线刷功能",
+    description:"支持小米线刷功能",
+    image:"https://img-g.lacs.cc/file/1770038390097_SnowShot_2026-02-02_18-55-41.webp",
+    badges:["线刷功能"],
+    color:"bg-purple-50 dark:bg-purple-900/10",
+    reverse:true
+  },{
+    title:"在线资源",
+    description:"支持在线资源下载",
+    image:"https://img-g.lacs.cc/file/1770038395960_SnowShot_2026-02-02_18-55-51.webp",
+    badges:["在线资源"],
+    color:"bg-purple-50 dark:bg-purple-900/10",
+    reverse:true
+  }
+];
+
+const subFeatures = [
+  {
+    title: "设备概览可视化",
+    description: "实时监控电池健康、内存占用及 CPU 负载。",
+    image: "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
+    span: "md:col-span-2"
+  },
+  {
+    title: "adb/fastboot命令交互",
+    description: "深度集成终端。",
+    image: "https://img-g.lacs.cc/file/1770038392565_SnowShot_2026-02-02_18-56-54.webp",
+    span: "md:col-span-1"
+  },
+  {
+    title: "调试面板",
+    description: "Logcat 实时过滤与系统参数查看。",
+    image: "https://img-g.lacs.cc/file/1770038393651_SnowShot_2026-02-02_18-51-05.webp",
+    span: "md:col-span-1"
+  },{
+    title:"全局通知和提示音",
+    description:"界面优雅，声音悦耳",
+    span:"md:col-span-1"
+  }
+];
+
+const moreFeatures = [
+  "https://img-g.lacs.cc/file/1770038393216_SnowShot_2026-02-02_16-36-04.webp",
+  "https://img-g.lacs.cc/file/1770038395960_SnowShot_2026-02-02_18-55-51.webp",
+  "https://img-g.lacs.cc/file/1770038396282_SnowShot_2026-02-02_18-56-00.webp",
+  "https://img-g.lacs.cc/file/1770038393568_SnowShot_2026-02-02_18-56-14.webp",
+  "https://img-g.lacs.cc/file/1770038400618_SnowShot_2026-02-02_18-56-42.webp",
+  "https://img-g.lacs.cc/file/1770038392565_SnowShot_2026-02-02_18-56-54.webp",
+  "https://img-g.lacs.cc/file/1770038400278_SnowShot_2026-02-02_18-57-02.webp"
+];
 ---
 
 <MainLayout
@@ -8,35 +119,85 @@ import { SITE_CONFIG } from '@/config/site';
   description="探索玩机管家 (Android Device Management Tool) 强大功能，让Android设备管理变得简单高效"
 >
   <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-primary-50 to-blue-100 dark:from-gray-900 dark:to-gray-800 py-20">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-        强大功能
+  <section class="relative overflow-hidden bg-white dark:bg-black py-24 sm:py-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      <h1 class="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight">
+        重新定义 <span class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">管理体验</span>
       </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-        高效、安全、大规模管理Android设备所需的一切功能
+      <p class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto font-light leading-relaxed">
+        ADMT 不仅仅是一个工具，它是为了每一位对效率有极致追求的开发者而打造的智能中枢。
       </p>
     </div>
+    <!-- Decorative background element -->
+    <div class="absolute -top-44 -right-44 w-96 h-96 bg-blue-100 dark:bg-blue-900/20 rounded-full blur-3xl opacity-50"></div>
+    <div class="absolute -bottom-44 -left-44 w-96 h-96 bg-indigo-100 dark:bg-indigo-900/20 rounded-full blur-3xl opacity-50"></div>
   </section>
 
-  <!-- Features Grid -->
-  <section class="py-20 bg-white dark:bg-gray-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        {SITE_CONFIG.features.map((feature) => (
-          <div class="flex items-start space-x-4">
-            <div class="flex-shrink-0">
-              <div class="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center text-2xl">
-                {feature.icon}
+  <!-- Detailed Features Sections -->
+  {featureDetails.map((feature, index) => (
+    <section class={`py-24 sm:py-32 ${feature.color}`}>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class={`flex flex-col ${feature.image ? (feature.reverse ? 'lg:flex-row-reverse' : 'lg:flex-row') : 'items-center text-center'} items-center gap-16`}>
+          {feature.image && (
+            <div class="w-full lg:w-1/2" data-fade-in>
+              <div class="relative group">
+                <div class="absolute -inset-4 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-2xl opacity-20 blur-2xl group-hover:opacity-30 transition duration-500"></div>
+                <img 
+                  src={feature.image} 
+                  alt={feature.title}
+                  class="relative rounded-2xl shadow-2xl border border-white/20 dark:border-white/10 w-full object-cover transform transition duration-700 hover:scale-[1.02]"
+                />
               </div>
             </div>
-            <div>
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3">
-                {feature.title}
-              </h3>
-              <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
-                {feature.description}
-              </p>
+          )}
+          <div class={`w-full ${feature.image ? 'lg:w-1/2' : 'max-w-3xl'} flex flex-col justify-center`} data-fade-in>
+            <div class={`flex flex-wrap gap-2 mb-6 ${!feature.image && 'justify-center'}`}>
+              {feature.badges && feature.badges.map(badge => (
+                <span class="px-3 py-1 rounded-full bg-blue-600/10 text-blue-600 dark:bg-blue-400/10 dark:text-blue-400 text-xs font-medium tracking-wide">
+                  {badge}
+                </span>
+              ))}
+            </div>
+            <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight">
+              {feature.title}
+            </h2>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-400 leading-relaxed font-light">
+              {feature.description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <!-- Sub Features Bento Grid -->
+  <section class="py-24 sm:py-32 bg-white dark:bg-black">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-fade-in>
+        <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">甚至更多，尽在掌握</h2>
+        <p class="text-xl text-gray-600 dark:text-gray-400">细微之处，方见真章</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {subFeatures.map((item) => (
+          <div class={`group relative overflow-hidden rounded-2xl bg-gray-50 dark:bg-gray-900 p-8 flex flex-col justify-between transition duration-500 hover:shadow-2xl hover:-translate-y-2 ${item.span}`} data-fade-in>
+            <div class="z-10 relative">
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">{item.title}</h3>
+              {item.description && <p class="text-gray-600 dark:text-gray-400 max-w-xs">{item.description}</p>}
+            </div>
+            {item.image && (
+              <div class="mt-8 relative h-48 sm:h-64 rounded-xl overflow-hidden shadow-lg border border-white/50 dark:border-white/5">
+                <img 
+                  src={item.image} 
+                  alt={item.title}
+                  class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+                />
+              </div>
+            )}
+            <div class="absolute top-0 right-0 p-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                <div class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow-lg flex items-center justify-center text-blue-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </div>
             </div>
           </div>
         ))}
@@ -44,4 +205,81 @@ import { SITE_CONFIG } from '@/config/site';
     </div>
   </section>
 
+  <!-- Screenshot Gallery Section -->
+  <section class="py-24 sm:py-32 bg-gray-50 dark:bg-black/50 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16" data-fade-in>
+        <h2 class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 italic">界面之美，溢于言表</h2>
+      </div>
+      
+      <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        {moreFeatures.map((img, idx) => (
+          <div class="break-inside-avoid" data-fade-in>
+             <div class="rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition duration-500 hover:scale-[1.02] border border-gray-200 dark:border-gray-800">
+                <img 
+                  src={img} 
+                  alt={`Feature Gallery ${idx + 1}`}
+                  class="w-full h-auto cursor-zoom-in"
+                  loading="lazy"
+                />
+             </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="py-24 sm:py-32 bg-white dark:bg-black text-center">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-8" data-fade-in>准备好开启高效工作了吗？</h2>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center" data-fade-in>
+        <a href="/download" class="px-12 py-5 rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-lg transition shadow-xl hover:shadow-2xl transform hover:scale-105">
+           立即下载 ADMT
+        </a>
+        <a href="/" class="px-12 py-5 rounded-full border-2 border-gray-200 dark:border-gray-800 hover:border-blue-600 dark:hover:border-blue-500 transition font-bold text-lg dark:text-white">
+           返回首页
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 引入滚动效果脚本 -->
+  <script>
+    // 简单的交叉观察器实现淡入效果，如果 AppleScrollEffects 没覆盖到
+    const observerOptions = {
+      threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('[data-fade-in]').forEach(el => observer.observe(el));
+  </script>
+
+  <ImageLightbox />
 </MainLayout>
+
+<style>
+  /* 基础淡入样式 */
+  [data-fade-in] {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  [data-fade-in].is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 延迟动画 */
+  [data-fade-in]:nth-child(1) { transition-delay: 0.1s; }
+  [data-fade-in]:nth-child(2) { transition-delay: 0.2s; }
+  [data-fade-in]:nth-child(3) { transition-delay: 0.3s; }
+</style>
