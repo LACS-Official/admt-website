@@ -27,7 +27,7 @@ import StatsCounter from "@/components/StatsCounter";
 
   <!-- Hero Section - Apple Style -->
   <section
-    class="hero-section py-24 lg:py-48 min-h-[95vh] flex items-center dynamic-background overflow-hidden relative"
+    class="hero-section py-16 md:py-48 min-h-[60vh] md:min-h-[95vh] flex items-center dynamic-background overflow-hidden relative"
     data-parallax="0.05"
   >
     <Hyperspeed client:only="react" />
@@ -35,7 +35,7 @@ import StatsCounter from "@/components/StatsCounter";
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
     >
       <h1
-        class="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-gray-900 dark:text-white mb-10 animate-fade-in tracking-tighter leading-[1.05]"
+        class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-gray-900 dark:text-white mb-6 md:mb-10 animate-fade-in tracking-tighter leading-[1.05]"
         data-scroll-color="hero-title"
         data-fade-in
       >
@@ -49,19 +49,19 @@ import StatsCounter from "@/components/StatsCounter";
         >
       </h1>
       <p
-        class="text-2xl sm:text-3xl md:text-4xl text-gray-600 dark:text-gray-300 mb-16 animate-slide-up font-light leading-relaxed tracking-tight max-w-4xl mx-auto"
+        class="text-lg sm:text-3xl md:text-4xl text-gray-600 dark:text-gray-300 mb-10 md:mb-16 animate-slide-up font-light leading-relaxed tracking-tight max-w-4xl mx-auto px-4"
         data-scroll-color="gradient-text"
         data-fade-in
       >
         {SITE_CONFIG.tagline}
       </p>
       <div
-        class="flex flex-col sm:flex-row gap-6 justify-center animate-slide-up"
+        class="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center animate-slide-up"
       >
         <Magnet client:load padding={50} magnetStrength={3}>
           <a
             href="/download"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-14 py-5 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-[1.03] shadow-[0_20px_50px_rgba(37,99,235,0.3)] hover:shadow-blue-500/40 block"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-14 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 transform hover:scale-[1.03] shadow-[0_20px_50px_rgba(37,99,235,0.3)] hover:shadow-blue-500/40 block"
           >
             立即下载
           </a>
@@ -69,7 +69,7 @@ import StatsCounter from "@/components/StatsCounter";
         <Magnet client:load padding={50} magnetStrength={3}>
           <a
             href="/features"
-            class="group text-gray-900 dark:text-white px-14 py-5 rounded-full font-bold text-xl transition-all duration-300 border-2 border-gray-900/10 dark:border-white/10 hover:border-gray-900 dark:hover:border-white flex items-center justify-center gap-2 block"
+            class="group text-gray-900 dark:text-white px-8 md:px-14 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 border-2 border-gray-900/10 dark:border-white/10 hover:border-gray-900 dark:hover:border-white flex items-center justify-center gap-2 block"
           >
             了解详情
             <svg
@@ -90,7 +90,7 @@ import StatsCounter from "@/components/StatsCounter";
   </section>
 
   <!-- Gallery Showcase - High Impact -->
-  <section class="py-24 bg-white dark:bg-black overflow-hidden">
+  <section class="py-12 md:py-24 bg-white dark:bg-black overflow-hidden">
     <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         <div class="order-2 md:order-1" data-fade-in>
@@ -108,7 +108,7 @@ import StatsCounter from "@/components/StatsCounter";
         </div>
         <div class="order-1 md:order-2 px-8" data-fade-in>
           <h2
-            class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight"
+            class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
           >
             看见 <span
               class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
@@ -116,7 +116,7 @@ import StatsCounter from "@/components/StatsCounter";
             >
           </h2>
           <p
-            class="text-xl text-gray-600 dark:text-gray-400 font-light leading-relaxed mb-10"
+            class="text-base md:text-xl text-gray-600 dark:text-gray-400 font-light leading-relaxed mb-6 md:mb-10"
           >
             深度的系统洞察，直观的数据展示。ADMT 让复杂的 Android
             系统管理变得如丝般顺滑。
@@ -128,7 +128,7 @@ import StatsCounter from "@/components/StatsCounter";
                 "实时的系统日志捕获",
                 "全能的手机信息管理",
               ].map((item) => (
-                <li class="flex items-center gap-3 text-lg font-medium text-gray-700 dark:text-gray-300">
+                <li class="flex items-center gap-3 text-sm md:text-lg font-medium text-gray-700 dark:text-gray-300">
                   <svg
                     class="w-6 h-6 text-blue-600"
                     fill="none"
@@ -153,25 +153,25 @@ import StatsCounter from "@/components/StatsCounter";
   </section>
 
   <!-- Features Preview - Apple Style -->
-  <section class="py-24 sm:py-32 bg-gray-50 dark:bg-black">
+  <section class="py-16 md:py-32 bg-gray-50 dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-20">
+      <div class="text-center mb-12 md:mb-20">
         <h2
-          class="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
+          class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tight"
           data-scroll-color="section-title"
         >
           强大功能
         </h2>
         <p
-          class="text-xl md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto font-light mb-10"
+          class="text-base md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto font-light mb-8 md:mb-10"
           data-scroll-color="feature-text"
         >
           一切都为了让设备管理变得简单而高效
         </p>
-        <div class="flex justify-center mb-16" data-fade-in>
+        <div class="flex justify-center mb-8 md:mb-16" data-fade-in>
           <a
             href="/features"
-            class="group inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-10 py-5 rounded-full font-bold text-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+            class="group inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-base md:text-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
           >
             探索所有功能特性
             <svg
@@ -191,9 +191,7 @@ import StatsCounter from "@/components/StatsCounter";
       </div>
 
       <!-- Feature Grid -->
-      <div
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 sm:gap-12"
-      >
+      <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-12">
         {
           [
             {
@@ -239,13 +237,13 @@ import StatsCounter from "@/components/StatsCounter";
                   showTooltip={false}
                 />
               </div>
-              <div class="p-8 sm:p-10">
-                <div class="flex items-center gap-4 mb-4">
-                  <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+              <div class="p-4 sm:p-10">
+                <div class="flex items-center gap-2 mb-2 sm:mb-4">
+                  <h3 class="text-lg sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
                     {feature.title}
                   </h3>
                 </div>
-                <p class="text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+                <p class="text-xs sm:text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed">
                   {feature.description}
                 </p>
               </div>
@@ -256,25 +254,24 @@ import StatsCounter from "@/components/StatsCounter";
     </div>
   </section>
 
-  <!-- Stats Section - Apple Style -->
-  <section class="py-24 sm:py-32 bg-white dark:bg-black">
+  <section class="py-12 md:py-24 bg-white dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <StatsCounter client:visible />
     </div>
   </section>
 
   <!-- Video Section -->
-  <section class="py-24 sm:py-32 bg-white dark:bg-black">
+  <section class="py-12 md:py-24 bg-white dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12 sm:mb-16">
+      <div class="text-center mb-10 md:mb-16">
         <h2
-          class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 tracking-tight"
+          class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tight"
           data-scroll-color="section-title"
         >
           功能演示视频
         </h2>
         <p
-          class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-light max-w-3xl mx-auto"
+          class="text-base md:text-xl text-gray-600 dark:text-gray-400 font-light max-w-3xl mx-auto"
           data-scroll-color="feature-text"
         >
           观看玩机管家的功能演示，了解如何高效管理您的Android设备
@@ -294,16 +291,16 @@ import StatsCounter from "@/components/StatsCounter";
   </section>
 
   <!-- CTA Section - Apple Style -->
-  <section class="py-24 sm:py-32 bg-gray-50 dark:bg-gray-900">
+  <section class="py-20 md:py-32 bg-gray-50 dark:bg-gray-900">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2
-        class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 tracking-tight"
+        class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
         data-scroll-color="section-title"
       >
         准备好开始使用玩机管家了吗？
       </h2>
       <p
-        class="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-10 sm:mb-12 font-light max-w-3xl mx-auto"
+        class="text-base md:text-xl text-gray-600 dark:text-gray-400 mb-8 md:mb-12 font-light max-w-3xl mx-auto"
         data-scroll-color="feature-text"
       >
         强大、简洁、优雅的安卓设备跨平台全能玩机管家

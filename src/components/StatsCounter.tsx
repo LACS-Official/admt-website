@@ -62,10 +62,10 @@ const StatsCounter: React.FC = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12 md:gap-16 text-center">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-12 md:gap-16 text-center max-w-5xl mx-auto">
       {statsItems.map((item, index) => (
-        <div key={index} className="p-6 transform hover:scale-105 transition-transform duration-400">
-          <div className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-3 sm:mb-4" data-scroll-color="gradient-text">
+        <div key={index} className="p-2 sm:p-6 transform hover:scale-105 transition-transform duration-400">
+          <div className="text-2xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 dark:text-white mb-2 sm:mb-4" data-scroll-color="gradient-text">
             {!loading ? (
               <>
                 <CountUp to={item.value} separator="," duration={2} />+
@@ -74,7 +74,7 @@ const StatsCounter: React.FC = () => {
               <span>...</span>
             )}
           </div>
-          <div className="text-base sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium">
+          <div className="text-sm sm:text-lg md:text-xl text-gray-600 dark:text-gray-400 font-medium">
             {item.label}
           </div>
         </div>
