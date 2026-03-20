@@ -1,18 +1,10 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import { SITE_CONFIG } from "@/config/site";
-import ScrollColorAnimation from "@/components/ScrollColorAnimation.astro";
-import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
 import SimpleAnnouncementBanner from "@/components/SimpleAnnouncementBanner.astro";
 import ImageLightbox from "@/components/ImageLightbox.astro";
-
-// ReactBits Components
-import Hyperspeed from "@/components/reactbits/Hyperspeed";
-import CountUp from "@/components/reactbits/CountUp";
-import Magnet from "@/components/reactbits/Magnet";
-import TiltedCard from "@/components/reactbits/TiltedCard";
-import SplashCursor from "@/components/reactbits/SplashCursor";
 import StatsCounter from "@/components/StatsCounter";
+import GroupModal from "@/components/GroupModal.astro";
 ---
 
 <MainLayout
@@ -20,27 +12,21 @@ import StatsCounter from "@/components/StatsCounter";
   description={SITE_CONFIG.description}
   image="/img/admt-bg.webp"
 >
-  <SplashCursor client:load />
-
   <!-- Announcement Banner - Fixed Top -->
   <SimpleAnnouncementBanner />
 
-  <!-- Hero Section - Apple Style -->
+  <!-- Hero Section -->
   <section
-    class="hero-section py-16 md:py-48 min-h-[60vh] md:min-h-[95vh] flex items-center dynamic-background overflow-hidden relative"
-    data-parallax="0.05"
+    class="hero-section py-16 md:py-32 min-h-[50vh] flex items-center bg-white dark:bg-black relative"
   >
-    <Hyperspeed client:only="react" />
     <div
-      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+      class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 w-full pt-10"
     >
       <h1
-        class="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-gray-900 dark:text-white mb-6 md:mb-10 animate-fade-in tracking-tighter leading-[1.05]"
-        data-scroll-color="hero-title"
-        data-fade-in
+        class="text-5xl sm:text-7xl md:text-8xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tighter leading-[1.05]"
       >
         {SITE_CONFIG.name.split("-")[0]}<span
-          class="bg-gradient-to-b from-gray-900 to-gray-500 dark:from-white dark:to-gray-400 bg-clip-text text-transparent italic"
+          class="text-gray-400 dark:text-gray-500 font-light"
           >{
             SITE_CONFIG.name.split("-")[1]
               ? "-" + SITE_CONFIG.name.split("-")[1]
@@ -49,74 +35,61 @@ import StatsCounter from "@/components/StatsCounter";
         >
       </h1>
       <p
-        class="text-lg sm:text-3xl md:text-4xl text-gray-600 dark:text-gray-300 mb-10 md:mb-16 animate-slide-up font-light leading-relaxed tracking-tight max-w-4xl mx-auto px-4"
-        data-scroll-color="gradient-text"
-        data-fade-in
+        class="text-lg sm:text-2xl text-gray-500 dark:text-gray-400 mb-10 md:mb-12 font-light leading-relaxed max-w-3xl mx-auto px-4"
       >
         {SITE_CONFIG.tagline}
       </p>
-      <div
-        class="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center animate-slide-up"
-      >
-        <Magnet client:load padding={50} magnetStrength={3}>
-          <a
-            href="/download"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-14 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 transform hover:scale-[1.03] shadow-[0_20px_50px_rgba(37,99,235,0.3)] hover:shadow-blue-500/40 block"
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/download"
+          class="bg-black dark:bg-white text-white dark:text-black px-8 md:px-10 py-3 md:py-4 rounded-full font-medium text-base md:text-lg transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 block"
+        >
+          立即下载
+        </a>
+        <a
+          href="/features"
+          class="group text-gray-900 bg-white border border-gray-200 dark:text-white dark:bg-black dark:border-gray-800 px-8 md:px-10 py-3 md:py-4 rounded-full font-medium text-base md:text-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-900 flex items-center justify-center gap-2 block"
+        >
+          了解详情
+          <svg
+            class="w-4 h-4 group-hover:translate-x-1 transition-transform"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            ><path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 5l7 7-7 7"></path></svg
           >
-            立即下载
-          </a>
-        </Magnet>
-        <Magnet client:load padding={50} magnetStrength={3}>
-          <a
-            href="/features"
-            class="group text-gray-900 dark:text-white px-8 md:px-14 py-4 md:py-5 rounded-full font-bold text-lg md:text-xl transition-all duration-300 border-2 border-gray-900/10 dark:border-white/10 hover:border-gray-900 dark:hover:border-white flex items-center justify-center gap-2 block"
-          >
-            了解详情
-            <svg
-              class="w-5 h-5 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              ><path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 5l7 7-7 7"></path></svg
-            >
-          </a>
-        </Magnet>
+        </a>
       </div>
     </div>
   </section>
 
-  <!-- Gallery Showcase - High Impact -->
-  <section class="py-12 md:py-24 bg-white dark:bg-black overflow-hidden">
-    <div class="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-        <div class="order-2 md:order-1" data-fade-in>
-          <div class="relative">
-            <div
-              class="absolute -inset-10 bg-blue-500/10 rounded-full blur-3xl"
-            >
-            </div>
-            <img
-              src="https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp"
-              alt="ADMT 每一处细节"
-              class="relative rounded-2xl shadow-2xl border border-gray-200/50 dark:border-white/10 transform -rotate-1 hover:rotate-0 transition-all duration-1000 group-hover:shadow-3xl"
-            />
-          </div>
+  <!-- Gallery Showcase -->
+  <section
+    class="py-16 md:py-24 bg-gray-50 dark:bg-gray-900/40 border-t border-gray-100 dark:border-gray-800"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div
+        class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20 items-center"
+      >
+        <div class="order-2 md:order-1">
+          <img
+            src="https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp"
+            alt="ADMT 每一处细节"
+            class="rounded-xl border border-gray-200 dark:border-gray-800 w-full"
+          />
         </div>
-        <div class="order-1 md:order-2 px-8" data-fade-in>
+        <div class="order-1 md:order-2">
           <h2
-            class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
+            class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
           >
-            看见 <span
-              class="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
-              >每一处细节</span
-            >
+            看见每一处细节
           </h2>
           <p
-            class="text-base md:text-xl text-gray-600 dark:text-gray-400 font-light leading-relaxed mb-6 md:mb-10"
+            class="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8"
           >
             深度的系统洞察，直观的数据展示。ADMT 让复杂的 Android
             系统管理变得如丝般顺滑。
@@ -128,9 +101,9 @@ import StatsCounter from "@/components/StatsCounter";
                 "实时的系统日志捕获",
                 "全能的手机信息管理",
               ].map((item) => (
-                <li class="flex items-center gap-3 text-sm md:text-lg font-medium text-gray-700 dark:text-gray-300">
+                <li class="flex items-center gap-3 text-base text-gray-700 dark:text-gray-300">
                   <svg
-                    class="w-6 h-6 text-blue-600"
+                    class="w-5 h-5 text-gray-400"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -138,7 +111,7 @@ import StatsCounter from "@/components/StatsCounter";
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      stroke-width="2"
+                      stroke-width="1.5"
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
@@ -152,30 +125,30 @@ import StatsCounter from "@/components/StatsCounter";
     </div>
   </section>
 
-  <!-- Features Preview - Apple Style -->
-  <section class="py-16 md:py-32 bg-gray-50 dark:bg-black">
+  <!-- Features Preview -->
+  <section class="py-16 md:py-24 bg-white dark:bg-black">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12 md:mb-20">
-        <h2
-          class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tight"
-          data-scroll-color="section-title"
-        >
-          强大功能
-        </h2>
-        <p
-          class="text-base md:text-2xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto font-light mb-8 md:mb-10"
-          data-scroll-color="feature-text"
-        >
-          一切都为了让设备管理变得简单而高效
-        </p>
-        <div class="flex justify-center mb-8 md:mb-16" data-fade-in>
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <h2
+            class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+          >
+            强大功能
+          </h2>
+          <p
+            class="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-xl"
+          >
+            一切都为了让设备管理变得简单而高效
+          </p>
+        </div>
+        <div class="mt-6 md:mt-0">
           <a
             href="/features"
-            class="group inline-flex items-center bg-blue-600 hover:bg-blue-700 text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-bold text-base md:text-xl transition-all duration-300 transform hover:scale-105 shadow-xl hover:shadow-2xl"
+            class="group inline-flex items-center text-gray-900 dark:text-white font-medium text-sm md:text-base hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
-            探索所有功能特性
+            探索所有功能
             <svg
-              class="ml-3 w-6 h-6 transform group-hover:translate-x-1 transition-transform"
+              class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -191,7 +164,7 @@ import StatsCounter from "@/components/StatsCounter";
       </div>
 
       <!-- Feature Grid -->
-      <div class="grid grid-cols-2 lg:grid-cols-2 gap-4 md:gap-12">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
         {
           [
             {
@@ -201,49 +174,38 @@ import StatsCounter from "@/components/StatsCounter";
                 "https://img-g.lacs.cc/file/1770038393216_SnowShot_2026-02-02_16-36-04.webp",
             },
             {
-              title: "全能的设备信息获取",
-              description: "获取设备的详细信息。",
+              title: "全能的设备信息",
+              description: "获取设备的最详尽信息与规格参数。",
               image:
                 "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
             },
             {
               title: "设备投屏",
-              description: "超低延迟，极致高清。",
+              description: "超低延迟，极致高清画面呈现。",
               image:
                 "https://img-g.lacs.cc/file/1770038393162_SnowShot_2026-02-02_18-41-20.webp",
             },
             {
               title: "应用管理",
-              description: "批量管理，极致高效。",
+              description: "批量管理应用，带来极致工作效率。",
               image:
                 "https://img-g.lacs.cc/file/1770038395136_SnowShot_2026-02-02_18-51-34.webp",
             },
-          ].map((feature, index) => (
-            <div
-              class="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 shadow-xl hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
-              data-fade-in
-            >
-              <div class="aspect-[16/10] overflow-hidden">
-                <TiltedCard
-                  client:visible
-                  imageSrc={feature.image}
-                  altText={feature.title}
-                  captionText={feature.title}
-                  containerHeight="100%"
-                  imageHeight="300px"
-                  imageWidth="100%"
-                  rotateAmplitude={12}
-                  scaleOnHover={1.05}
-                  showTooltip={false}
+          ].map((feature) => (
+            <div class="group border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900/50 overflow-hidden">
+              <div class="aspect-[16/10] overflow-hidden border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+                <img
+                  src={feature.image}
+                  alt={feature.title}
+                  class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  loading="lazy"
                 />
               </div>
-              <div class="p-4 sm:p-10">
-                <div class="flex items-center gap-2 mb-2 sm:mb-4">
-                  <h3 class="text-lg sm:text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
-                    {feature.title}
-                  </h3>
-                </div>
-                <p class="text-xs sm:text-lg text-gray-600 dark:text-gray-400 font-light leading-relaxed">
+              <div class="p-6">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white tracking-tight mb-1">
+                  {feature.title}
+                </h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
                   {feature.description}
                 </p>
               </div>
@@ -254,129 +216,46 @@ import StatsCounter from "@/components/StatsCounter";
     </div>
   </section>
 
-  <section class="py-12 md:py-24 bg-white dark:bg-black">
+  <section
+    class="py-12 md:py-20 bg-gray-50 dark:bg-gray-900/40 border-t border-gray-100 dark:border-gray-800"
+  >
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <StatsCounter client:visible />
     </div>
   </section>
 
-  <!-- Video Section -->
-  <section class="py-12 md:py-24 bg-white dark:bg-black">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-10 md:mb-16">
-        <h2
-          class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6 tracking-tight"
-          data-scroll-color="section-title"
-        >
-          功能演示视频
-        </h2>
-        <p
-          class="text-base md:text-xl text-gray-600 dark:text-gray-400 font-light max-w-3xl mx-auto"
-          data-scroll-color="feature-text"
-        >
-          观看玩机管家的功能演示，了解如何高效管理您的Android设备
-        </p>
-      </div>
-      <div
-        class="aspect-video max-w-4xl mx-auto bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl transition-all duration-400 hover:shadow-[0_20px_60px_rgba(0,0,0,0.3)]"
-      >
-        <iframe
-          src="//player.bilibili.com/player.html?isOutside=true&aid=115400721433636&bvid=BV1mrsPzME5t&cid=33213580102&p=1"
-          scrolling="no"
-          frameborder="no"
-          allowfullscreen="true"
-          class="w-full h-full"></iframe>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA Section - Apple Style -->
-  <section class="py-20 md:py-32 bg-gray-50 dark:bg-gray-900">
+  <!-- CTA Section -->
+  <section
+    class="py-20 md:py-32 bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800"
+  >
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2
-        class="text-3xl md:text-6xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
-        data-scroll-color="section-title"
+        class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
       >
-        准备好开始使用玩机管家了吗？
+        准备好开始使用了吗？
       </h2>
       <p
-        class="text-base md:text-xl text-gray-600 dark:text-gray-400 mb-8 md:mb-12 font-light max-w-3xl mx-auto"
-        data-scroll-color="feature-text"
+        class="text-base md:text-xl text-gray-500 dark:text-gray-400 mb-10 font-light max-w-2xl mx-auto"
       >
-        强大、简洁、优雅的安卓设备跨平台全能玩机管家
+        强大、简洁、极致的安卓设备跨平台全能玩机管家
       </p>
-      <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
           href="/download"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-8 sm:px-12 py-3.5 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          class="bg-black text-white dark:bg-white dark:text-black px-8 sm:px-10 py-3 rounded-full text-base font-medium transition-colors hover:bg-gray-800 dark:hover:bg-gray-200"
         >
-          免费下载使用
+          免费下载
         </a>
         <a
           href="/docs"
-          class="bg-white hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-8 sm:px-12 py-3.5 rounded-full text-base sm:text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border border-gray-200 dark:border-gray-700"
+          class="bg-white text-gray-900 border border-gray-200 dark:bg-black dark:text-white dark:border-gray-800 px-8 sm:px-10 py-3 rounded-full text-base font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-900"
         >
-          访问文档中心
+          查看文档
         </a>
       </div>
     </div>
   </section>
 
-  <!-- 滚动效果组件 -->
-  <ScrollColorAnimation />
-  <AppleScrollEffects />
   <ImageLightbox />
+  <GroupModal />
 </MainLayout>
-
-<style>
-  /* Hero Section Background */
-  .hero-section {
-    position: relative;
-    background-image: url("/img/admt-bg.webp");
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-  }
-
-  /* Background overlay for better text readability */
-  .hero-section::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(255, 255, 255, 0.75);
-    z-index: 1;
-  }
-
-  /* Dark mode overlay */
-  :global(.dark) .hero-section::before {
-    background: rgba(0, 0, 0, 0.7);
-  }
-
-  /* Ensure content is above the overlay */
-  .hero-section > div {
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Responsive background attachment */
-  @media (max-width: 768px) {
-    .hero-section {
-      background-attachment: scroll;
-    }
-  }
-
-  /* Enhance text contrast on background */
-  .hero-section h1,
-  .hero-section p {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  :global(.dark) .hero-section h1,
-  :global(.dark) .hero-section p {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  }
-</style>

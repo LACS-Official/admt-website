@@ -1,0 +1,54 @@
+---
+import MainLayout from "@/layouts/MainLayout.astro";
+
+const formUrl =
+  "https://f1r77k85u0p.feishu.cn/share/base/form/shrcnjHyOt1hlzs6ePsehfgJaOf";
+---
+
+<MainLayout
+  title="反馈建议"
+  description="您的反馈对我们至关重要，请告诉我们您的想法和建议。"
+>
+  <div
+    class="bg-white dark:bg-black min-h-[calc(100vh-64px)] flex flex-col pt-10"
+  >
+    <!-- Header Section -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 pt-16">
+      <h1
+        class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+      >
+        反馈与建议
+      </h1>
+      <p
+        class="text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-light"
+      >
+        无论是遇到问题、功能请求还是改进建议，我们都非常期待听到您的声音。
+      </p>
+    </div>
+
+    <!-- Form Container -->
+    <div class="flex-grow w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
+      <div
+        class="relative w-full h-[800px] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900 shadow-sm"
+      >
+        <iframe
+          src={formUrl}
+          class="absolute inset-0 w-full h-full border-0"
+          title="反馈表单"
+          loading="lazy"></iframe>
+      </div>
+
+      <div class="mt-8 text-center text-sm text-gray-400 dark:text-gray-500">
+        <p>如果表单无法正常加载，您也可以直接访问：</p>
+        <a
+          href={formUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors underline underline-offset-4"
+        >
+          飞书表单原链接
+        </a>
+      </div>
+    </div>
+  </div>
+</MainLayout>

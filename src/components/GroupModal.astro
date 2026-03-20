@@ -1,0 +1,223 @@
+---
+import { SITE_CONFIG } from "@/config/site";
+---
+
+<div
+  id="group-modal"
+  class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
+  aria-labelledby="modal-title"
+  role="dialog"
+  aria-modal="true"
+>
+  <div
+    class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md animate-in fade-in zoom-in duration-300"
+  >
+    <!-- Background Decoration -->
+    <div
+      class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-10 dark:opacity-20"
+    >
+    </div>
+
+    <div class="px-6 pt-8 pb-6">
+      <div class="flex flex-col items-center text-center">
+        <!-- Icon/Logo -->
+        <div
+          class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-8 w-8"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+            ></path>
+          </svg>
+        </div>
+
+        <h3
+          class="text-2xl font-bold leading-6 text-gray-900 dark:text-white"
+          id="modal-title"
+        >
+          {SITE_CONFIG.group.name}
+        </h3>
+
+        <div class="mt-4">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
+            扫描下方二维码加入我们的官方交流群，<br />与开发者和用户实时沟通。
+          </p>
+        </div>
+
+        <!-- QR Code Placeholder -->
+        <div
+          class="group relative mt-6 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 transition-colors hover:border-blue-400 dark:hover:border-blue-500"
+        >
+          <div
+            class="flex items-center justify-center w-48 h-48 overflow-hidden rounded-lg bg-white"
+          >
+            <img
+              src={SITE_CONFIG.group.qrCode}
+              alt="QQ Group QR Code"
+              class="w-full h-full object-cover"
+              onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(window.location.href)"
+            />
+          </div>
+          <div
+            class="mt-2 text-xs font-medium text-gray-400 dark:text-gray-500"
+          >
+            群号：<span class="text-blue-600 dark:text-blue-400"
+              >{SITE_CONFIG.group.number}</span
+            >
+          </div>
+        </div>
+
+        <div class="mt-8 flex flex-col w-full space-y-3">
+          <a
+            href={SITE_CONFIG.group.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex w-full justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all active:scale-[0.98]"
+          >
+            直接加入群聊
+          </a>
+          <button
+            type="button"
+            class="close-modal-button inline-flex w-full justify-center rounded-full bg-gray-100 dark:bg-gray-700 px-6 py-3 text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all"
+          >
+            稍后再说
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Close button (top right) -->
+    <button
+      type="button"
+      class="close-modal-button absolute top-4 right-4 text-gray-400 hover:text-gray-500 transition-colors focus:outline-none"
+    >
+      <span class="sr-only">Close</span>
+      <svg
+        class="h-6 w-6"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  function setupModal() {
+    const modal = document.getElementById("group-modal");
+    const openButtons = document.querySelectorAll(".open-group-modal");
+    const closeButtons = document.querySelectorAll(".close-modal-button");
+
+    if (!modal) return;
+
+    const showModal = () => {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
+      // Trigger animation
+      setTimeout(() => {
+        modal.classList.add("opacity-100");
+      }, 10);
+    };
+
+    const hideModal = () => {
+      modal.classList.remove("opacity-100");
+      document.body.style.overflow = "";
+      setTimeout(() => {
+        modal.classList.add("hidden");
+        modal.classList.remove("flex");
+      }, 300);
+    };
+
+    openButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        showModal();
+      });
+    });
+
+    closeButtons.forEach((btn) => {
+      btn.addEventListener("click", hideModal);
+    });
+
+    // Close on click outside
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        hideModal();
+      }
+    });
+
+    // Close on escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+        hideModal();
+      }
+    });
+  }
+
+  // Initial setup
+  setupModal();
+
+  // Re-setup on page navigation (for SPAs or Astro view transitions)
+  document.addEventListener("astro:page-load", setupModal);
+
+  // Show modal on first visit
+  const hasSeenModal = localStorage.getItem("hasSeenGroupModal");
+  if (!hasSeenModal) {
+    setTimeout(() => {
+      showModal();
+      localStorage.setItem("hasSeenGroupModal", "true");
+    }, 1000);
+  }
+</script>
+
+<style>
+  .animate-in {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    animation-fill-mode: forwards;
+  }
+
+  .fade-in {
+    animation-name: fade-in;
+  }
+
+  .zoom-in {
+    animation-name: zoom-in;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes zoom-in {
+    from {
+      transform: scale(0.95);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+</style>

@@ -67,6 +67,15 @@ export const SITE_CONFIG = {
     { name: "功能特性", href: "/features" },
     { name: "文档", href: "/docs" },
     { name: "下载", href: "/download" },
+    { name: "反馈", href: "/feedback" },
     { name: "关于与联系", href: "https://www.lacs.cc/contact" }
-  ]
+  ],
+
+  // 群组信息
+  group: {
+    name: "ADMT 官方交流群",
+    number: "1040866704",
+    link: "https://qm.qq.com/q/kqY217EUkU",
+    qrCode: "https://img-g.lacs.cc/file/admtweb/1773804245866_qrcode_1773803395190.webp"
+  }
 };
