@@ -1,5 +1,5 @@
 import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
-import { join, extname, basename } from 'path';
+import { join, extname, basename, relative } from 'path';
 import { marked } from 'marked';
 import { gfmHeadingId } from 'marked-gfm-heading-id';
 import matter from 'gray-matter';
@@ -293,17 +293,8 @@ export function parseMarkdownContent(
  * @returns slug
  */
 function generateSlugFromPath(filePath: string): string {
-  const relativePath = filePath.replace(process.cwd(), '').replace(/\\/g, '/');
-  const pathParts = relativePath.split('/').filter(part => part && part !== 'public' && part !== 'docs');
-  const fileName = pathParts[pathParts.length - 1];
-  const nameWithoutExt = fileName ? fileName.replace(/\.md$/, '') : '';
-
-  if (pathParts.length > 1) {
-    pathParts[pathParts.length - 1] = nameWithoutExt;
-    return pathParts.join('/');
-  }
-
-  return nameWithoutExt;
+  const docsDir = join(process.cwd(), 'public/docs');
+  return relative(docsDir, filePath).replace(/\\/g, '/').replace(/\.md$/, '');
 }
 
 /**

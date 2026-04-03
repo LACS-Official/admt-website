@@ -10,10 +10,9 @@ import GroupModal from "@/components/GroupModal.astro";
 <MainLayout
   title="首页"
   description={SITE_CONFIG.description}
-  image="/img/admt-bg.webp"
+  image={SITE_CONFIG.home.hero.bgImage || "/img/admt-bg.webp"}
 >
-  <!-- Announcement Banner - Fixed Top -->
-  <SimpleAnnouncementBanner />
+  <ImageLightbox />
 
   <!-- Hero Section -->
   <section
@@ -44,13 +43,13 @@ import GroupModal from "@/components/GroupModal.astro";
           href="/download"
           class="bg-black dark:bg-white text-white dark:text-black px-8 md:px-10 py-3 md:py-4 rounded-full font-medium text-base md:text-lg transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 block"
         >
-          立即下载
+          {SITE_CONFIG.home.hero.ctaDownload}
         </a>
         <a
           href="/features"
           class="group text-gray-900 bg-white border border-gray-200 dark:text-white dark:bg-black dark:border-gray-800 px-8 md:px-10 py-3 md:py-4 rounded-full font-medium text-base md:text-lg transition-colors hover:bg-gray-50 dark:hover:bg-gray-900 flex items-center justify-center gap-2 block"
         >
-          了解详情
+          {SITE_CONFIG.home.hero.ctaLearnMore}
           <svg
             class="w-4 h-4 group-hover:translate-x-1 transition-transform"
             fill="none"
@@ -77,8 +76,8 @@ import GroupModal from "@/components/GroupModal.astro";
       >
         <div class="order-2 md:order-1">
           <img
-            src="https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp"
-            alt="ADMT 每一处细节"
+            src={SITE_CONFIG.home.showcase.image}
+            alt={SITE_CONFIG.home.showcase.title}
             class="rounded-xl border border-gray-200 dark:border-gray-800 w-full"
           />
         </div>
@@ -86,21 +85,16 @@ import GroupModal from "@/components/GroupModal.astro";
           <h2
             class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
           >
-            看见每一处细节
+            {SITE_CONFIG.home.showcase.title}
           </h2>
           <p
             class="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8"
           >
-            深度的系统洞察，直观的数据展示。ADMT 让复杂的 Android
-            系统管理变得如丝般顺滑。
+            {SITE_CONFIG.home.showcase.description}
           </p>
           <ul class="space-y-4">
             {
-              [
-                "全方位的设备信息展示",
-                "实时的系统日志捕获",
-                "全能的手机信息管理",
-              ].map((item) => (
+              SITE_CONFIG.home.showcase.features.map((item) => (
                 <li class="flex items-center gap-3 text-base text-gray-700 dark:text-gray-300">
                   <svg
                     class="w-5 h-5 text-gray-400"
@@ -133,12 +127,12 @@ import GroupModal from "@/components/GroupModal.astro";
           <h2
             class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
           >
-            强大功能
+            {SITE_CONFIG.home.featuresPreview.title}
           </h2>
           <p
             class="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-xl"
           >
-            一切都为了让设备管理变得简单而高效
+            {SITE_CONFIG.home.featuresPreview.subtitle}
           </p>
         </div>
         <div class="mt-6 md:mt-0">
@@ -146,7 +140,7 @@ import GroupModal from "@/components/GroupModal.astro";
             href="/features"
             class="group inline-flex items-center text-gray-900 dark:text-white font-medium text-sm md:text-base hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
-            探索所有功能
+            {SITE_CONFIG.home.featuresPreview.viewAllText}
             <svg
               class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
               fill="none"
@@ -166,32 +160,7 @@ import GroupModal from "@/components/GroupModal.astro";
       <!-- Feature Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
         {
-          [
-            {
-              title: "欢迎使用",
-              description: "ADMT，让设备管理变得简单而高效。",
-              image:
-                "https://img-g.lacs.cc/file/1770038393216_SnowShot_2026-02-02_16-36-04.webp",
-            },
-            {
-              title: "全能的设备信息",
-              description: "获取设备的最详尽信息与规格参数。",
-              image:
-                "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
-            },
-            {
-              title: "设备投屏",
-              description: "超低延迟，极致高清画面呈现。",
-              image:
-                "https://img-g.lacs.cc/file/1770038393162_SnowShot_2026-02-02_18-41-20.webp",
-            },
-            {
-              title: "应用管理",
-              description: "批量管理应用，带来极致工作效率。",
-              image:
-                "https://img-g.lacs.cc/file/1770038395136_SnowShot_2026-02-02_18-51-34.webp",
-            },
-          ].map((feature) => (
+          SITE_CONFIG.home.featuresPreview.items.map((feature) => (
             <div class="group border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900/50 overflow-hidden">
               <div class="aspect-[16/10] overflow-hidden border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
                 <img
@@ -232,25 +201,25 @@ import GroupModal from "@/components/GroupModal.astro";
       <h2
         class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
       >
-        准备好开始使用了吗？
+        {SITE_CONFIG.home.cta.title}
       </h2>
       <p
         class="text-base md:text-xl text-gray-500 dark:text-gray-400 mb-10 font-light max-w-2xl mx-auto"
       >
-        强大、简洁、极致的安卓设备跨平台全能玩机管家
+        {SITE_CONFIG.home.cta.description}
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
           href="/download"
           class="bg-black text-white dark:bg-white dark:text-black px-8 sm:px-10 py-3 rounded-full text-base font-medium transition-colors hover:bg-gray-800 dark:hover:bg-gray-200"
         >
-          免费下载
+          {SITE_CONFIG.home.cta.downloadText}
         </a>
         <a
           href="/docs"
           class="bg-white text-gray-900 border border-gray-200 dark:bg-black dark:text-white dark:border-gray-800 px-8 sm:px-10 py-3 rounded-full text-base font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-900"
         >
-          查看文档
+          {SITE_CONFIG.home.cta.docsText}
         </a>
       </div>
     </div>

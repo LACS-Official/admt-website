@@ -6,11 +6,21 @@
 ---
 
 <!-- 公告横幅 - 只在有真实API数据时显示 -->
-<div id="announcement-banner" class="announcement-banner fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-10 shadow-xl backdrop-blur-sm transform -translate-y-full transition-transform duration-500 ease-out" style="display: none;">
+<div
+  id="announcement-banner"
+  class="announcement-banner fixed top-0 left-0 right-0 z-50 bg-black bg-opacity-80 dark:bg-white dark:bg-opacity-10 shadow-xl backdrop-blur-sm transform -translate-y-full transition-transform duration-500 ease-out"
+  style="display: none;"
+>
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
     <!-- 倒计时显示 -->
-    <div id="countdown-display" class="absolute top-3 right-6 text-white text-xs font-bold bg-black bg-opacity-30 rounded-full w-7 h-7 flex items-center justify-center opacity-70 transition-all duration-300 hover:opacity-90 hover:scale-110" style="display: none; font-family: 'Courier New', monospace;">
-      <span id="countdown-number" style="transition: transform 0.15s ease-out;">5</span>
+    <div
+      id="countdown-display"
+      class="absolute top-3 right-6 text-white text-xs font-bold bg-black bg-opacity-30 rounded-full w-7 h-7 flex items-center justify-center opacity-70 transition-all duration-300 hover:opacity-90 hover:scale-110"
+      style="display: none; font-family: 'Courier New', monospace;"
+    >
+      <span id="countdown-number" style="transition: transform 0.15s ease-out;"
+        >5</span
+      >
     </div>
 
     <div id="announcement-content" class="announcement-content">
@@ -20,20 +30,23 @@
 </div>
 
 <!-- 无公告状态提示 - 仅用于调试，正常情况下不显示 -->
-<div id="no-announcements-debug" class="hidden fixed top-4 right-4 z-40 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-4 py-2 rounded-lg text-sm">
+<div
+  id="no-announcements-debug"
+  class="hidden fixed top-4 right-4 z-40 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-4 py-2 rounded-lg text-sm"
+>
   暂无公告
 </div>
 
 <script is:inline>
   // 公告横幅管理 - 仅使用真实API数据
-  document.addEventListener('DOMContentLoaded', function() {
-    console.log('Loading announcements from API...');
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("Loading announcements from API...");
 
-    const banner = document.getElementById('announcement-banner');
-    const content = document.getElementById('announcement-content');
-    const debugElement = document.getElementById('no-announcements-debug');
-    const countdownDisplay = document.getElementById('countdown-display');
-    const countdownNumber = document.getElementById('countdown-number');
+    const banner = document.getElementById("announcement-banner");
+    const content = document.getElementById("announcement-content");
+    const debugElement = document.getElementById("no-announcements-debug");
+    const countdownDisplay = document.getElementById("countdown-display");
+    const countdownNumber = document.getElementById("countdown-number");
 
     // 自动消失配置
     const AUTO_HIDE_DELAY = 2; // 秒后自动消失
@@ -43,21 +56,23 @@
     let isManuallyHidden = false;
 
     if (!banner || !content) {
-      console.error('Banner elements not found');
+      console.error("Banner elements not found");
       return;
     }
 
     // 从API获取公告数据
-    fetch('https://api-g.lacs.cc/app/software/id/1/announcements?published=true&limit=3')
-      .then(response => {
-        console.log('API response status:', response.status);
+    fetch(
+      "https://api-g.lacs.cc/app/software/id/1/announcements?published=true&limit=3",
+    )
+      .then((response) => {
+        console.log("API response status:", response.status);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         return response.json();
       })
-      .then(data => {
-        console.log('API response data:', data);
+      .then((data) => {
+        console.log("API response data:", data);
 
         // 检查两种可能的数据结构
         let announcements = [];
@@ -65,7 +80,11 @@
           if (data.data && Array.isArray(data.data)) {
             // 标准结构：data直接是数组
             announcements = data.data;
-          } else if (data.data && data.data.announcements && Array.isArray(data.data.announcements)) {
+          } else if (
+            data.data &&
+            data.data.announcements &&
+            Array.isArray(data.data.announcements)
+          ) {
             // 实际结构：data.announcements是数组
             announcements = data.data.announcements;
           }
@@ -80,45 +99,52 @@
           // 显示横幅
           showBanner();
         } else {
-          console.log('No announcements available from API');
+          console.log("No announcements available from API");
           hideBanner();
-          showDebugMessage('API返回空数据');
+          showDebugMessage("API返回空数据");
         }
       })
-      .catch(error => {
-        console.error('Failed to load announcements from API:', error);
+      .catch((error) => {
+        console.error("Failed to load announcements from API:", error);
         hideBanner();
-        showDebugMessage('API调用失败');
+        showDebugMessage("API调用失败");
       });
 
     // 添加鼠标悬停事件监听器
     if (banner) {
-      banner.addEventListener('mouseenter', pauseCountdown);
-      banner.addEventListener('mouseleave', resumeCountdown);
+      banner.addEventListener("mouseenter", pauseCountdown);
+      banner.addEventListener("mouseleave", resumeCountdown);
     }
 
     function showBanner() {
-      banner.style.display = 'block';
+      banner.style.display = "block";
       setTimeout(() => {
-        banner.classList.remove('-translate-y-full');
-        banner.classList.add('translate-y-0');
+        // 计算并设置横幅高度，用于推挤 Header
+        const height = banner.offsetHeight;
+        document.documentElement.style.setProperty(
+          "--banner-height",
+          height + "px",
+        );
 
-        // 显示横幅后开始倒计时
+        banner.classList.remove("-translate-y-full");
+        banner.classList.add("translate-y-0");
+        document.documentElement.classList.add("announcement-active");
         startCountdown();
       }, 100);
     }
 
     function hideBanner() {
-      banner.style.display = 'none';
+      banner.style.display = "none";
+      document.documentElement.classList.remove("announcement-active");
     }
 
     function showDebugMessage(message) {
       if (debugElement) {
         debugElement.textContent = message;
-        debugElement.classList.remove('hidden');
+        debugElement.classList.remove("hidden");
         // 5秒后隐藏调试信息
         setTimeout(() => {
-          debugElement.classList.add('hidden');
+          debugElement.classList.add("hidden");
         }, 5000);
       }
     }
@@ -132,7 +158,7 @@
 
       // 显示倒计时
       if (countdownDisplay) {
-        countdownDisplay.style.display = 'flex';
+        countdownDisplay.style.display = "flex";
       }
 
       countdownTimer = setInterval(() => {
@@ -154,27 +180,27 @@
         countdownNumber.textContent = currentCountdown;
 
         // 添加数字变化动画
-        countdownNumber.style.transform = 'scale(1.2)';
+        countdownNumber.style.transform = "scale(1.2)";
         setTimeout(() => {
-          countdownNumber.style.transform = 'scale(1)';
+          countdownNumber.style.transform = "scale(1)";
         }, 150);
 
         // 最后3秒时添加警告样式
         if (currentCountdown <= 3) {
-          countdownDisplay.classList.add('animate-pulse');
-          countdownDisplay.style.backgroundColor = 'rgba(239, 68, 68, 0.4)';
-          countdownDisplay.style.borderColor = 'rgba(239, 68, 68, 0.6)';
-          countdownDisplay.style.border = '1px solid';
+          countdownDisplay.classList.add("animate-pulse");
+          countdownDisplay.style.backgroundColor = "rgba(239, 68, 68, 0.4)";
+          countdownDisplay.style.borderColor = "rgba(239, 68, 68, 0.6)";
+          countdownDisplay.style.border = "1px solid";
         } else {
-          countdownDisplay.classList.remove('animate-pulse');
-          countdownDisplay.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-          countdownDisplay.style.border = 'none';
+          countdownDisplay.classList.remove("animate-pulse");
+          countdownDisplay.style.backgroundColor = "rgba(0, 0, 0, 0.3)";
+          countdownDisplay.style.border = "none";
         }
 
         // 最后1秒时添加强烈警告
         if (currentCountdown === 1) {
-          countdownDisplay.style.backgroundColor = 'rgba(239, 68, 68, 0.6)';
-          countdownDisplay.classList.add('animate-bounce');
+          countdownDisplay.style.backgroundColor = "rgba(239, 68, 68, 0.6)";
+          countdownDisplay.classList.add("animate-bounce");
         }
       }
     }
@@ -183,13 +209,14 @@
     function autoHideBanner() {
       if (isManuallyHidden) return;
 
-      banner.classList.add('-translate-y-full');
-      banner.classList.remove('translate-y-0');
+      banner.classList.add("-translate-y-full");
+      banner.classList.remove("translate-y-0");
 
       setTimeout(() => {
-        banner.style.display = 'none';
+        banner.style.display = "none";
+        document.documentElement.classList.remove("announcement-active");
         if (countdownDisplay) {
-          countdownDisplay.style.display = 'none';
+          countdownDisplay.style.display = "none";
         }
       }, 500);
     }
@@ -198,7 +225,7 @@
     function pauseCountdown() {
       isPaused = true;
       if (countdownDisplay) {
-        countdownDisplay.style.opacity = '0.3';
+        countdownDisplay.style.opacity = "0.3";
       }
     }
 
@@ -206,7 +233,7 @@
     function resumeCountdown() {
       isPaused = false;
       if (countdownDisplay) {
-        countdownDisplay.style.opacity = '0.6';
+        countdownDisplay.style.opacity = "0.6";
       }
     }
 
@@ -217,25 +244,27 @@
         countdownTimer = null;
       }
       if (countdownDisplay) {
-        countdownDisplay.style.display = 'none';
+        countdownDisplay.style.display = "none";
       }
     }
 
     // 将函数暴露到全局作用域
     window.stopCountdown = stopCountdown;
     window.isManuallyHidden = isManuallyHidden;
-    
+
     function displayAnnouncement(announcement) {
-      const typeIcon = getTypeIcon(announcement.type || 'general');
-      const typeLabel = getTypeLabel(announcement.type || 'general');
+      const typeIcon = getTypeIcon(announcement.type || "general");
+      const typeLabel = getTypeLabel(announcement.type || "general");
       const formattedDate = formatDate(announcement.publishedAt);
-      const announcementContent = announcement.content || announcement.title || '暂无内容';
+      const announcementContent =
+        announcement.content || announcement.title || "暂无内容";
 
       // 检查内容是否需要截断
       const maxLength = 100;
       const needsTruncation = announcementContent.length > maxLength;
-      const shortContent = needsTruncation ?
-        announcementContent.substring(0, maxLength) + '...' : announcementContent;
+      const shortContent = needsTruncation
+        ? announcementContent.substring(0, maxLength) + "..."
+        : announcementContent;
 
       content.innerHTML = `
         <div class="flex items-start justify-between py-4">
@@ -245,13 +274,15 @@
             </div>
             <div class="flex-1 min-w-0">
               <div class="font-bold text-white text-base leading-6 mb-2">
-                ${escapeHtml(announcement.title || '公告标题')}
+                ${escapeHtml(announcement.title || "公告标题")}
               </div>
               <div class="text-blue-50 text-sm leading-relaxed mb-3 opacity-90">
                 <div id="announcement-short-content">
                   ${escapeHtml(shortContent)}
                 </div>
-                ${needsTruncation ? `
+                ${
+                  needsTruncation
+                    ? `
                   <div id="announcement-full-content" class="hidden">
                     ${escapeHtml(announcementContent)}
                   </div>
@@ -262,7 +293,9 @@
                   >
                     展开全文
                   </button>
-                ` : ''}
+                `
+                    : ""
+                }
               </div>
               <div class="flex items-center space-x-3 flex-wrap">
                 <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white bg-opacity-25 text-white">
@@ -271,16 +304,24 @@
                 <span class="text-xs text-blue-100 font-medium">
                   📅 ${formattedDate}
                 </span>
-                ${announcement.version ? `
+                ${
+                  announcement.version
+                    ? `
                   <span class="text-xs text-blue-100 font-medium">
                     🏷️ v${escapeHtml(announcement.version)}
                   </span>
-                ` : ''}
-                ${announcement.metadata && announcement.metadata.urgent ? `
+                `
+                    : ""
+                }
+                ${
+                  announcement.metadata && announcement.metadata.urgent
+                    ? `
                   <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold bg-red-500 bg-opacity-80 text-white animate-pulse">
                     🚨 紧急
                   </span>
-                ` : ''}
+                `
+                    : ""
+                }
               </div>
             </div>
           </div>
@@ -292,35 +333,53 @@
         </div>
       `;
     }
-    
+
     function getTypeIcon(type) {
       switch (type) {
-        case 'update': return '🔄';
-        case 'feature': return '✨';
-        case 'security': return '🔒';
-        case 'maintenance': return '🔧';
-        case 'bugfix': return '🐛';
-        case 'general': return '📢';
-        case 'promotion': return '🎉';
-        case 'deprecation': return '⚠️';
-        default: return '📢';
+        case "update":
+          return "🔄";
+        case "feature":
+          return "✨";
+        case "security":
+          return "🔒";
+        case "maintenance":
+          return "🔧";
+        case "bugfix":
+          return "🐛";
+        case "general":
+          return "📢";
+        case "promotion":
+          return "🎉";
+        case "deprecation":
+          return "⚠️";
+        default:
+          return "📢";
       }
     }
-    
+
     function getTypeLabel(type) {
       switch (type) {
-        case 'update': return '更新';
-        case 'feature': return '新功能';
-        case 'security': return '安全';
-        case 'maintenance': return '维护';
-        case 'bugfix': return '修复';
-        case 'general': return '通知';
-        case 'promotion': return '推广';
-        case 'deprecation': return '弃用';
-        default: return '通知';
+        case "update":
+          return "更新";
+        case "feature":
+          return "新功能";
+        case "security":
+          return "安全";
+        case "maintenance":
+          return "维护";
+        case "bugfix":
+          return "修复";
+        case "general":
+          return "通知";
+        case "promotion":
+          return "推广";
+        case "deprecation":
+          return "弃用";
+        default:
+          return "通知";
       }
     }
-    
+
     function formatDate(dateString) {
       try {
         const date = new Date(dateString);
@@ -328,31 +387,31 @@
         const diffTime = now.getTime() - date.getTime();
         const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-        if (diffDays === 0) return '今天';
-        if (diffDays === 1) return '昨天';
+        if (diffDays === 0) return "今天";
+        if (diffDays === 1) return "昨天";
         if (diffDays < 7) return `${diffDays}天前`;
         if (diffDays < 30) return `${Math.floor(diffDays / 7)}周前`;
-        
-        return date.toLocaleDateString('zh-CN', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric'
+
+        return date.toLocaleDateString("zh-CN", {
+          year: "numeric",
+          month: "short",
+          day: "numeric",
         });
       } catch (error) {
-        return '未知时间';
+        return "未知时间";
       }
     }
-    
+
     function escapeHtml(text) {
-      const div = document.createElement('div');
+      const div = document.createElement("div");
       div.textContent = text;
       return div.innerHTML;
     }
   });
 
   // 全局关闭横幅函数
-  window.closeBanner = function(button) {
-    const banner = button.closest('.announcement-banner');
+  window.closeBanner = function (button) {
+    const banner = button.closest(".announcement-banner");
     if (banner) {
       // 标记为手动隐藏
       window.isManuallyHidden = true;
@@ -362,39 +421,40 @@
         window.stopCountdown();
       }
 
-      banner.classList.add('-translate-y-full');
-      banner.classList.remove('translate-y-0');
+      banner.classList.add("-translate-y-full");
+      banner.classList.remove("translate-y-0");
 
       // 延迟隐藏，等待动画完成
       setTimeout(() => {
-        banner.style.display = 'none';
-        const countdownDisplay = document.getElementById('countdown-display');
+        banner.style.display = "none";
+        document.documentElement.classList.remove("announcement-active");
+        const countdownDisplay = document.getElementById("countdown-display");
         if (countdownDisplay) {
-          countdownDisplay.style.display = 'none';
+          countdownDisplay.style.display = "none";
         }
       }, 500);
     }
   };
 
   // 全局展开/收起公告内容函数
-  window.toggleAnnouncementContent = function() {
-    const shortContent = document.getElementById('announcement-short-content');
-    const fullContent = document.getElementById('announcement-full-content');
-    const toggleBtn = document.getElementById('toggle-content-btn');
+  window.toggleAnnouncementContent = function () {
+    const shortContent = document.getElementById("announcement-short-content");
+    const fullContent = document.getElementById("announcement-full-content");
+    const toggleBtn = document.getElementById("toggle-content-btn");
 
     if (shortContent && fullContent && toggleBtn) {
-      const isExpanded = !fullContent.classList.contains('hidden');
+      const isExpanded = !fullContent.classList.contains("hidden");
 
       if (isExpanded) {
         // 收起
-        shortContent.classList.remove('hidden');
-        fullContent.classList.add('hidden');
-        toggleBtn.textContent = '展开全文';
+        shortContent.classList.remove("hidden");
+        fullContent.classList.add("hidden");
+        toggleBtn.textContent = "展开全文";
       } else {
         // 展开
-        shortContent.classList.add('hidden');
-        fullContent.classList.remove('hidden');
-        toggleBtn.textContent = '收起';
+        shortContent.classList.add("hidden");
+        fullContent.classList.remove("hidden");
+        toggleBtn.textContent = "收起";
       }
     }
   };

@@ -1,5 +1,6 @@
 ---
 import DocsLayout from "@/layouts/DocsLayout.astro";
+import { SITE_CONFIG } from "@/config/site";
 import { readFileSync } from "fs";
 import { join } from "path";
 
@@ -60,7 +61,7 @@ const htmlContent = markdownToHtml(markdownContent);
 
 <DocsLayout
   title="快速入门指南"
-  description="5分钟快速上手玩机管家，连接您的第一台Android设备"
+  description={`5分钟快速上手${SITE_CONFIG.name}，连接您的第一台Android设备`}
   currentPath="快速入门"
 >
   <!-- 进度指示器 -->
@@ -161,7 +162,7 @@ const htmlContent = markdownToHtml(markdownContent);
         class="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center"
       >
         <span class="text-2xl mr-2">🎉</span>
-        恭喜！您已完成快速入门
+        恭喜！您已完成 {SITE_CONFIG.name} 快速入门
       </h3>
       <p class="text-gray-600 dark:text-gray-300 mb-4">
         现在您已经掌握了基本操作，可以继续学习更多高级功能：

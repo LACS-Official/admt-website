@@ -11,8 +11,15 @@ const POLL_FILENAME = "linux_poll_count.json";
 // 获取当前计数的逻辑
 async function getCount() {
   try {
+    const token =
+      process.env.BLOB_READ_WRITE_TOKEN ||
+      import.meta.env.BLOB_READ_WRITE_TOKEN;
+    if (!token || typeof token !== "string") {
+      return 0; // Local fallback
+    }
     const { blobs } = await list({
       prefix: POLL_FILENAME,
+      token: token,
     });
 
     // 查找精确匹配的文件名
@@ -59,8 +66,15 @@ export async function POST() {
     const token =
       process.env.BLOB_READ_WRITE_TOKEN ||
       import.meta.env.BLOB_READ_WRITE_TOKEN;
+    
+    // 开发环境 fallback: 如果缺少 Token，则进行 Mock 响应
     if (!token) {
-      throw new Error("Environment variable BLOB_READ_WRITE_TOKEN is missing");
+      console.warn("BLOB_READ_WRITE_TOKEN is missing. Running in Mock mode (Local Dev).");
+      const currentCount = Math.floor(Math.random() * 100); // 模拟一个当前值
+      return new Response(JSON.stringify({ success: true, count: currentCount + 1, isMock: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     // 1. 获取当前值
@@ -74,8 +88,9 @@ export async function POST() {
     // 2. 写入新值
     const blob = await put(POLL_FILENAME, JSON.stringify({ count: newCount }), {
       access: "public",
-      addRandomSuffix: false, // 覆盖旧文件路径
-      allowOverwrite: true, // 允许覆盖同名文件
+      addRandomSuffix: false,
+      allowOverwrite: true,
+      token: token,
     });
 
     console.log(`Successfully updated Linux Blob at: ${blob.url}`);

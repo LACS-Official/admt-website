@@ -7,31 +7,37 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header
-  class="sticky top-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
+  class="sticky top-0 z-[100] bg-white/80 dark:bg-black/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-900 transition-all duration-300"
 >
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
+    <div class="flex justify-between items-center h-16 md:h-20">
       <!-- Logo -->
       <div class="flex items-center">
-        <a href="/" class="flex items-center space-x-2">
-          <img src="/favicon.png" alt="玩机管家" class="w-8 h-8 rounded-lg" />
-          <span class="font-bold text-xl text-gray-900 dark:text-white">
+        <a href="/" class="flex items-center space-x-3 group">
+          <img
+            src="/favicon.png"
+            alt={SITE_CONFIG.name}
+            class="w-8 h-8 md:w-9 md:h-9 rounded-xl shadow-sm group-hover:scale-110 transition-transform duration-300"
+          />
+          <span
+            class="font-bold text-xl md:text-2xl text-gray-900 dark:text-white tracking-tight"
+          >
             {SITE_CONFIG.name}
           </span>
         </a>
       </div>
 
       <!-- Desktop Navigation -->
-      <div class="hidden md:block">
-        <div class="ml-10 flex items-baseline space-x-4">
+      <div class="hidden md:flex items-center space-x-8">
+        <div class="flex items-center space-x-1">
           {
             SITE_CONFIG.navigation.map((item) => (
               <a
                 href={item.href}
-                class={`px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                class={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   currentPath === item.href
-                    ? "bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300"
-                    : "text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    ? "bg-gray-100 dark:bg-gray-800 text-black dark:text-white"
+                    : "text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-900"
                 }`}
               >
                 {item.name}
@@ -39,101 +45,200 @@ const currentPath = Astro.url.pathname;
             ))
           }
         </div>
-      </div>
 
-      <!-- Right side buttons -->
-      <div class="hidden md:flex items-center space-x-4">
-        <ThemeToggle />
-        <button
-          type="button"
-          class="open-group-modal text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 text-sm font-medium transition-colors"
-        >
-          交流群
-        </button>
-        <a
-          href="/download"
-          class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300"
-        >
-          下载
-        </a>
-      </div>
+        <div class="h-4 w-px bg-gray-200 dark:bg-gray-800 mx-2"></div>
 
-      <!-- Mobile menu button -->
-      <div class="md:hidden flex items-center space-x-2">
-        <ThemeToggle />
-        <button
-          type="button"
-          class="mobile-menu-button inline-flex items-center justify-center p-2 rounded-md text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500"
-          aria-controls="mobile-menu"
-          aria-expanded="false"
-        >
-          <span class="sr-only">Open main menu</span>
-          <svg
-            class="block h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
+        <div class="flex items-center space-x-4">
+          <ThemeToggle />
+          <button
+            type="button"
+            class="open-group-modal text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white text-sm font-medium transition-colors"
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
-          </svg>
-        </button>
+            {SITE_CONFIG.header.groupButtonText}
+          </button>
+          <a
+            href="/download"
+            class="bg-black dark:bg-white text-white dark:text-black px-6 py-2.5 rounded-full text-sm font-medium hover:opacity-80 transition-all active:scale-95 shadow-sm"
+          >
+            {SITE_CONFIG.header.downloadButtonText}
+          </a>
+        </div>
       </div>
-    </div>
 
-    <!-- Mobile menu -->
-    <div class="mobile-menu hidden md:hidden">
-      <div
-        class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800"
-      >
-        {
-          SITE_CONFIG.navigation.map((item) => (
-            <a
-              href={item.href}
-              class={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                currentPath === item.href
-                  ? "bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300"
-                  : "text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-              }`}
-            >
-              {item.name}
-            </a>
-          ))
-        }
+      <!-- Mobile Button Container -->
+      <div class="md:hidden flex items-center space-x-4 pr-1">
+        <ThemeToggle />
         <button
           type="button"
-          class="open-group-modal block w-full text-center text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 px-3 py-2 rounded-md text-base font-medium transition-colors duration-200"
+          class="mobile-menu-button relative z-[110] p-2 text-gray-900 dark:text-white focus:outline-none"
+          aria-label="Toggle Menu"
         >
-          交流群
+          <div
+            class="w-6 h-6 flex flex-col justify-center items-center gap-1.5"
+          >
+            <span
+              class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 origin-center"
+            ></span>
+            <span
+              class="hamburger-line w-6 h-0.5 bg-current transition-all duration-300 origin-center"
+            ></span>
+          </div>
         </button>
-        <a
-          href="/download"
-          class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-full text-base font-medium transition-colors duration-300 mt-2"
-        >
-          下载
-        </a>
       </div>
     </div>
   </nav>
 </header>
 
-<script>
-  // Mobile menu toggle
-  document.addEventListener("DOMContentLoaded", () => {
-    const button = document.querySelector(".mobile-menu-button");
-    const menu = document.querySelector(".mobile-menu");
+<!-- Mobile Overlay (Fullscreen) - Moved outside of header to escape stacking context -->
+<div
+  class="mobile-overlay fixed inset-0 z-[105] hidden flex-col transition-opacity duration-300 opacity-0 bg-white/95 dark:bg-black/95 backdrop-blur-2xl overflow-y-auto overscroll-none"
+>
+  <!-- Close Button inside Overlay -->
+  <div class="absolute top-4 right-4 md:hidden">
+    <button
+      type="button"
+      class="mobile-close-button p-4 text-gray-900 dark:text-white focus:outline-none"
+      aria-label="Close Menu"
+    >
+      <svg
+        class="w-8 h-8"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path>
+      </svg>
+    </button>
+  </div>
 
-    if (button && menu) {
+  <div
+    class="flex flex-col items-center w-full min-h-screen px-6 py-32 space-y-10"
+  >
+    {
+      SITE_CONFIG.navigation.map((item, idx) => (
+        <a
+          href={item.href}
+          class="mobile-nav-item scale-95 opacity-0 text-3xl font-bold text-gray-900 dark:text-white hover:text-gray-500 transition-all duration-500"
+          style={`transition-delay: ${idx * 50}ms`}
+        >
+          {item.name}
+        </a>
+      ))
+    }
+
+    <div
+      class="mobile-nav-item scale-95 opacity-0 w-full pt-10 flex flex-col gap-5 max-w-xs"
+      style="transition-delay: 250ms"
+    >
+      <button
+        type="button"
+        class="open-group-modal w-full py-4 rounded-2xl border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-white font-bold text-lg active:scale-95 transition-all"
+      >
+        {SITE_CONFIG.header.groupButtonText}
+      </button>
+      <a
+        href="/download"
+        class="w-full py-4 rounded-2xl bg-black dark:bg-white text-white dark:text-black text-center font-bold text-lg active:scale-95 transition-all shadow-xl"
+      >
+        {SITE_CONFIG.header.downloadButtonText}
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Hamburger Animation */
+  .mobile-menu-active .hamburger-line:first-child {
+    transform: translateY(4px) rotate(45deg);
+  }
+  .mobile-menu-active .hamburger-line:last-child {
+    transform: translateY(-4px) rotate(-45deg);
+  }
+
+  /* Overlay States */
+  .mobile-overlay.active {
+    display: flex !important;
+  }
+  .mobile-overlay.fade-in {
+    opacity: 1 !important;
+  }
+
+  /* Nav Item Entry Animation */
+  .mobile-overlay.fade-in .mobile-nav-item {
+    opacity: 1;
+    scale: 1;
+    transform: translateY(0);
+  }
+
+  /* Disable scroll when menu open */
+  :global(body.menu-open) {
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  function setupHeader() {
+    const button = document.querySelector(".mobile-menu-button");
+    const closeBtn = document.querySelector(".mobile-close-button");
+    const overlay = document.querySelector(".mobile-overlay");
+    const body = document.body;
+
+    // Shared close function
+    const closeMenu = () => {
+      button?.classList.remove("mobile-menu-active");
+      overlay?.classList.remove("fade-in");
+      body.classList.remove("menu-open");
+      setTimeout(() => {
+        if (!button?.classList.contains("mobile-menu-active")) {
+          overlay?.classList.remove("active");
+        }
+      }, 300);
+    };
+
+    if (button && overlay) {
       button.addEventListener("click", () => {
-        const isExpanded = button.getAttribute("aria-expanded") === "true";
-        button.setAttribute("aria-expanded", (!isExpanded).toString());
-        menu.classList.toggle("hidden");
+        const isOpening = !button.classList.contains("mobile-menu-active");
+
+        if (isOpening) {
+          // Open
+          body.classList.add("menu-open");
+          button.classList.add("mobile-menu-active");
+          overlay.classList.add("active");
+          // Trigger transition
+          requestAnimationFrame(() => {
+            overlay.classList.add("fade-in");
+          });
+        } else {
+          closeMenu();
+        }
+      });
+
+      // Handle close button
+      closeBtn?.addEventListener("click", closeMenu);
+
+      // Cleanup on navigation
+      const links = overlay.querySelectorAll("a, .open-group-modal");
+      links.forEach((l) => {
+        l.addEventListener("click", closeMenu);
       });
     }
-  });
+  }
+
+  document.addEventListener("DOMContentLoaded", setupHeader);
+  document.addEventListener("astro:after-swap", setupHeader);
 </script>
+
+<style is:global>
+  header {
+    transition: top 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  html.announcement-active header {
+    top: var(--banner-height, 0px) !important;
+  }
+</style>
 
 <GroupModal />

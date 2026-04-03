@@ -1,6 +1,7 @@
 ---
 import DocsLayout from '@/layouts/DocsLayout.astro';
 import { getDocsIndexContent, getAllDocuments, findDocumentBySlug } from '@/utils/markdown';
+import { SITE_CONFIG } from '@/config/site';
 
 // 读取文档首页内容
 const docsContent = getDocsIndexContent();
@@ -87,7 +88,7 @@ const quickNavCards = [
 
 // 页面标题和描述，优先使用 Markdown 文件中的信息
 const pageTitle = docsContent?.frontmatter.title || '文档中心';
-const pageDescription = docsContent?.frontmatter.description || '玩机管家完整使用指南和开发文档';
+const pageDescription = docsContent?.frontmatter.description || `${SITE_CONFIG.name}完整使用指南和开发文档`;
 ---
 
 <DocsLayout
@@ -102,7 +103,7 @@ const pageDescription = docsContent?.frontmatter.description || '玩机管家完
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
         </svg>
       </div>
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">玩机管家文档中心</h1>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">{SITE_CONFIG.name}文档中心</h1>
       <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
         从安装配置到高级功能，这里有您需要的所有信息
       </p>

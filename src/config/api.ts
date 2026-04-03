@@ -3,13 +3,15 @@
  * 管理版本管理API的相关配置
  */
 
+import { SITE_CONFIG } from './site';
+
 // API 基础配置
 export const API_CONFIG = {
   // 基础URL
   BASE_URL: 'https://api-g.lacs.cc',
   
-  // 玩机管家 (Android Device Management Tool) 的软件ID
-  SOFTWARE_ID: 1,
+  // 软件ID - 从网站配置读取
+  SOFTWARE_ID: SITE_CONFIG.softwareId || 1,
   
   // API 端点
   ENDPOINTS: {
@@ -59,7 +61,7 @@ export const API_CONFIG = {
     HEADERS: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'Origin': 'https://admt.lacs.cc'
+      'Origin': SITE_CONFIG.url
     }
   },
   

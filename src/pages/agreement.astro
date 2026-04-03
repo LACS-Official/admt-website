@@ -13,7 +13,7 @@ import { SITE_CONFIG } from "@/config/site";
       <header class="mb-10 text-center">
         <h1 class="text-3xl sm:text-4xl font-bold mb-3">
           <span class="text-slate-800 dark:text-slate-100"
-            >玩机管家软件协议政策</span
+            >{SITE_CONFIG.name} 软件协议政策</span
           >
         </h1>
         <p class="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
@@ -271,7 +271,9 @@ import { SITE_CONFIG } from "@/config/site";
             <ul
               class="list-disc pl-11 text-slate-700 dark:text-slate-300 space-y-2"
             >
-              <li>软件及其所有相关知识产权均归我们(领创工作室)所有。</li>
+              <li>
+                软件及其所有相关知识产权均归我们({SITE_CONFIG.author})所有。
+              </li>
               <li>
                 您不得复制、修改、分发、销售或使用本软件的任何部分，除非获得我们的明确许可。
               </li>

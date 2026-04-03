@@ -9,6 +9,7 @@ import {
   ApiCacheManager,
   ApiErrorHandler
 } from '@/config/api';
+import { SITE_CONFIG } from '@/config/site';
 
 // 类型定义
 export interface SoftwareVersionHistory {
@@ -448,25 +449,24 @@ export class VersionApiService {
 export const versionApi = new VersionApiService();
 
 /**
- * 玩机管家 (Android Device Management Tool) 专用版本服务
- * 专门用于获取软件ID为1的版本信息
+ * 软件版本管理专用服务
+ * 专门用于获取特定软件的版本信息
  */
-export class DeviceManagerVersionService extends VersionApiService {
+export class SoftwareVersionService extends VersionApiService {
   constructor() {
     super();
     // 确保使用正确的软件ID
     const config = getApiConfig();
-    this.urlBuilder = new ApiUrlBuilder(config.BASE_URL, 1);
+    this.urlBuilder = new ApiUrlBuilder(config.BASE_URL, config.SOFTWARE_ID);
   }
 
   /**
-   * 获取玩机管家的最新版本信息
+   * 获取软件的最新版本信息
    * 包含完整的下载链接和元数据
-   * 通过 ID 判断最新版本
    */
-  async getLatestDeviceManagerVersion(): Promise<SoftwareVersionHistory | null> {
+  async getLatestSoftwareVersion(): Promise<SoftwareVersionHistory | null> {
     try {
-      console.log('Fetching latest 玩机管家 version (Software ID: 1)...');
+      console.log(`Fetching latest version for Software ID: ${this.config.SOFTWARE_ID}...`);
 
       // 获取所有版本，按创建时间降序排列
       let result = await this.getVersionHistory({
@@ -477,34 +477,34 @@ export class DeviceManagerVersionService extends VersionApiService {
       });
 
       if (result && result.data && result.data.length > 0) {
-        console.log(`Found ${result.data.length} versions for 玩机管家`);
+        console.log(`Found ${result.data.length} versions`);
 
         // 通过 ID 判断最新版本（ID 最大的就是最新版本）
         let latestVersion = result.data.reduce((prev, current) => {
           return (current.id > prev.id) ? current : prev;
         });
 
-        console.log('Latest 玩机管家 version found:', latestVersion.version, 'with ID:', latestVersion.id);
+        console.log('Latest version found:', latestVersion.version, 'with ID:', latestVersion.id);
         return latestVersion;
       }
 
-      console.warn('No versions found for 玩机管家 (Software ID: 1)');
+      console.warn(`No versions found for Software ID: ${this.config.SOFTWARE_ID}`);
       return null;
     } catch (error) {
-      console.error('Failed to fetch 玩机管家 version:', error);
+      console.error('Failed to fetch software version:', error);
       throw error;
     }
   }
 
   /**
-   * 获取DeviceManager Pro的版本统计
+   * 获取软件的版本统计
    */
-  async getDeviceManagerStats(): Promise<VersionStats | null> {
+  async getSoftwareStats(): Promise<VersionStats | null> {
     try {
-      console.log('Fetching DeviceManager Pro version stats...');
+      console.log('Fetching software version stats...');
       return await this.getVersionStats();
     } catch (error) {
-      console.error('Failed to fetch DeviceManager Pro stats:', error);
+      console.error('Failed to fetch software stats:', error);
       throw error;
     }
   }
@@ -573,7 +573,7 @@ export class DeviceManagerVersionService extends VersionApiService {
         windows: {
           installer: {
             name: "安装程序",
-            filename: `玩机管家-${latestVersion.version}-Setup.exe`,
+            filename: `${SITE_CONFIG.name}-${latestVersion.version}-Setup.exe`,
             size: latestVersion.fileSize || "14MB",
             url: latestVersion.downloadLinks?.official || "#",
             description: "推荐：完整安装包，包含所有功能",
@@ -679,8 +679,8 @@ export class DeviceManagerVersionService extends VersionApiService {
 
 }
 
-// 导出玩机管家专用实例
-export const deviceManagerVersionApi = new DeviceManagerVersionService();
+// 导出软件管理专用实例
+export const softwareVersionApi = new SoftwareVersionService();
 
 // ==================== 公告系统 API 服务 ====================
 
@@ -917,24 +917,24 @@ export class AnnouncementApiService {
 }
 
 /**
- * 玩机管家 (Android Device Management Tool) 专用公告服务
- * 专门用于获取软件ID为6的公告信息
+ * 软件专用公告服务
+ * 专门用于获取软件ID对应的公告信息
  */
 export class DeviceManagerAnnouncementService extends AnnouncementApiService {
   constructor() {
     super();
     // 确保使用正确的软件ID
     const config = getApiConfig();
-    this.urlBuilder = new ApiUrlBuilder(config.BASE_URL, 6);
+    this.urlBuilder = new ApiUrlBuilder(config.BASE_URL, config.SOFTWARE_ID);
   }
 
   /**
-   * 获取玩机管家的主页公告
+   * 获取软件的主页公告
    * 返回适合在主页显示的公告列表
    */
   async getHomepageAnnouncements(): Promise<SoftwareAnnouncement[]> {
     try {
-      console.log('Fetching 玩机管家 homepage announcements (Software ID: 6)...');
+      console.log(`Fetching ${SITE_CONFIG.name} homepage announcements (Software ID: ${this.config?.SOFTWARE_ID || 'current'})...`);
 
       // 获取活跃的公告，限制数量为3条
       const announcements = await this.getActiveAnnouncements(3);

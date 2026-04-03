@@ -1,77 +1,58 @@
 import React, { useEffect, useState } from "react";
-
-interface StatsData {
-  totalUsage: number;
-  uniqueDevices: number;
-  totalConnections: number;
-  uniqueConnectionDevices: number;
-}
+import { SITE_CONFIG } from '@/config/site';
 
 const StatsCounter: React.FC = () => {
-  const [stats, setStats] = useState<StatsData>({
-    totalUsage: 0,
-    uniqueDevices: 0,
-    totalConnections: 0,
-    uniqueConnectionDevices: 0,
-  });
+  const [statsData, setStatsData] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(true);
+
+  const { stats } = SITE_CONFIG;
 
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const response = await fetch("https://api-g.lacs.cc/api/admt/stats", {
+        const response = await fetch(stats.apiUrl, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Origin: "https://admt.lacs.cc",
+            Origin: SITE_CONFIG.url,
           },
         });
         const result = await response.json();
         if (result.success && result.data) {
-          setStats({
-            totalUsage: parseInt(result.data.totalUsage) || 0,
-            uniqueDevices: parseInt(result.data.uniqueDevices) || 0,
-            totalConnections: parseInt(result.data.totalConnections) || 0,
-            uniqueConnectionDevices:
-              parseInt(result.data.uniqueConnectionDevices) || 0,
-          });
+          setStatsData(result.data);
         }
       } catch (error) {
         console.error("Failed to fetch stats:", error);
-        setStats({
-          totalUsage: 10000,
-          uniqueDevices: 5000,
-          totalConnections: 50000,
-          uniqueConnectionDevices: 3000,
-        });
       } finally {
         setLoading(false);
       }
     };
 
     fetchStats();
-  }, []);
+  }, [stats.apiUrl]);
 
-  const statsItems = [
-    { label: "累计使用次数", value: stats.totalUsage },
-    { label: "使用人数", value: stats.uniqueDevices },
-    { label: "管理设备", value: stats.totalConnections },
-    { label: "设备数量", value: stats.uniqueConnectionDevices },
-  ];
-
-  const formatNumber = (num: number) => {
+  const formatNumber = (val: any) => {
+    const num = typeof val === 'string' ? parseInt(val) : val;
+    if (isNaN(num)) return "0";
     return new Intl.NumberFormat("en-US").format(num);
   };
 
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-12 md:gap-16 text-center max-w-5xl mx-auto">
-      {statsItems.map((item, index) => (
+      {stats.items.map((item: any, index: number) => (
         <div
           key={index}
           className="p-4 sm:p-6 border border-gray-100 dark:border-gray-800 rounded-xl bg-white dark:bg-black"
         >
           <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-2">
-            {!loading ? <>{formatNumber(item.value)}+</> : <span>...</span>}
+            {!loading ? (
+              <>
+                {formatNumber(statsData[item.key] || item.value)}
+                {item.suffix}
+              </>
+            ) : (
+              <span>...</span>
+            )}
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">
             {item.label}

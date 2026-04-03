@@ -4,113 +4,113 @@ import { SITE_CONFIG } from "@/config/site";
 
 <div
   id="group-modal"
-  class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-300"
+  class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-gray-900/40 backdrop-blur-md transition-all duration-500 opacity-0"
   aria-labelledby="modal-title"
   role="dialog"
   aria-modal="true"
 >
-  <div
-    class="relative transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-md animate-in fade-in zoom-in duration-300"
-  >
-    <!-- Background Decoration -->
+  <!-- Background Glows -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
     <div
-      class="absolute top-0 left-0 w-full h-24 bg-gradient-to-r from-blue-600 to-indigo-600 opacity-10 dark:opacity-20"
+      class="absolute top-[20%] left-[30%] w-64 h-64 bg-blue-500/20 rounded-full blur-[100px] animate-pulse"
+    >
+    </div>
+    <div
+      class="absolute bottom-[20%] right-[30%] w-64 h-64 bg-indigo-500/20 rounded-full blur-[100px] animate-pulse"
+      style="animation-delay: 1s"
+    >
+    </div>
+  </div>
+
+  <div
+    class="relative transform overflow-hidden rounded-[2.5rem] bg-white/80 dark:bg-black/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 text-left shadow-[0_32px_64px_-16px_rgba(0,0,0,0.3)] transition-all sm:my-8 sm:w-full sm:max-w-md animate-modal-in"
+  >
+    <!-- Top Pattern/Glow -->
+    <div
+      class="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-blue-500/10 to-transparent pointer-events-none"
     >
     </div>
 
-    <div class="px-6 pt-8 pb-6">
+    <div class="px-8 pt-10 pb-8 relative">
       <div class="flex flex-col items-center text-center">
-        <!-- Icon/Logo -->
-        <div
-          class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="h-8 w-8"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-            ></path>
-          </svg>
-        </div>
-
         <h3
-          class="text-2xl font-bold leading-6 text-gray-900 dark:text-white"
+          class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-3"
           id="modal-title"
         >
           {SITE_CONFIG.group.name}
         </h3>
 
-        <div class="mt-4">
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            扫描下方二维码加入我们的官方交流群，<br />与开发者和用户实时沟通。
-          </p>
-        </div>
-
-        <!-- QR Code Placeholder -->
-        <div
-          class="group relative mt-6 p-4 bg-gray-50 dark:bg-gray-900/50 rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 transition-colors hover:border-blue-400 dark:hover:border-blue-500"
+        <p
+          class="text-gray-500 dark:text-gray-400 text-base leading-relaxed px-4"
         >
-          <div
-            class="flex items-center justify-center w-48 h-48 overflow-hidden rounded-lg bg-white"
-          >
+          {SITE_CONFIG.group.description}
+        </p>
+
+        <!-- QR Code Card -->
+        <div
+          class="mt-8 p-1.5 rounded-[2rem] bg-gray-100/50 dark:bg-white/5 border border-white/20 dark:border-white/5"
+        >
+          <div class="bg-white p-4 rounded-[1.8rem] shadow-inner">
             <img
               src={SITE_CONFIG.group.qrCode}
-              alt="QQ Group QR Code"
-              class="w-full h-full object-cover"
+              alt="QR Code"
+              class="w-48 h-48 object-contain"
               onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(window.location.href)"
             />
           </div>
-          <div
-            class="mt-2 text-xs font-medium text-gray-400 dark:text-gray-500"
-          >
-            群号：<span class="text-blue-600 dark:text-blue-400"
-              >{SITE_CONFIG.group.number}</span
-            >
-          </div>
         </div>
 
-        <div class="mt-8 flex flex-col w-full space-y-3">
+        <div class="mt-3 text-sm font-medium text-gray-400 dark:text-gray-500">
+          群号：<span
+            class="text-blue-600 dark:text-blue-400 font-bold tracking-wider"
+            >{SITE_CONFIG.group.number}</span
+          >
+        </div>
+
+        <!-- Actions -->
+        <div class="mt-8 flex flex-col w-full space-y-4">
           <a
             href={SITE_CONFIG.group.link}
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex w-full justify-center rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-500/30 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all active:scale-[0.98]"
+            class="flex items-center justify-center w-full py-4 px-6 rounded-2xl bg-black dark:bg-white text-white dark:text-black font-bold text-lg hover:scale-[1.02] active:scale-[0.98] transition-all shadow-xl shadow-black/10 dark:shadow-white/5"
           >
-            直接加入群聊
+            {SITE_CONFIG.group.joinButtonText}
           </a>
-          <button
-            type="button"
-            class="close-modal-button inline-flex w-full justify-center rounded-full bg-gray-100 dark:bg-gray-700 px-6 py-3 text-sm font-semibold text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 focus:outline-none transition-all"
-          >
-            稍后再说
-          </button>
+
+          <div class="flex items-center gap-3 w-full">
+            <button
+              type="button"
+              class="close-modal-button flex-1 py-3 px-6 rounded-2xl bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 font-semibold text-sm hover:bg-gray-200 dark:hover:bg-white/10 transition-all"
+            >
+              {SITE_CONFIG.group.closeButtonText}
+            </button>
+            <button
+              type="button"
+              class="permanently-hide-button py-3 px-6 rounded-2xl text-gray-400 dark:text-gray-600 font-medium text-xs hover:text-gray-600 dark:hover:text-gray-400 transition-all underline underline-offset-4"
+            >
+              不再提示
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Close button (top right) -->
+    <!-- Top-level Close X -->
     <button
       type="button"
-      class="close-modal-button absolute top-4 right-4 text-gray-400 hover:text-gray-500 transition-colors focus:outline-none"
+      class="close-modal-button absolute top-6 right-6 p-2 rounded-full text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-all"
     >
-      <span class="sr-only">Close</span>
       <svg
         class="h-6 w-6"
         fill="none"
         viewBox="0 0 24 24"
-        stroke-width="1.5"
         stroke="currentColor"
       >
         <path
           stroke-linecap="round"
           stroke-linejoin="round"
+          stroke-width="2"
           d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
@@ -120,28 +120,33 @@ import { SITE_CONFIG } from "@/config/site";
 <script>
   function setupModal() {
     const modal = document.getElementById("group-modal");
+    if (!modal) return;
+
     const openButtons = document.querySelectorAll(".open-group-modal");
     const closeButtons = document.querySelectorAll(".close-modal-button");
+    const permanentHideBtn = modal.querySelector(".permanently-hide-button");
 
-    if (!modal) return;
+    const STORAGE_KEY = "hide_group_modal_permanently_v1";
 
     const showModal = () => {
       modal.classList.remove("hidden");
       modal.classList.add("flex");
       document.body.style.overflow = "hidden";
-      // Trigger animation
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         modal.classList.add("opacity-100");
-      }, 10);
+      });
     };
 
-    const hideModal = () => {
+    const hideModal = (permanently = false) => {
       modal.classList.remove("opacity-100");
       document.body.style.overflow = "";
+      if (permanently) {
+        localStorage.setItem(STORAGE_KEY, "true");
+      }
       setTimeout(() => {
         modal.classList.add("hidden");
         modal.classList.remove("flex");
-      }, 300);
+      }, 500);
     };
 
     openButtons.forEach((btn) => {
@@ -152,72 +157,48 @@ import { SITE_CONFIG } from "@/config/site";
     });
 
     closeButtons.forEach((btn) => {
-      btn.addEventListener("click", hideModal);
+      btn.addEventListener("click", () => hideModal(false));
     });
+
+    permanentHideBtn?.addEventListener("click", () => hideModal(true));
 
     // Close on click outside
     modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        hideModal();
-      }
+      if (e.target === modal) hideModal(false);
     });
 
-    // Close on escape key
+    // Close on escape
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-        hideModal();
+        hideModal(false);
       }
     });
+
+    // Auto-show logic
+    const isPermanentlyHidden = localStorage.getItem(STORAGE_KEY);
+    if (!isPermanentlyHidden) {
+      setTimeout(showModal, 1500);
+    }
   }
 
-  // Initial setup
+  // Handle both initial load and view transitions
   setupModal();
-
-  // Re-setup on page navigation (for SPAs or Astro view transitions)
   document.addEventListener("astro:page-load", setupModal);
-
-  // Show modal on first visit
-  const hasSeenModal = localStorage.getItem("hasSeenGroupModal");
-  if (!hasSeenModal) {
-    setTimeout(() => {
-      showModal();
-      localStorage.setItem("hasSeenGroupModal", "true");
-    }, 1000);
-  }
 </script>
 
 <style>
-  .animate-in {
-    animation-duration: 0.3s;
-    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-    animation-fill-mode: forwards;
-  }
-
-  .fade-in {
-    animation-name: fade-in;
-  }
-
-  .zoom-in {
-    animation-name: zoom-in;
-  }
-
-  @keyframes fade-in {
+  @keyframes modal-in {
     from {
       opacity: 0;
+      transform: scale(0.9) translateY(20px);
     }
     to {
       opacity: 1;
+      transform: scale(1) translateY(0);
     }
   }
 
-  @keyframes zoom-in {
-    from {
-      transform: scale(0.95);
-      opacity: 0;
-    }
-    to {
-      transform: scale(1);
-      opacity: 1;
-    }
+  .animate-modal-in {
+    animation: modal-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 </style>

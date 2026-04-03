@@ -1,10 +1,11 @@
 ---
 import DocsLayout from "@/layouts/DocsLayout.astro";
+import { SITE_CONFIG } from "@/config/site";
 ---
 
 <DocsLayout
   title="安装指南"
-  description="详细的安装步骤和系统配置要求"
+  description={`详细的安装步骤和系统配置要求`}
   currentPath="安装指南"
 >
   <!-- 系统要求概览 -->
@@ -224,13 +225,15 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
       <li>访问 <a href="/download">官方下载页面</a></li>
       <li>选择 <strong>Windows 版本</strong></li>
       <li>点击 <strong>下载安装程序</strong> 按钮</li>
-      <li>下载 <code>玩机管家-Setup.exe</code> 文件（约45MB）</li>
+      <li>下载 <code>{SITE_CONFIG.name}-Setup.exe</code> 文件（约45MB）</li>
     </ol>
 
     <h3>🔧 运行安装程序</h3>
     <ol>
       <li>
-        <strong>启动安装</strong>：双击下载的 <code>玩机管家-Setup.exe</code> 文件
+        <strong>启动安装</strong>：双击下载的 <code
+          >{SITE_CONFIG.name}-Setup.exe</code
+        > 文件
       </li>
       <li>
         <strong>安全提示</strong>：如果出现Windows安全提示，点击 <strong
@@ -239,7 +242,8 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
       </li>
       <li>
         <strong>管理员权限</strong>：在用户账户控制(UAC)提示中点击 <strong
-          >"是"</strong>
+          >"是"</strong
+        >
       </li>
     </ol>
 
@@ -248,12 +252,13 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
       <li><strong>欢迎页面</strong>：点击 <strong>"下一步"</strong></li>
       <li>
         <strong>许可协议</strong>：阅读并接受许可协议，点击 <strong
-          >"我接受"</strong>
+          >"我接受"</strong
+        >
       </li>
       <li>
         <strong>安装位置</strong>：
         <ul>
-          <li>默认路径: <code>C:\Program Files\玩机管家\</code></li>
+          <li>默认路径: <code>C:\Program Files\{SITE_CONFIG.name}\</code></li>
           <li>可点击 <strong>"浏览"</strong> 更改安装位置</li>
           <li>点击 <strong>"下一步"</strong></li>
         </ul>
@@ -274,7 +279,7 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
 
     <h4>激活程序</h4>
     <ol>
-      <li>启动玩机管家</li>
+      <li>启动{SITE_CONFIG.name}</li>
       <li>在激活界面输入您的许可证密钥</li>
       <li>点击 <strong>"激活"</strong> 按钮</li>
       <li>等待激活验证完成</li>
@@ -290,7 +295,7 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
     <h3>✅ 验证安装</h3>
     <p>完成安装后，请进行以下验证：</p>
     <ul>
-      <li>在开始菜单中找到 <strong>"玩机管家"</strong></li>
+      <li>在开始菜单中找到 <strong>"{SITE_CONFIG.name}"</strong></li>
       <li>启动程序，确认界面正常显示</li>
       <li>检查版本信息：<strong>帮助</strong> → <strong>关于</strong></li>
       <li>确认版本号为 <strong>2.1.0</strong></li>
@@ -401,3 +406,40 @@ import DocsLayout from "@/layouts/DocsLayout.astro";
     </div>
   </div>
 </DocsLayout>
+
+<style>
+  .prose h2 {
+    @apply text-2xl font-bold text-gray-900 dark:text-white mt-12 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700;
+  }
+  .prose h3 {
+    @apply text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-4;
+  }
+  .prose h4 {
+    @apply text-lg font-medium text-gray-900 dark:text-white mt-6 mb-3;
+  }
+  .prose p {
+    @apply text-gray-700 dark:text-gray-300 leading-relaxed mb-4;
+  }
+  .prose ul,
+  .prose ol {
+    @apply mb-6 pl-6 space-y-2 text-gray-700 dark:text-gray-300;
+  }
+  .prose li {
+    @apply leading-relaxed;
+  }
+  .prose ul li {
+    @apply list-disc;
+  }
+  .prose ol li {
+    @apply list-decimal;
+  }
+  .prose code {
+    @apply bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-gray-100 px-1.5 py-0.5 rounded text-sm font-mono font-medium;
+  }
+  .prose strong {
+    @apply font-semibold text-gray-900 dark:text-white;
+  }
+  .prose a {
+    @apply text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 font-medium;
+  }
+</style>
