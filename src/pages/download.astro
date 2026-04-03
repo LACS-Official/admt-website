@@ -121,9 +121,9 @@ const versions = dynamicConfig?.allVersions || [];
           </div>
         </div>
 
-        <!-- Linux Platform -->
+        <!-- Linux Platform (Poll) -->
         <div
-          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800"
+          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col"
         >
           <div class="flex items-center gap-4 mb-8">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">
@@ -131,26 +131,27 @@ const versions = dynamicConfig?.allVersions || [];
             </h2>
             <span
               class="text-xs text-gray-500 dark:text-gray-400 ml-auto border border-gray-200 dark:border-gray-700 px-2 py-1 rounded"
-              >x64</span
+              >正在规划</span
             >
           </div>
-          <div class="space-y-3">
+          <div class="mt-auto space-y-4">
             <div
-              class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-sm font-medium text-gray-800 dark:text-gray-200"
+              class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center"
             >
-              AppImage
+              <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                正在规划，即将发布！
+              </p>
             </div>
-            <div class="grid grid-cols-2 gap-3">
-              <div
-                class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center text-sm font-medium text-gray-800 dark:text-gray-200"
-              >
-                DEB
-              </div>
-              <div
-                class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center text-sm font-medium text-gray-800 dark:text-gray-200"
-              >
-                RPM
-              </div>
+            <button
+              id="linux-poll-button"
+              class="w-full py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              助力开发 Linux 版
+            </button>
+            <div class="text-center pt-2">
+              <p class="text-xs text-gray-500">
+                已有 <span id="linux-poll-count" class="font-bold">...</span> 人助力推进
+              </p>
             </div>
           </div>
         </div>
@@ -198,63 +199,79 @@ const versions = dynamicConfig?.allVersions || [];
 </MainLayout>
 
 <script is:inline>
-  // macOS Poll Logic
+  // Platform Interest Poll Logic
   document.addEventListener("DOMContentLoaded", () => {
-    const pollButton = document.getElementById("macos-poll-button");
-    const pollCountLabel = document.getElementById("macos-poll-count");
-    const STORAGE_KEY = "admt_macos_voted";
-    const API_URL = "/api/macos-poll";
+    const platforms = [
+      {
+        id: "macos",
+        buttonId: "macos-poll-button",
+        countId: "macos-poll-count",
+        storageKey: "admt_macos_voted",
+        apiUrl: "/api/macos-poll",
+      },
+      {
+        id: "linux",
+        buttonId: "linux-poll-button",
+        countId: "linux-poll-count",
+        storageKey: "admt_linux_voted",
+        apiUrl: "/api/linux-poll",
+      },
+    ];
 
-    async function updateCount() {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) throw new Error("Fetch failed");
-        const data = await response.json();
-        pollCountLabel.textContent = data.count;
-      } catch (e) {
-        pollCountLabel.textContent = "0"; // Fallback display
+    platforms.forEach((platform) => {
+      const pollButton = document.getElementById(platform.buttonId);
+      const pollCountLabel = document.getElementById(platform.countId);
+
+      if (!pollButton || !pollCountLabel) return;
+
+      async function updateCount() {
+        try {
+          const response = await fetch(`${platform.apiUrl}?t=${Date.now()}`);
+          if (!response.ok) throw new Error("Fetch failed");
+          const data = await response.json();
+          pollCountLabel.textContent = data.count;
+        } catch (e) {
+          pollCountLabel.textContent = "0"; // Fallback display
+        }
       }
-    }
 
-    async function handleVote() {
-      if (localStorage.getItem(STORAGE_KEY)) return;
+      async function handleVote() {
+        if (localStorage.getItem(platform.storageKey)) return;
 
-      try {
-        const response = await fetch(API_URL, { method: "POST" });
-        if (!response.ok) throw new Error("Post failed");
-        const data = await response.json();
-        pollCountLabel.textContent = data.count;
-        localStorage.setItem(STORAGE_KEY, "true");
-        disableButton();
-      } catch (e) {
-        console.error("Vote failed", e);
+        try {
+          const response = await fetch(platform.apiUrl, { method: "POST" });
+          if (!response.ok) throw new Error("Post failed");
+          const data = await response.json();
+          pollCountLabel.textContent = data.count;
+          localStorage.setItem(platform.storageKey, "true");
+          disableButton();
+        } catch (e) {
+          console.error(`${platform.id} Vote failed`, e);
+        }
       }
-    }
 
-    function disableButton() {
-      if (!pollButton) return;
-      pollButton.disabled = true;
-      pollButton.textContent = "已提交意向";
-      pollButton.classList.remove(
-        "bg-black",
-        "dark:bg-white",
-        "hover:bg-gray-800",
-        "dark:hover:bg-gray-200",
-      );
-      pollButton.classList.add(
-        "bg-gray-200",
-        "text-gray-500",
-        "dark:bg-gray-800",
-        "dark:text-gray-400",
-      );
-    }
+      function disableButton() {
+        pollButton.disabled = true;
+        pollButton.textContent = "已提交意向";
+        pollButton.classList.remove(
+          "bg-black",
+          "dark:bg-white",
+          "hover:bg-gray-800",
+          "dark:hover:bg-gray-200",
+        );
+        pollButton.classList.add(
+          "bg-gray-200",
+          "text-gray-500",
+          "dark:bg-gray-800",
+          "dark:text-gray-400",
+        );
+      }
 
-    if (pollButton) {
-      if (localStorage.getItem(STORAGE_KEY)) {
+      if (localStorage.getItem(platform.storageKey)) {
         disableButton();
       }
       pollButton.addEventListener("click", handleVote);
       updateCount();
-    }
+    });
   });
 </script>
