@@ -3,8 +3,8 @@ export const SITE_CONFIG = {
   name: "玩机管家-ADMT",
   englishName: "Android Device Management Tool",
   description: "专为开发者和 IT 专业人士打造的强大 Android 设备管理工具",
-  tagline: "重新定义设备管理体验",
-  subtitle: "强大、简洁、优雅",
+  tagline: "首款接入 AI 的刷机玩机工具",
+  subtitle: "打造安卓刷机玩机全流程生态闭环",
   url: "https://admt.lacs.cc",
   softwareId: 1, // 后端 API 对应的软件 ID
 
@@ -32,9 +32,11 @@ export const SITE_CONFIG = {
     police: "辽公网安备21122402000208号",
   },
 
-  // 社交媒体
+  // 社交与开源
   social: {
-    email: "admt@lacs.email",
+    email: "admt@lacs.top",
+    studio: "https://www.lacs.cc",
+    github: "https://github.com/LACS-Official/admt",
   },
 
   // 产品信息
@@ -42,7 +44,7 @@ export const SITE_CONFIG = {
     version: "1.2.0",
     releaseDate: "2025-08-15",
     platforms: ["Windows", "macOS", "Linux"],
-    license: "商业许可",
+    license: "GPL-3.0 开源协议",
   },
 
   // 导航菜单
@@ -52,7 +54,7 @@ export const SITE_CONFIG = {
     { name: "文档", href: "/docs" },
     { name: "下载", href: "/download" },
     { name: "反馈", href: "/feedback" },
-    { name: "关于与联系", href: "https://www.lacs.cc/contact" },
+    { name: "关于与联系", href: "/contact" },
   ],
 
   // 首页内容配置
@@ -134,30 +136,44 @@ export const SITE_CONFIG = {
     featureDetails: [
       {
         title: "极致连接体验",
-        description: "自研智能连接技术，支持 USB 与 无线 双模式。秒识别，瞬时同步，让连接不再是阻碍。",
-        image: "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
+        description:
+          "自研智能连接技术，支持 USB 与 无线 双模式。秒识别，瞬时同步，让连接不再是阻碍。",
+        image:
+          "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
         badges: ["全自动发现", "断线重连", "多设备并发"],
         color: "bg-white dark:bg-black",
       },
       {
         title: "Fastboot镜像可视化",
         description: "支持查看，导出，让Fastboot镜像管理变得简单高效。",
-        image: "https://img-g.lacs.cc/file/1770043646538_SnowShot_2026-02-02_22-46-23.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770043646538_SnowShot_2026-02-02_22-46-23.webp",
         badges: ["分类查看", "核心作用详解"],
         color: "bg-gray-50 dark:bg-gray-900/40",
         reverse: true,
       },
       {
         title: "全能的应用管理",
-        description: "从安装、提权到卸载等功能。权限深度管控，掌控应用每一个细节。",
-        image: "https://img-g.lacs.cc/file/1770038395136_SnowShot_2026-02-02_18-51-34.webp",
-        badges: ["批量卸载", "批量冻结/解冻", "强行停止", "导出apk", "清除数据", "导入/导出列表"],
+        description:
+          "从安装、提权到卸载等功能。权限深度管控，掌控应用每一个细节。",
+        image:
+          "https://img-g.lacs.cc/file/1770038395136_SnowShot_2026-02-02_18-51-34.webp",
+        badges: [
+          "批量卸载",
+          "批量冻结/解冻",
+          "强行停止",
+          "导出apk",
+          "清除数据",
+          "导入/导出列表",
+        ],
         color: "bg-white dark:bg-black",
       },
       {
         title: "低延时设备投屏",
-        description: "基于scrcpy的屏幕镜像。支持多种设置，在电脑上也能享受高帧率顺滑操作。",
-        image: "https://img-g.lacs.cc/file/1770038393162_SnowShot_2026-02-02_18-41-20.webp",
+        description:
+          "基于scrcpy的屏幕镜像。支持多种设置，在电脑上也能享受高帧率顺滑操作。",
+        image:
+          "https://img-g.lacs.cc/file/1770038393162_SnowShot_2026-02-02_18-41-20.webp",
         badges: ["高清镜像", "键鼠同步", "剪贴板共享"],
         color: "bg-gray-50 dark:bg-gray-900/40",
         reverse: true,
@@ -165,14 +181,16 @@ export const SITE_CONFIG = {
       {
         title: "全能的应用安装功能",
         description: "支持单个安装、批量安装、遍历文件夹安装包安装",
-        image: "https://img-g.lacs.cc/file/1770038385884_SnowShot_2026-02-02_18-50-53.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038385884_SnowShot_2026-02-02_18-50-53.webp",
         badges: ["批量安装", "遍历安装"],
         color: "bg-white dark:bg-black",
       },
       {
         title: "按键模拟",
         description: "支持各种常用按键模拟",
-        image: "https://img-g.lacs.cc/file/1770038388771_SnowShot_2026-02-02_18-41-06.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038388771_SnowShot_2026-02-02_18-41-06.webp",
         badges: ["按键模拟"],
         color: "bg-gray-50 dark:bg-gray-900/40",
         reverse: true,
@@ -180,14 +198,16 @@ export const SITE_CONFIG = {
       {
         title: "设备系统设置",
         description: "支持显示控制，动画速度，电源管理，电池模拟",
-        image: "https://img-g.lacs.cc/file/1770038393224_SnowShot_2026-02-02_18-51-57.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038393224_SnowShot_2026-02-02_18-51-57.webp",
         badges: ["显示控制", "动画速度", "电源管理", "电池模拟"],
         color: "bg-white dark:bg-black",
       },
       {
         title: "镜像刷入",
         description: "支持常规镜像刷入，到指定的分区，以及强大的刷入模式",
-        image: "https://img-g.lacs.cc/file/1770038397996_SnowShot_2026-02-02_18-52-41.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038397996_SnowShot_2026-02-02_18-52-41.webp",
         badges: ["常规刷入", "分区刷入", "刷入模式"],
         color: "bg-gray-50 dark:bg-gray-900/40",
         reverse: true,
@@ -195,14 +215,16 @@ export const SITE_CONFIG = {
       {
         title: "线刷功能",
         description: "支持小米线刷功能",
-        image: "https://img-g.lacs.cc/file/1770038390097_SnowShot_2026-02-02_18-55-41.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038390097_SnowShot_2026-02-02_18-55-41.webp",
         badges: ["线刷功能"],
         color: "bg-white dark:bg-black",
       },
       {
         title: "在线资源",
         description: "支持在线资源下载",
-        image: "https://img-g.lacs.cc/file/1770038395960_SnowShot_2026-02-02_18-55-51.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038395960_SnowShot_2026-02-02_18-55-51.webp",
         badges: ["在线资源"],
         color: "bg-gray-50 dark:bg-gray-900/40",
         reverse: true,
@@ -212,19 +234,22 @@ export const SITE_CONFIG = {
       {
         title: "设备概览可视化",
         description: "实时监控电池健康、内存占用及 CPU 负载。",
-        image: "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
         span: "md:col-span-2",
       },
       {
         title: "adb/fastboot命令交互",
         description: "深度集成终端。",
-        image: "https://img-g.lacs.cc/file/1770038392565_SnowShot_2026-02-02_18-56-54.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038392565_SnowShot_2026-02-02_18-56-54.webp",
         span: "md:col-span-1",
       },
       {
         title: "调试面板",
         description: "Logcat 实时过滤与系统参数查看。",
-        image: "https://img-g.lacs.cc/file/1770038393651_SnowShot_2026-02-02_18-51-05.webp",
+        image:
+          "https://img-g.lacs.cc/file/1770038393651_SnowShot_2026-02-02_18-51-05.webp",
         span: "md:col-span-1",
       },
       {
@@ -256,6 +281,7 @@ export const SITE_CONFIG = {
       quark: "/img/icons/夸克网盘.svg",
       baidu: "/img/icons/百度网盘.svg",
       thunderPan: "/img/icons/迅雷.svg",
+      pan123: "/img/icons/123云盘.svg",
     },
     platforms: {
       windows: {
@@ -280,7 +306,8 @@ export const SITE_CONFIG = {
         storageKey: "admt_macos_poll_v1",
         poll: {
           title: "macOS 版本发布意愿投票",
-          description: "如果您希望我们在 macOS 平台上发布，请点击下方按钮参与投票。您的支持将加快我们的开发进度。",
+          description:
+            "如果您希望我们在 macOS 平台上发布，请点击下方按钮参与投票。您的支持将加快我们的开发进度。",
           apiUrl: "/api/macos-poll",
         },
       },
@@ -297,7 +324,8 @@ export const SITE_CONFIG = {
         storageKey: "admt_linux_poll_v1",
         poll: {
           title: "Linux 版本发布意愿投票",
-          description: "如果您希望我们在 Linux 平台上发布，请点击下方按钮参与投票。您的支持将加快我们的开发进度。",
+          description:
+            "如果您希望我们在 Linux 平台上发布，请点击下方按钮参与投票。您的支持将加快我们的开发进度。",
           apiUrl: "/api/linux-poll",
         },
       },
@@ -332,13 +360,15 @@ export const SITE_CONFIG = {
         links: [
           { name: "功能特性", href: "/features" },
           { name: "下载", href: "/download" },
+          { name: "GitHub 源码", href: "https://github.com/LACS-Official/admt" },
         ],
       },
       {
-        title: "支持",
+        title: "开源与支持",
         links: [
           { name: "文档", href: "/docs" },
           { name: "联系我们", href: "/contact" },
+          { name: "GitHub 仓库", href: "https://github.com/LACS-Official/admt" },
         ],
       },
       {
@@ -358,8 +388,18 @@ export const SITE_CONFIG = {
     items: [
       { label: "累计使用", key: "totalUsage", value: 6770, suffix: " 次" },
       { label: "活跃设备", key: "uniqueDevices", value: 2511, suffix: " 台" },
-      { label: "累计连接", key: "totalConnections", value: 31088, suffix: " 次" },
-      { label: "在线设备", key: "uniqueConnectionDevices", value: 2928, suffix: " 台" },
-    ]
+      {
+        label: "累计连接",
+        key: "totalConnections",
+        value: 31088,
+        suffix: " 次",
+      },
+      {
+        label: "在线设备",
+        key: "uniqueConnectionDevices",
+        value: 2928,
+        suffix: " 台",
+      },
+    ],
   },
 };
