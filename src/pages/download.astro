@@ -40,12 +40,14 @@ const { platforms } = downloadPage;
         </div>
         <h1
           class="text-4xl md:text-7xl lg:text-8xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tighter"
+          data-i18n-key="downloadTitle"
         >
           {downloadPage.hero.title.replace("{SITE_CONFIG.name}", "")}
           <span class="text-gray-400 font-light">{SITE_CONFIG.name}</span>
         </h1>
         <p
           class="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-light mb-10 md:mb-12"
+          data-i18n-key="downloadSubtitle"
         >
           {downloadPage.hero.subtitle}
         </p>
@@ -61,7 +63,7 @@ const { platforms } = downloadPage;
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
             </svg>
-            GitHub Releases 下载
+            <span data-i18n-key="downloadGithubReleases">GitHub Releases 下载</span>
           </a>
           {
             downloads.quark && (
@@ -75,7 +77,7 @@ const { platforms } = downloadPage;
                   alt="Quark"
                   class="w-5 h-5 object-contain"
                 />
-                夸克网盘下载
+                <span data-i18n-key="downloadQuark">夸克网盘下载</span>
               </a>
             )
           }
@@ -91,7 +93,7 @@ const { platforms } = downloadPage;
                   alt="Thunder"
                   class="w-5 h-5 object-contain"
                 />
-                迅雷网盘下载
+                <span data-i18n-key="downloadThunder">迅雷网盘下载</span>
               </a>
             )
           }
@@ -100,14 +102,14 @@ const { platforms } = downloadPage;
               <a
                 href={downloads.pan123}
                 target="_blank"
-                class="px-8 py-3 bg-[#1A5CFF] text-white rounded-xl font-medium text-base hover:bg-[#0047E0] transition-colors flex items-center gap-2"
+                class="px-8 py-3 bg-[#0089FF] text-white rounded-xl font-medium text-base hover:bg-[#0077E6] transition-colors flex items-center gap-2"
               >
                 <img
                   src={downloadPage.providerIcons.pan123}
                   alt="123Pan"
                   class="w-5 h-5 object-contain"
                 />
-                123云盘下载
+                <span data-i18n-key="downloadPan123">123云盘下载</span>
               </a>
             )
           }
@@ -116,14 +118,14 @@ const { platforms } = downloadPage;
               <a
                 href={downloads.baidu}
                 target="_blank"
-                class="px-8 py-3 bg-gray-800 dark:bg-gray-800 text-white rounded-xl font-medium text-base hover:bg-gray-900 transition-colors flex items-center gap-2"
+                class="px-8 py-3 bg-[#3385FF] text-white rounded-xl font-medium text-base hover:bg-[#2B70D9] transition-colors flex items-center gap-2"
               >
                 <img
                   src={downloadPage.providerIcons.baidu}
                   alt="Baidu"
                   class="w-5 h-5 object-contain"
                 />
-                百度网盘下载
+                <span data-i18n-key="downloadBaidu">百度网盘下载</span>
               </a>
             )
           }
@@ -147,13 +149,12 @@ const { platforms } = downloadPage;
             >
           </div>
           <div class="space-y-3">
-            {
-              (platforms.windows.items || []).map((item: string) => (
-                <div class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-sm font-medium text-gray-800 dark:text-gray-200">
-                  {item}
-                </div>
-              ))
-            }
+            <div class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-sm font-medium text-gray-800 dark:text-gray-200" data-i18n-key="downloadExe">
+              {platforms.windows.items[0]}
+            </div>
+            <div class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-sm font-medium text-gray-800 dark:text-gray-200" data-i18n-key="downloadZip">
+              {platforms.windows.items[1]}
+            </div>
           </div>
         </div>
 
@@ -174,22 +175,23 @@ const { platforms } = downloadPage;
             <div
               class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center"
             >
-              <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+              <p class="text-sm font-medium text-gray-800 dark:text-gray-200" data-i18n-key="downloadPlanned">
                 {platforms.linux.statusText}
               </p>
             </div>
             <button
               id="linux-poll-button"
               class="w-full py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-i18n-key="downloadLinuxPollBtn"
             >
               {platforms.linux.pollButtonText}
             </button>
             <div class="text-center pt-2">
               <p class="text-xs text-gray-500">
-                {platforms.linux.pollPrefix || "已有 "}<span
+                <span data-i18n-key="downloadPollPrefix">{platforms.linux.pollPrefix || "已有 "}</span><span
                   id="linux-poll-count"
                   class="font-bold">...</span
-                >{platforms.linux.pollSuffix || " 位用户支持"}
+                ><span data-i18n-key="downloadPollSuffix">{platforms.linux.pollSuffix || " 位用户支持"}</span>
               </p>
             </div>
           </div>
@@ -212,15 +214,16 @@ const { platforms } = downloadPage;
             <button
               id="macos-poll-button"
               class="w-full py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              data-i18n-key="downloadMacosPollBtn"
             >
               {platforms.macos.pollButtonText}
             </button>
             <div class="text-center pt-2">
               <p class="text-xs text-gray-500">
-                {platforms.macos.pollPrefix || "已有 "}<span
+                <span data-i18n-key="downloadPollPrefix">{platforms.macos.pollPrefix || "已有 "}</span><span
                   id="macos-poll-count"
                   class="font-bold">...</span
-                >{platforms.macos.pollSuffix || " 位用户支持"}
+                ><span data-i18n-key="downloadPollSuffix">{platforms.macos.pollSuffix || " 位用户支持"}</span>
               </p>
             </div>
           </div>
@@ -228,7 +231,7 @@ const { platforms } = downloadPage;
       </div>
 
       <div class="mt-12 text-center">
-        <p class="text-sm text-gray-500 dark:text-gray-400">
+        <p class="text-sm text-gray-500 dark:text-gray-400" data-i18n-key="downloadFooterMsg">
           {downloadPage.footerMessage}
         </p>
       </div>

@@ -100,13 +100,14 @@ const currentUrl = Astro.url.pathname;
             <nav
               class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400"
             >
-              <a href="/" class="hover:text-gray-700 dark:hover:text-gray-300"
+              <a href="/" class="hover:text-gray-700 dark:hover:text-gray-300" data-i18n-key="docsBreadcrumbHome"
                 >首页</a
               >
               <span>/</span>
               <a
                 href="/docs"
-                class="hover:text-gray-700 dark:hover:text-gray-300">文档</a
+                class="hover:text-gray-700 dark:hover:text-gray-300"
+                data-i18n-key="docsBreadcrumbDocs">文档</a
               >
               {
                 currentPath && (

@@ -37,6 +37,20 @@ const StatsCounter: React.FC = () => {
     return new Intl.NumberFormat("en-US").format(num);
   };
 
+  const statKeys: Record<string, string> = {
+    totalUsage: "statUsage",
+    uniqueDevices: "statDevices",
+    totalConnections: "statConnections",
+    uniqueConnectionDevices: "statOnlineDevices",
+  };
+
+  const statSuffixKeys: Record<string, string> = {
+    totalUsage: "statUsageSuffix",
+    uniqueDevices: "statDevicesSuffix",
+    totalConnections: "statConnectionsSuffix",
+    uniqueConnectionDevices: "statOnlineDevicesSuffix",
+  };
+
   return (
     <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-12 md:gap-16 text-center max-w-5xl mx-auto">
       {stats.items.map((item: any, index: number) => (
@@ -48,13 +62,16 @@ const StatsCounter: React.FC = () => {
             {!loading ? (
               <>
                 {formatNumber(statsData[item.key] || item.value)}
-                {item.suffix}
+                <span data-i18n-key={statSuffixKeys[item.key]}>{item.suffix}</span>
               </>
             ) : (
               <span>...</span>
             )}
           </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 font-medium">
+          <div 
+            className="text-sm text-gray-500 dark:text-gray-400 font-medium"
+            data-i18n-key={statKeys[item.key]}
+          >
             {item.label}
           </div>
         </div>

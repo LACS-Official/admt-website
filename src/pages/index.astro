@@ -45,10 +45,10 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <span>🎉 ADMT 现已全面开源</span>
+          <span data-i18n-key="homeOpenSourceBanner">🎉 ADMT 现已全面开源</span>
           <span class="text-gray-400 dark:text-gray-500">•</span>
           <span class="inline-flex items-center gap-1 group-hover:text-black dark:group-hover:text-white transition-colors">
-            前往 GitHub 仓库
+            <span data-i18n-key="homeGoToGithub">前往 GitHub 仓库</span>
             <svg class="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
             </svg>
@@ -74,11 +74,13 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
       <div data-parallax="0.1">
         <p
           class="text-2xl sm:text-3xl md:text-4xl text-gray-800 dark:text-gray-200 mb-4 font-semibold tracking-tight leading-relaxed max-w-4xl mx-auto px-4"
+          data-i18n-key="tagline"
         >
           {SITE_CONFIG.tagline}
         </p>
         <p
           class="text-lg sm:text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-12 md:mb-16 font-light leading-relaxed max-w-3xl mx-auto px-4"
+          data-i18n-key="subtitle"
         >
           {SITE_CONFIG.subtitle}
         </p>
@@ -88,6 +90,7 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
         <a
           href="/download"
           class="bg-black dark:bg-white text-white dark:text-black px-8 md:px-10 py-4 md:py-5 rounded-full font-semibold text-lg md:text-xl transition-all hover:scale-105 hover:shadow-2xl active:scale-95 w-full sm:w-auto text-center"
+          data-i18n-key="homeHeroDownload"
         >
           {SITE_CONFIG.home.hero.ctaDownload}
         </a>
@@ -100,13 +103,13 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
           <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
           </svg>
-          GitHub 源码
+          <span data-i18n-key="homeHeroGithub">GitHub 源码</span>
         </a>
         <a
           href="/features"
           class="group text-gray-900 bg-white/80 backdrop-blur-md border border-gray-200 dark:text-white dark:bg-black/50 dark:border-gray-800 px-8 md:px-10 py-4 md:py-5 rounded-full font-semibold text-lg md:text-xl transition-all hover:bg-gray-50 dark:hover:bg-gray-900 hover:scale-105 flex items-center justify-center gap-2 w-full sm:w-auto"
         >
-          {SITE_CONFIG.home.hero.ctaLearnMore}
+          <span data-i18n-key="homeHeroLearnMore">{SITE_CONFIG.home.hero.ctaLearnMore}</span>
           <svg
             class="w-5 h-5 group-hover:translate-x-1 transition-transform"
             fill="none"
@@ -141,17 +144,19 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
         <div class="order-1 md:order-2">
           <h2
             class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
+            data-i18n-key="homeShowcaseTitle"
           >
             {SITE_CONFIG.home.showcase.title}
           </h2>
           <p
             class="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed mb-8"
+            data-i18n-key="homeShowcaseDesc"
           >
             {SITE_CONFIG.home.showcase.description}
           </p>
           <ul class="space-y-4">
             {
-              SITE_CONFIG.home.showcase.features.map((item) => (
+              SITE_CONFIG.home.showcase.features.map((item, idx) => (
                 <li class="flex items-center gap-3 text-base text-gray-700 dark:text-gray-300">
                   <svg
                     class="w-5 h-5 text-gray-400"
@@ -166,7 +171,7 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
                       d="M5 13l4 4L19 7"
                     />
                   </svg>
-                  {item}
+                  <span data-i18n-key={`homeShowcaseFeature${idx + 1}`}>{item}</span>
                 </li>
               ))
             }
@@ -183,11 +188,13 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
         <div>
           <h2
             class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+            data-i18n-key="homeFeaturesTitle"
           >
             {SITE_CONFIG.home.featuresPreview.title}
           </h2>
           <p
             class="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-xl"
+            data-i18n-key="homeFeaturesSubtitle"
           >
             {SITE_CONFIG.home.featuresPreview.subtitle}
           </p>
@@ -197,7 +204,7 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
             href="/features"
             class="group inline-flex items-center text-gray-900 dark:text-white font-medium text-sm md:text-base hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
           >
-            {SITE_CONFIG.home.featuresPreview.viewAllText}
+            <span data-i18n-key="homeFeaturesViewAll">{SITE_CONFIG.home.featuresPreview.viewAllText}</span>
             <svg
               class="ml-2 w-4 h-4 transform group-hover:translate-x-1 transition-transform"
               fill="none"
@@ -217,7 +224,7 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
       <!-- Feature Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
         {
-          SITE_CONFIG.home.featuresPreview.items.map((feature) => (
+          SITE_CONFIG.home.featuresPreview.items.map((feature, idx) => (
             <div class="group border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900/50 overflow-hidden">
               <div class="aspect-[16/10] overflow-hidden border-b border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
                 <img
@@ -228,10 +235,16 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
                 />
               </div>
               <div class="p-6">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white tracking-tight mb-1">
+                <h3 
+                  class="text-xl font-semibold text-gray-900 dark:text-white tracking-tight mb-1"
+                  data-i18n-key={`homeFeature${idx + 1}Title`}
+                >
                   {feature.title}
                 </h3>
-                <p class="text-sm text-gray-500 dark:text-gray-400">
+                <p 
+                  class="text-sm text-gray-500 dark:text-gray-400"
+                  data-i18n-key={`homeFeature${idx + 1}Desc`}
+                >
                   {feature.description}
                 </p>
               </div>
@@ -257,11 +270,13 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
       <h2
         class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 md:mb-8 tracking-tight"
+        data-i18n-key="homeCtaTitle"
       >
         {SITE_CONFIG.home.cta.title}
       </h2>
       <p
         class="text-base md:text-xl text-gray-500 dark:text-gray-400 mb-10 font-light max-w-2xl mx-auto"
+        data-i18n-key="homeCtaDesc"
       >
         {SITE_CONFIG.home.cta.description}
       </p>
@@ -269,6 +284,7 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
         <a
           href="/download"
           class="bg-black text-white dark:bg-white dark:text-black px-8 sm:px-10 py-3 rounded-full text-base font-medium transition-colors hover:bg-gray-800 dark:hover:bg-gray-200"
+          data-i18n-key="homeCtaDownload"
         >
           {SITE_CONFIG.home.cta.downloadText}
         </a>
@@ -281,11 +297,12 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
           <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
           </svg>
-          GitHub 仓库
+          <span data-i18n-key="homeCtaGithub">GitHub 仓库</span>
         </a>
         <a
           href="/docs"
           class="bg-white text-gray-900 border border-gray-200 dark:bg-black dark:text-white dark:border-gray-800 px-8 sm:px-10 py-3 rounded-full text-base font-medium transition-colors hover:bg-gray-50 dark:hover:bg-gray-900"
+          data-i18n-key="homeCtaDocs"
         >
           {SITE_CONFIG.home.cta.docsText}
         </a>

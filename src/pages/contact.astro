@@ -5,44 +5,57 @@ import { SITE_CONFIG } from "@/config/site";
 const contactItems = [
   {
     title: "GitHub 开源仓库",
+    titleKey: "contactGithubTitle",
     value: "LACS-Official/admt",
     description: "ADMT 现已开源！欢迎提交 Issue、PR 或点赞 Star 支持。",
+    descKey: "contactGithubDesc",
     icon: `<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path></svg>`,
     action: {
       text: "访问 GitHub 仓库",
+      textKey: "contactGithubAction",
       href: SITE_CONFIG.social.github,
     },
   },
   {
     title: "官方邮箱",
+    titleKey: "contactEmailTitle",
     value: SITE_CONFIG.social.email,
     description: "业务合作、反馈或技术支持需求。",
+    descKey: "contactEmailDesc",
     icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>`,
     action: {
       text: "发送邮件",
+      textKey: "contactEmailAction",
       href: `mailto:${SITE_CONFIG.social.email}`,
       secondaryText: "点击复制",
+      secondaryKey: "contactEmailCopy",
       copyValue: SITE_CONFIG.social.email,
     },
   },
   {
     title: "官方交流群",
+    titleKey: "contactGroupTitle",
     value: `QQ群: ${SITE_CONFIG.group.number}`,
     description: SITE_CONFIG.group.description,
+    descKey: "groupDesc",
     image: SITE_CONFIG.group.qrCode,
     icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>`,
     action: {
       text: SITE_CONFIG.group.joinButtonText,
+      textKey: "groupJoinBtn",
       href: SITE_CONFIG.group.link,
     },
   },
   {
     title: "工作室官网",
+    titleKey: "contactStudioTitle",
     value: SITE_CONFIG.author,
     description: "了解我们更多项目、文化及动态。",
+    descKey: "contactStudioDesc",
     icon: `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m-9 9a9 9 0 019-9"></path></svg>`,
     action: {
       text: "访问官网",
+      textKey: "contactStudioAction",
       href: SITE_CONFIG.social.studio,
     },
   },
@@ -58,13 +71,13 @@ const contactItems = [
       <div class="text-center mb-12">
         <h1
           class="text-4xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+          data-i18n-key="contactTitle"
         >
-          联系<span class="text-gray-400 dark:text-gray-500 font-light"
-            >我们</span
-          >
+          {contactItems[0].title ? "联系我们" : "Contact Us"}
         </h1>
         <p
           class="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-2xl mx-auto font-light leading-relaxed px-4"
+          data-i18n-key="contactSubtitle"
         >
           领创工作室 (LACS) 致力于打造极致的设备管理工具。
           <br class="hidden md:block" />
@@ -80,13 +93,19 @@ const contactItems = [
                 <Fragment set:html={item.icon} />
               </div>
 
-              <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-1 leading-tight">
+              <h2 
+                class="text-lg font-bold text-gray-900 dark:text-white mb-1 leading-tight"
+                data-i18n-key={item.titleKey}
+              >
                 {item.title}
               </h2>
               <div class="text-blue-600 dark:text-blue-400 font-medium mb-3 text-sm">
                 {item.value}
               </div>
-              <p class="text-gray-500 dark:text-gray-400 text-center text-xs font-light leading-snug mb-6 opacity-80">
+              <p 
+                class="text-gray-500 dark:text-gray-400 text-center text-xs font-light leading-snug mb-6 opacity-80"
+                data-i18n-key={item.descKey}
+              >
                 {item.description}
               </p>
 
@@ -107,6 +126,7 @@ const contactItems = [
                     item.action.href.startsWith("http") ? "_blank" : "_self"
                   }
                   class="flex items-center justify-center w-full py-2.5 px-4 bg-gray-900 dark:bg-white text-white dark:text-black rounded-lg font-bold text-sm hover:opacity-90 active:scale-[0.98] transition-all"
+                  data-i18n-key={item.action.textKey}
                 >
                   {item.action.text}
                 </a>
@@ -114,6 +134,7 @@ const contactItems = [
                   <button
                     class="copy-btn flex items-center justify-center w-full py-2.5 px-4 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-400 rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-all text-xs"
                     data-value={item.action.copyValue}
+                    data-i18n-key={item.action.secondaryKey}
                   >
                     {item.action.secondaryText}
                   </button>

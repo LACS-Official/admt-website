@@ -1,0 +1,83 @@
+---
+---
+
+<button
+  type="button"
+  id="language-toggle-btn"
+  class="language-toggle-btn group relative flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold tracking-wide text-gray-700 dark:text-gray-300 hover:text-black dark:hover:text-white bg-gray-100/80 dark:bg-gray-800/80 hover:bg-gray-200/80 dark:hover:bg-gray-700/80 border border-gray-200/60 dark:border-gray-700/60 backdrop-blur-md transition-all duration-200 active:scale-95 shadow-sm"
+  aria-label="Toggle language"
+  title="Switch Language / 切换语言"
+>
+  <svg
+    class="w-4 h-4 text-gray-500 dark:text-gray-400 group-hover:text-blue-500 transition-colors"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="1.8"
+      d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+    ></path>
+  </svg>
+  <span id="language-toggle-label" class="uppercase font-bold">CN / EN</span>
+</button>
+
+<script>
+  import { translations, LANG_STORAGE_KEY, type Language } from "@/config/i18n";
+
+  function initLanguageToggle() {
+    const toggleBtns = document.querySelectorAll(".language-toggle-btn");
+    const labels = document.querySelectorAll("#language-toggle-label");
+
+    const getStoredLang = (): Language => {
+      const saved = localStorage.getItem(LANG_STORAGE_KEY) as Language;
+      if (saved === "zh" || saved === "en") return saved;
+      return navigator.language.toLowerCase().startsWith("en") ? "en" : "zh";
+    };
+
+    const applyLanguage = (lang: Language) => {
+      document.documentElement.lang = lang === "zh" ? "zh-CN" : "en";
+      
+      // Update toggle labels
+      labels.forEach((label) => {
+        label.textContent = lang === "zh" ? "中 / EN" : "EN / 中";
+      });
+
+      // Apply translations to all DOM elements with data-i18n-key
+      const dict = translations[lang];
+      document.querySelectorAll("[data-i18n-key]").forEach((el) => {
+        const key = el.getAttribute("data-i18n-key") as keyof typeof dict;
+        if (key && dict[key] !== undefined) {
+          // If element is an input placeholder
+          if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+            (el as HTMLInputElement).placeholder = dict[key];
+          } else {
+            el.textContent = dict[key];
+          }
+        }
+      });
+
+      // Broadcast event for custom component logic (if needed)
+      window.dispatchEvent(new CustomEvent("admt-language-change", { detail: { lang } }));
+    };
+
+    const currentLang = getStoredLang();
+    applyLanguage(currentLang);
+
+    toggleBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const activeLang = getStoredLang();
+        const nextLang: Language = activeLang === "zh" ? "en" : "zh";
+        localStorage.setItem(LANG_STORAGE_KEY, nextLang);
+        applyLanguage(nextLang);
+      });
+    });
+  }
+
+  // Run setup on load & view transition swaps
+  initLanguageToggle();
+  document.addEventListener("astro:page-load", initLanguageToggle);
+  document.addEventListener("astro:after-swap", initLanguageToggle);
+</script>
