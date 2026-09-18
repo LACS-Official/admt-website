@@ -137,7 +137,7 @@ const { platforms } = downloadPage;
       >
         <!-- Windows Platform -->
         <div
-          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800"
+          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col justify-between"
         >
           <div class="flex items-center gap-4 mb-8">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">
@@ -158,48 +158,9 @@ const { platforms } = downloadPage;
           </div>
         </div>
 
-        <!-- Linux Platform (Poll) -->
+        <!-- macOS Platform -->
         <div
-          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col"
-        >
-          <div class="flex items-center gap-4 mb-8">
-            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
-              {platforms.linux.name}
-            </h2>
-            <span
-              class="text-xs text-gray-500 dark:text-gray-400 ml-auto border border-gray-200 dark:border-gray-700 px-2 py-1 rounded"
-              >{platforms.linux.requirement}</span
-            >
-          </div>
-          <div class="mt-auto space-y-4">
-            <div
-              class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center"
-            >
-              <p class="text-sm font-medium text-gray-800 dark:text-gray-200" data-i18n-key="downloadPlanned">
-                {platforms.linux.statusText}
-              </p>
-            </div>
-            <button
-              id="linux-poll-button"
-              class="w-full py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              data-i18n-key="downloadLinuxPollBtn"
-            >
-              {platforms.linux.pollButtonText}
-            </button>
-            <div class="text-center pt-2">
-              <p class="text-xs text-gray-500">
-                <span data-i18n-key="downloadPollPrefix">{platforms.linux.pollPrefix || "已有 "}</span><span
-                  id="linux-poll-count"
-                  class="font-bold">...</span
-                ><span data-i18n-key="downloadPollSuffix">{platforms.linux.pollSuffix || " 位用户支持"}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <!-- macOS Platform (Poll) -->
-        <div
-          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col"
+          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col justify-between"
         >
           <div class="flex items-center gap-4 mb-8">
             <h2 class="text-xl font-bold text-gray-900 dark:text-white">
@@ -210,22 +171,52 @@ const { platforms } = downloadPage;
               >{platforms.macos.requirement}</span
             >
           </div>
-          <div class="mt-auto space-y-4">
-            <button
-              id="macos-poll-button"
-              class="w-full py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black font-medium text-sm transition-colors hover:bg-gray-800 dark:hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-              data-i18n-key="downloadMacosPollBtn"
+          <div class="space-y-3">
+            <div
+              class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center text-sm font-medium text-gray-800 dark:text-gray-200"
+              data-i18n-key="downloadDev"
             >
-              {platforms.macos.pollButtonText}
-            </button>
-            <div class="text-center pt-2">
-              <p class="text-xs text-gray-500">
-                <span data-i18n-key="downloadPollPrefix">{platforms.macos.pollPrefix || "已有 "}</span><span
-                  id="macos-poll-count"
-                  class="font-bold">...</span
-                ><span data-i18n-key="downloadPollSuffix">{platforms.macos.pollSuffix || " 位用户支持"}</span>
-              </p>
+              {platforms.macos.statusText}
             </div>
+            <button
+              type="button"
+              disabled
+              class="w-full py-3.5 rounded-lg bg-gray-200/70 dark:bg-gray-800/80 text-gray-400 dark:text-gray-500 font-medium text-sm cursor-not-allowed border border-gray-200/50 dark:border-gray-700/50 select-none transition-none"
+              data-i18n-key="downloadComingSoon"
+            >
+              敬请期待
+            </button>
+          </div>
+        </div>
+
+        <!-- Linux Platform -->
+        <div
+          class="p-8 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 flex flex-col justify-between"
+        >
+          <div class="flex items-center gap-4 mb-8">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+              {platforms.linux.name}
+            </h2>
+            <span
+              class="text-xs text-gray-500 dark:text-gray-400 ml-auto border border-gray-200 dark:border-gray-700 px-2 py-1 rounded"
+              >{platforms.linux.requirement}</span
+            >
+          </div>
+          <div class="space-y-3">
+            <div
+              class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center text-sm font-medium text-gray-800 dark:text-gray-200"
+              data-i18n-key="downloadPlanned"
+            >
+              {platforms.linux.statusText}
+            </div>
+            <button
+              type="button"
+              disabled
+              class="w-full py-3.5 rounded-lg bg-gray-200/70 dark:bg-gray-800/80 text-gray-400 dark:text-gray-500 font-medium text-sm cursor-not-allowed border border-gray-200/50 dark:border-gray-700/50 select-none transition-none"
+              data-i18n-key="downloadComingSoon"
+            >
+              敬请期待
+            </button>
           </div>
         </div>
       </div>
@@ -241,81 +232,3 @@ const { platforms } = downloadPage;
   <!-- Version History -->
   <VersionHistory versions={versions} />
 </MainLayout>
-
-<script is:inline define:vars={{ downloadPage }}>
-  // Platform Interest Poll Logic
-  document.addEventListener("DOMContentLoaded", () => {
-    const platforms = [
-      {
-        id: "macos",
-        buttonId: "macos-poll-button",
-        countId: "macos-poll-count",
-        storageKey: downloadPage.platforms.macos.storageKey,
-        apiUrl: downloadPage.platforms.macos.poll.apiUrl,
-      },
-      {
-        id: "linux",
-        buttonId: "linux-poll-button",
-        countId: "linux-poll-count",
-        storageKey: downloadPage.platforms.linux.storageKey,
-        apiUrl: downloadPage.platforms.linux.poll.apiUrl,
-      },
-    ];
-
-    platforms.forEach((platform) => {
-      const pollButton = document.getElementById(platform.buttonId);
-      const pollCountLabel = document.getElementById(platform.countId);
-
-      if (!pollButton || !pollCountLabel) return;
-
-      async function updateCount() {
-        try {
-          const response = await fetch(`${platform.apiUrl}?t=${Date.now()}`);
-          if (!response.ok) throw new Error("Fetch failed");
-          const data = await response.json();
-          pollCountLabel.textContent = data.count || "0";
-        } catch (e) {
-          pollCountLabel.textContent = "0"; // Fallback display
-        }
-      }
-
-      async function handleVote() {
-        if (localStorage.getItem(platform.storageKey)) return;
-
-        try {
-          const response = await fetch(platform.apiUrl, { method: "POST" });
-          if (!response.ok) throw new Error("Post failed");
-          const data = await response.json();
-          pollCountLabel.textContent = data.count || "0";
-          localStorage.setItem(platform.storageKey, "true");
-          disableButton();
-        } catch (e) {
-          console.error(`${platform.id} Vote failed`, e);
-        }
-      }
-
-      function disableButton() {
-        pollButton.disabled = true;
-        pollButton.textContent = "已提交意向";
-        pollButton.classList.remove(
-          "bg-black",
-          "dark:bg-white",
-          "hover:bg-gray-800",
-          "dark:hover:bg-gray-200",
-        );
-        pollButton.classList.add(
-          "bg-gray-200",
-          "text-gray-500",
-          "dark:bg-gray-800",
-          "dark:text-gray-400",
-        );
-      }
-
-      if (localStorage.getItem(platform.storageKey)) {
-        disableButton();
-      }
-      pollButton.addEventListener("click", handleVote);
-      updateCount();
-    });
-  });
-</script>
