@@ -57,7 +57,7 @@ import { SITE_CONFIG } from "@/config/site";
               src={SITE_CONFIG.group.qrCode}
               alt="QR Code"
               class="w-48 h-48 object-contain"
-              onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(window.location.href)"
+              onerror="this.onerror=null;this.src='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + encodeURIComponent(window.location.href);"
             />
           </div>
         </div>

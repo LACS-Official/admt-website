@@ -5,6 +5,26 @@ import ImageLightbox from "@/components/ImageLightbox.astro";
 
 const { featuresPage } = SITE_CONFIG;
 const { featureDetails, subFeatures, moreFeatures } = featuresPage;
+
+const featureKeys = [
+  { titleKey: "featConnTitle", descKey: "featConnDesc" },
+  { titleKey: "featFastbootTitle", descKey: "featFastbootDesc" },
+  { titleKey: "featAppTitle", descKey: "featAppDesc" },
+  { titleKey: "featMirrorTitle", descKey: "featMirrorDesc" },
+  { titleKey: "featInstallTitle", descKey: "featInstallDesc" },
+  { titleKey: "featKeyTitle", descKey: "featKeyDesc" },
+  { titleKey: "featSystemTitle", descKey: "featSystemDesc" },
+  { titleKey: "featFlashTitle", descKey: "featFlashDesc" },
+  { titleKey: "featWireTitle", descKey: "featWireDesc" },
+  { titleKey: "featOnlineTitle", descKey: "featOnlineDesc" },
+];
+
+const subFeatureKeys = [
+  { titleKey: "featSub1Title", descKey: "featSub1Desc" },
+  { titleKey: "featSub2Title", descKey: "featSub2Desc" },
+  { titleKey: "featSub3Title", descKey: "featSub3Desc" },
+  { titleKey: "featSub4Title", descKey: "featSub4Desc" },
+];
 ---
 
 <MainLayout
@@ -20,11 +40,13 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
     >
       <h1
         class="text-4xl md:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-6 tracking-tight"
+        data-i18n-key="featuresTitle"
       >
         {featuresPage.hero.title}
       </h1>
       <p
         class="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-3xl mx-auto font-light leading-relaxed"
+        data-i18n-key="featuresSubtitle"
       >
         {featuresPage.hero.subtitle}
       </p>
@@ -33,47 +55,58 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
 
   <!-- Detailed Features Sections -->
   {
-    featureDetails.map((feature: any) => (
-      <section class={`py-20 sm:py-28 ${feature.color}`}>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            class={`flex flex-col ${feature.image ? (feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row") : "items-center text-center"} items-center gap-12 lg:gap-20`}
-          >
-            {feature.image && (
-              <div class="w-full lg:w-1/2">
-                <div class="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
-                  <img
-                    src={feature.image}
-                    alt={feature.title}
-                    class="w-full object-cover"
-                  />
-                </div>
-              </div>
-            )}
+    featureDetails.map((feature: any, idx: number) => {
+      const keys = featureKeys[idx] || {};
+      return (
+        <section class={`py-20 sm:py-28 ${feature.color}`}>
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div
-              class={`w-full ${feature.image ? "lg:w-1/2" : "max-w-3xl"} flex flex-col justify-center`}
+              class={`flex flex-col ${feature.image ? (feature.reverse ? "lg:flex-row-reverse" : "lg:flex-row") : "items-center text-center"} items-center gap-12 lg:gap-20`}
             >
+              {feature.image && (
+                <div class="w-full lg:w-1/2">
+                  <div class="relative group rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900">
+                    <img
+                      src={feature.image}
+                      alt={feature.title}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full object-cover"
+                    />
+                  </div>
+                </div>
+              )}
               <div
-                class={`flex flex-wrap gap-2 mb-6 ${!feature.image && "justify-center"}`}
+                class={`w-full ${feature.image ? "lg:w-1/2" : "max-w-3xl"} flex flex-col justify-center`}
               >
-                {feature.badges &&
-                  feature.badges.map((badge: string) => (
-                    <span class="px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-medium tracking-wide">
-                      {badge}
-                    </span>
-                  ))}
+                <div
+                  class={`flex flex-wrap gap-2 mb-6 ${!feature.image && "justify-center"}`}
+                >
+                  {feature.badges &&
+                    feature.badges.map((badge: string) => (
+                      <span class="px-3 py-1 rounded-full border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-xs font-medium tracking-wide">
+                        {badge}
+                      </span>
+                    ))}
+                </div>
+                <h2
+                  class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+                  data-i18n-key={keys.titleKey}
+                >
+                  {feature.title}
+                </h2>
+                <p
+                  class="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-light"
+                  data-i18n-key={keys.descKey}
+                >
+                  {feature.description}
+                </p>
               </div>
-              <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight">
-                {feature.title}
-              </h2>
-              <p class="text-base md:text-lg text-gray-600 dark:text-gray-400 leading-relaxed font-light">
-                {feature.description}
-              </p>
             </div>
           </div>
-        </div>
-      </section>
-    ))
+        </section>
+      );
+    })
   }
 
   <!-- Sub Features Bento Grid -->
@@ -84,41 +117,56 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
       <div class="text-center mb-16">
         <h2
           class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+          data-i18n-key="featuresSubTitle"
         >
           甚至更多，尽在掌握
         </h2>
-        <p class="text-lg text-gray-500 dark:text-gray-400 font-light">
+        <p
+          class="text-lg text-gray-500 dark:text-gray-400 font-light"
+          data-i18n-key="featuresSubSubtitle"
+        >
           细微之处，方见真章
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
         {
-          subFeatures.map((item: any) => (
-            <div
-              class={`relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 flex flex-col justify-between ${item.span || ""}`}
-            >
-              <div class="z-10 relative mb-6">
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                  {item.title}
-                </h3>
-                {item.description && (
-                  <p class="text-sm text-gray-500 dark:text-gray-400 max-w-sm">
-                    {item.description}
-                  </p>
+          subFeatures.map((item: any, idx: number) => {
+            const keys = subFeatureKeys[idx] || {};
+            return (
+              <div
+                class={`relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 flex flex-col justify-between ${item.span || ""}`}
+              >
+                <div class="z-10 relative mb-6">
+                  <h3
+                    class="text-xl font-bold text-gray-900 dark:text-white mb-2"
+                    data-i18n-key={keys.titleKey}
+                  >
+                    {item.title}
+                  </h3>
+                  {item.description && (
+                    <p
+                      class="text-sm text-gray-500 dark:text-gray-400 max-w-sm"
+                      data-i18n-key={keys.descKey}
+                    >
+                      {item.description}
+                    </p>
+                  )}
+                </div>
+                {item.image && (
+                  <div class="relative h-48 sm:h-64 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      loading="lazy"
+                      decoding="async"
+                      class="w-full h-full object-cover"
+                    />
+                  </div>
                 )}
               </div>
-              {item.image && (
-                <div class="relative h-48 sm:h-64 rounded-lg overflow-hidden border border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-950">
-                  <img
-                    src={item.image}
-                    alt={item.title}
-                    class="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-            </div>
-          ))
+            );
+          })
         }
       </div>
     </div>
@@ -132,6 +180,7 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
       <div class="text-center mb-16">
         <h2
           class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight"
+          data-i18n-key="featuresGalleryTitle"
         >
           界面预览
         </h2>
@@ -147,6 +196,7 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
                   alt={`Feature Gallery ${idx + 1}`}
                   class="w-full h-auto cursor-zoom-in"
                   loading="lazy"
+                  decoding="async"
                   onclick={`window.openLightbox('${img}')`}
                 />
               </div>
@@ -162,6 +212,7 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
     <div class="max-w-4xl mx-auto px-4">
       <h2
         class="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-8 tracking-tight"
+        data-i18n-key="homeCtaTitle"
       >
         {SITE_CONFIG.home.cta.title}
       </h2>
@@ -169,13 +220,14 @@ const { featureDetails, subFeatures, moreFeatures } = featuresPage;
         <a
           href="/download"
           class="px-10 py-3.5 rounded-full bg-black dark:bg-white text-white dark:text-black font-medium text-base transition-colors hover:bg-gray-800 dark:hover:bg-gray-200"
+          data-i18n-key="homeCtaDownload"
         >
           {SITE_CONFIG.home.cta.downloadText}
-          {SITE_CONFIG.name}
         </a>
         <a
           href="/"
           class="px-10 py-3.5 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-black text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors font-medium text-base"
+          data-i18n-key="notFoundBackHome"
         >
           返回首页
         </a>

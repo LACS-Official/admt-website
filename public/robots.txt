@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://your-software-website.vercel.app/sitemap-index.xml
+Sitemap: https://admt.lacs.cc/sitemap-index.xml

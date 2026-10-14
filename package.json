@@ -12,7 +12,7 @@
   ],
   "author": "玩机管家团队",
   "license": "MIT",
-  "homepage": "https://your-software-website.vercel.app",
+  "homepage": "https://admt.lacs.cc",
   "repository": {
     "type": "git",
     "url": "https://github.com/LACS-Official/admt.git"
@@ -25,7 +25,7 @@
     "astro": "astro",
     "deploy": "node scripts/deploy.js",
     "check": "astro check",
-    "clean": "rm -rf dist .astro .vercel",
+    "clean": "node -e \"['dist', '.astro', '.vercel'].forEach(p => fs.rmSync(p, { recursive: true, force: true }))\"",
     "lint": "astro check"
   },
   "dependencies": {

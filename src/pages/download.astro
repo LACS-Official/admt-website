@@ -171,21 +171,25 @@ const { platforms } = downloadPage;
               >{platforms.macos.requirement}</span
             >
           </div>
-          <div class="space-y-3">
+          <div class="space-y-4">
             <div
               class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center text-sm font-medium text-gray-800 dark:text-gray-200"
               data-i18n-key="downloadDev"
             >
               {platforms.macos.statusText}
             </div>
-            <button
-              type="button"
-              disabled
-              class="w-full py-3.5 rounded-lg bg-gray-200/70 dark:bg-gray-800/80 text-gray-400 dark:text-gray-500 font-medium text-sm cursor-not-allowed border border-gray-200/50 dark:border-gray-700/50 select-none transition-none"
-              data-i18n-key="downloadComingSoon"
-            >
-              敬请期待
-            </button>
+            <div class="poll-widget" data-api="/api/macos-poll" data-storage="admt_macos_poll_v1">
+              <div class="text-xs text-center text-gray-500 dark:text-gray-400 mb-2">
+                已有 <span class="font-bold text-gray-900 dark:text-white count-val">...</span> 位用户助力
+              </div>
+              <button
+                type="button"
+                class="poll-btn w-full py-3 rounded-xl bg-gray-900 hover:bg-black dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black font-semibold text-sm transition-all shadow-sm active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+              >
+                <span class="btn-text">助力 macOS 移植</span>
+                <span class="btn-icon">🍎</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -202,21 +206,25 @@ const { platforms } = downloadPage;
               >{platforms.linux.requirement}</span
             >
           </div>
-          <div class="space-y-3">
+          <div class="space-y-4">
             <div
               class="p-4 rounded-lg bg-white dark:bg-black border border-gray-100 dark:border-gray-800 text-center text-sm font-medium text-gray-800 dark:text-gray-200"
               data-i18n-key="downloadPlanned"
             >
               {platforms.linux.statusText}
             </div>
-            <button
-              type="button"
-              disabled
-              class="w-full py-3.5 rounded-lg bg-gray-200/70 dark:bg-gray-800/80 text-gray-400 dark:text-gray-500 font-medium text-sm cursor-not-allowed border border-gray-200/50 dark:border-gray-700/50 select-none transition-none"
-              data-i18n-key="downloadComingSoon"
-            >
-              敬请期待
-            </button>
+            <div class="poll-widget" data-api="/api/linux-poll" data-storage="admt_linux_poll_v1">
+              <div class="text-xs text-center text-gray-500 dark:text-gray-400 mb-2">
+                已有 <span class="font-bold text-gray-900 dark:text-white count-val">...</span> 位用户助力
+              </div>
+              <button
+                type="button"
+                class="poll-btn w-full py-3 rounded-xl bg-gray-900 hover:bg-black dark:bg-white dark:hover:bg-gray-100 text-white dark:text-black font-semibold text-sm transition-all shadow-sm active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
+              >
+                <span class="btn-text">助力 Linux 移植</span>
+                <span class="btn-icon">🐧</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -231,4 +239,61 @@ const { platforms } = downloadPage;
 
   <!-- Version History -->
   <VersionHistory versions={versions} />
+
+  <script is:inline>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".poll-widget").forEach((widget) => {
+        const api = widget.getAttribute("data-api");
+        const storageKey = widget.getAttribute("data-storage");
+        const countEl = widget.querySelector(".count-val");
+        const btn = widget.querySelector(".poll-btn");
+        const btnText = widget.querySelector(".btn-text");
+        const btnIcon = widget.querySelector(".btn-icon");
+
+        const hasVoted = storageKey && localStorage.getItem(storageKey);
+        if (hasVoted && btn) {
+          btn.disabled = true;
+          if (btnText) btnText.textContent = "已助力支持";
+          if (btnIcon) btnIcon.textContent = "❤️";
+        }
+
+        // Fetch current count
+        if (api) {
+          fetch(api)
+            .then((r) => r.json())
+            .then((data) => {
+              if (countEl && typeof data.count === "number") {
+                countEl.textContent = data.count.toLocaleString();
+              }
+            })
+            .catch(() => {
+              if (countEl) countEl.textContent = "0";
+            });
+        }
+
+        btn?.addEventListener("click", async () => {
+          if (hasVoted || btn.disabled) return;
+          btn.disabled = true;
+          if (btnText) btnText.textContent = "助力中...";
+
+          try {
+            const res = await fetch(api, { method: "POST" });
+            const data = await res.json();
+            if (data.success && typeof data.count === "number") {
+              if (countEl) countEl.textContent = data.count.toLocaleString();
+              if (storageKey) localStorage.setItem(storageKey, "1");
+              if (btnText) btnText.textContent = "已助力支持";
+              if (btnIcon) btnIcon.textContent = "❤️";
+            } else {
+              btn.disabled = false;
+              if (btnText) btnText.textContent = "重试助力";
+            }
+          } catch (e) {
+            btn.disabled = false;
+            if (btnText) btnText.textContent = "重试助力";
+          }
+        });
+      });
+    });
+  </script>
 </MainLayout>

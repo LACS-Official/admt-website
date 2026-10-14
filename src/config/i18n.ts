@@ -140,6 +140,9 @@ export const translations = {
     featSub3Desc: "Logcat 实时过滤与系统参数查看。",
     featSub4Title: "全局通知和提示音",
     featSub4Desc: "界面优雅，声音悦耳",
+    featuresSubTitle: "甚至更多，尽在掌握",
+    featuresSubSubtitle: "细微之处，方见真章",
+    featuresGalleryTitle: "界面预览",
 
     // 联系我们页
     contactTitle: "联系我们",
@@ -186,6 +189,13 @@ export const translations = {
     // 常用按钮/标语
     languageName: "中文",
     switchLanguage: "Switch to English",
+
+    // 404 页面
+    notFoundTitle: "页面未找到",
+    notFoundSubtitle: "抱歉，您访问的页面不存在或已被移动。",
+    notFoundBackHome: "返回首页",
+    notFoundDocs: "查看文档",
+    notFoundDownload: "前往下载",
   },
   en: {
     // 基础与通用
@@ -326,6 +336,9 @@ export const translations = {
     featSub3Desc: "Real-time Logcat filtering and system parameter inspection.",
     featSub4Title: "System Notifications & Audio",
     featSub4Desc: "Elegant user interface with pleasant sound alerts.",
+    featuresSubTitle: "Even More, All in Your Control",
+    featuresSubSubtitle: "True mastery in the subtle details",
+    featuresGalleryTitle: "Interface Preview",
 
     // 联系我们页
     contactTitle: "Contact Us",
@@ -372,6 +385,13 @@ export const translations = {
     // 常用按钮/标语
     languageName: "English",
     switchLanguage: "切换为中文",
+
+    // 404 Page
+    notFoundTitle: "Page Not Found",
+    notFoundSubtitle: "Sorry, the page you are looking for doesn't exist or has been moved.",
+    notFoundBackHome: "Back to Home",
+    notFoundDocs: "Browse Docs",
+    notFoundDownload: "Go to Download",
   },
 };
 

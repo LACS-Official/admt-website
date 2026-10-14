@@ -4,9 +4,7 @@
  * 通过API获取最新版本信息并更新下载配置
  * 只有最新版本提供下载链接，其他版本只显示日志
  */
-import { SITE_CONFIG } from '@/config/site';
-import { deviceManagerVersionApi, type SoftwareVersionHistory } from '@/services/versionApi';
-import DownloadsSection from '@/components/DownloadsSection.astro';
+import { softwareVersionApi, type SoftwareVersionHistory } from '@/services/versionApi';
 
 // 尝试获取最新版本信息和所有版本信息
 let latestVersion: SoftwareVersionHistory | null = null;
@@ -18,19 +16,20 @@ try {
   console.log('Fetching version data with download policy...');
 
   // 获取版本信息（包含下载策略）
-  const versionData = await deviceManagerVersionApi.getAllVersionsWithDownloadPolicy();
+  const versionData = await softwareVersionApi.getAllVersionsWithDownloadPolicy();
   
-  if (versionData.latestVersion) {
-    latestVersion = versionData.latestVersion;
+  if (versionData && versionData.latestVersion) {
+    const latest = versionData.latestVersion;
+    latestVersion = latest;
     allVersions = versionData.allVersions;
     
     console.log('Successfully fetched version data:');
-    console.log('- Latest version:', latestVersion.version, 'with ID:', latestVersion.id);
+    console.log('- Latest version:', latest.version, 'with ID:', latest.id);
     console.log('- Total versions:', allVersions.length);
-    console.log('- Latest version download URL:', latestVersion.downloadLinks?.official);
+    console.log('- Latest version download URL:', latest.downloadLinks?.official);
 
     // 生成动态下载配置
-    dynamicDownloadConfig = await deviceManagerVersionApi.generateDynamicDownloadConfig();
+    dynamicDownloadConfig = await softwareVersionApi.generateDynamicDownloadConfig();
   } else {
     console.warn('No version data available');
     errorMessage = 'API暂无版本数据，请稍后重试';
@@ -69,7 +68,14 @@ const dynamicDownloads = dynamicDownloadConfig;
             <!-- Windows平台下载 -->
       <div class="platform-selector">
         {latestVersion.downloadLinks?.official ? (
-          <DownloadsSection latestVersion={latestVersion} />
+          <a
+            href={latestVersion.downloadLinks.official}
+            class="inline-block px-6 py-2.5 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            下载最新安装包 (v{latestVersion.version})
+          </a>
         ) : (
           <div class="download-unavailable">
             <span>暂无下载链接</span>

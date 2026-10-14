@@ -1,7 +1,6 @@
 ---
 import MainLayout from "@/layouts/MainLayout.astro";
 import { SITE_CONFIG } from "@/config/site";
-import SimpleAnnouncementBanner from "@/components/SimpleAnnouncementBanner.astro";
 import ImageLightbox from "@/components/ImageLightbox.astro";
 import StatsCounter from "@/components/StatsCounter";
 import GroupModal from "@/components/GroupModal.astro";
@@ -138,6 +137,8 @@ import AppleScrollEffects from "@/components/AppleScrollEffects.astro";
           <img
             src={SITE_CONFIG.home.showcase.image}
             alt={SITE_CONFIG.home.showcase.title}
+            loading="lazy"
+            decoding="async"
             class="rounded-xl border border-gray-200 dark:border-gray-800 w-full"
           />
         </div>

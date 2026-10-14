@@ -1,18 +1,15 @@
 ---
 import DocsLayout from '@/layouts/DocsLayout.astro';
-import { getDocsIndexContent, getAllDocuments, findDocumentBySlug } from '@/utils/markdown';
+import { getDocsIndexContent, findDocumentBySlug } from '@/utils/markdown';
 import { SITE_CONFIG } from '@/config/site';
 
 // 读取文档首页内容
 const docsContent = getDocsIndexContent();
 
-// 获取所有文档并筛选热门文档
-const allDocuments = getAllDocuments();
-
 // 定义热门文档的 slug
 const popularDocSlugs = [
   'user-guide/getting-started',
-  'user-guide/device-connection',
+  'device/linksys',
   'troubleshooting/faq'
 ];
 
@@ -36,7 +33,7 @@ const popularDocsData = popularDocSlugs.map(slug => {
 const quickNavCards = [
   {
     title: '快速入门',
-    href: '/docs/getting-started',
+    href: '/docs/user-guide/getting-started',
     icon: '🚀',
     description: '5分钟快速上手，连接您的第一台Android设备',
     gradient: 'bg-blue-50 dark:bg-blue-900/20',
@@ -46,7 +43,7 @@ const quickNavCards = [
   },
   {
     title: '安装指南',
-    href: '/docs/installation',
+    href: '/docs/installation/windows',
     icon: '🔧',
     description: '详细的安装步骤和系统配置要求',
     gradient: 'bg-green-50 dark:bg-green-900/20',
@@ -55,8 +52,8 @@ const quickNavCards = [
     hoverColor: 'group-hover:text-green-600 dark:group-hover:text-green-400'
   },
   {
-    title: '用户指南',
-    href: '/docs/user-guide/device-connection',
+    title: '设备连接',
+    href: '/docs/device/linksys',
     icon: '📱',
     description: '完整的功能使用教程和最佳实践',
     gradient: 'bg-purple-50 dark:bg-purple-900/20',
@@ -66,7 +63,7 @@ const quickNavCards = [
   },
   {
     title: '故障排除',
-    href: '/docs/troubleshooting',
+    href: '/docs/troubleshooting/faq',
     icon: '🔧',
     description: '常见问题解答和故障解决方案',
     gradient: 'bg-red-50 dark:bg-red-900/20',
