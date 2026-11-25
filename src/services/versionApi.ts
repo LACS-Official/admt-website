@@ -581,18 +581,18 @@ export class SoftwareVersionService extends VersionApiService {
           }
         },
 
-        // macOS 下载配置 - 暂不支持
+        // macOS 下载配置 - v1.5.7 起随三平台发布
         macos: {
-          status: "unsupported",
-          message: "暂不支持下载",
-          description: "macOS 版本正在开发中，敬请期待"
+          status: "stable",
+          message: "稳定版本",
+          description: "磁盘映像 (.dmg)，Apple 芯片"
         },
 
-        // Linux 下载配置 - 暂不支持
+        // Linux 下载配置 - v1.5.7 起随三平台发布
         linux: {
-          status: "unsupported",
-          message: "暂不支持下载",
-          description: "Linux 版本正在开发中，敬请期待"
+          status: "stable",
+          message: "稳定版本",
+          description: "AppImage / deb / rpm (x86_64)"
         },
 
         // 所有版本信息（用于版本历史显示）

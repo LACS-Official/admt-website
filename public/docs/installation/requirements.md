@@ -19,13 +19,15 @@ date: "2024-01-15"
 - **推荐**: Windows 11 (64位) 最新版本
 - **不支持**: Windows 7, Windows 8, Windows 10 32位
 
-### macOS (即将支持)
-- **最低要求**: macOS 10.15 Catalina
-- **推荐**: macOS 12 Monterey 或更高
+### macOS
+- **最低要求**: macOS 12 Monterey 或更高
+- **架构**: Apple 芯片 (arm64)
+- **安装包**: 磁盘映像 (.dmg)
 
-### Linux (即将支持)
+### Linux
 - **支持发行版**: Ubuntu 20.04+, Debian 11+, CentOS 8+
 - **架构**: x86_64
+- **安装包**: AppImage / deb / rpm
 
 ## 💾 硬件要求
 

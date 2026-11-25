@@ -41,8 +41,8 @@ export const SITE_CONFIG = {
 
   // 产品信息
   product: {
-    version: "1.2.0",
-    releaseDate: "2025-08-15",
+    version: "1.5.7",
+    releaseDate: "2026-11-25",
     platforms: ["Windows", "macOS", "Linux"],
     license: "GPL-3.0 开源协议",
   },
@@ -137,10 +137,10 @@ export const SITE_CONFIG = {
       {
         title: "极致连接体验",
         description:
-          "自研智能连接技术，支持 USB 与 无线 双模式。秒识别，瞬时同步，让连接不再是阻碍。",
+          "自研智能连接技术，支持 USB 与 无线 双模式。扫码配对免插线，秒识别，瞬时同步，让连接不再是阻碍。",
         image:
           "https://img-g.lacs.cc/file/1770038394235_SnowShot_2026-02-02_18-38-19.webp",
-        badges: ["全自动发现", "断线重连", "多设备并发"],
+        badges: ["扫码配对", "全自动发现", "断线重连", "多设备并发"],
         color: "bg-white dark:bg-black",
       },
       {
@@ -229,6 +229,13 @@ export const SITE_CONFIG = {
         color: "bg-gray-50 dark:bg-gray-900/40",
         reverse: true,
       },
+      {
+        title: "应用内自动更新",
+        description:
+          "检查到新版本后，直接在应用内完成下载、安装与重启，无需手动下载安装包。三平台通用。",
+        badges: ["进度显示", "自动安装", "失败回退官网"],
+        color: "bg-white dark:bg-black",
+      },
     ],
     subFeatures: [
       {
@@ -290,48 +297,28 @@ export const SITE_CONFIG = {
         status: "stable",
         supportText: "稳定版本",
         requirement: "Windows 10/11 x64",
-        items: ["官方安装包 (.exe)", "绿色免安装版 (.zip)"],
+        items: ["官方安装包 (.exe)", "MSI 安装包 (.msi)"],
         icon: "M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-13.051-1.351",
       },
       macos: {
         id: "macos",
         name: "macOS",
-        status: "planned",
-        supportText: "正在开发中",
-        requirement: "macOS 11.0+",
-        statusText: "正在开发中",
-        pollButtonText: "敬请期待",
-        pollPrefix: "已有 ",
-        pollSuffix: " 位用户支持",
-        storageKey: "admt_macos_poll_v1",
-        poll: {
-          title: "macOS 版本发布意愿投票",
-          description:
-            "如果您希望我们在 macOS 平台上发布，请点击下方按钮参与投票。您的支持将加快我们的开发进度。",
-          apiUrl: "/api/macos-poll",
-        },
+        status: "stable",
+        supportText: "稳定版本",
+        requirement: "macOS 12.0+ (Apple 芯片)",
+        items: ["磁盘映像 (.dmg)"],
       },
       linux: {
         id: "linux",
         name: "Linux",
-        status: "planned",
-        supportText: "正在计划中",
-        requirement: "Ubuntu/Debian/Fedora",
-        statusText: "正在计划中",
-        pollButtonText: "敬请期待",
-        pollPrefix: "已有 ",
-        pollSuffix: " 位用户支持",
-        storageKey: "admt_linux_poll_v1",
-        poll: {
-          title: "Linux 版本发布意愿投票",
-          description:
-            "如果您希望我们在 Linux 平台上发布，请点击下方按钮参与投票。您的支持将加快我们的开发进度。",
-          apiUrl: "/api/linux-poll",
-        },
+        status: "stable",
+        supportText: "稳定版本",
+        requirement: "x86_64 · AppImage / deb / rpm",
+        items: ["独立运行包 (.AppImage)", "Debian 包 (.deb)", "RPM 包 (.rpm)"],
       },
     },
     footerMessage:
-      "暂无 macOS 或 Linux 版本发布计划。如需更多下载方式，请查看下方历史版本或第三方源。",
+      "Windows / macOS / Linux 三平台均已发布，可前往 GitHub Releases 获取全部安装包，或选择上方网盘下载。",
   },
 
   // 页头配置
